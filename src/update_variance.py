@@ -1,0 +1,62 @@
+import numpy as np
+import tarfile
+import sys
+import os
+sys.path.append(os.getcwd())
+
+import matplotlib.pyplot as plt
+
+from RlGlue import RlGlue
+from src.problems.registry import getProblem
+from src.utils.arrays import fillRest
+from src.utils.model import loadExperiment
+from src.utils.path import up
+
+# get the experiment model from JSON file
+exp = loadExperiment(sys.argv[2])
+idx = int(sys.argv[3])
+RUNS = int(sys.argv[1])
+
+run_variances = []
+for run in range(RUNS):
+    np.random.seed(run)
+
+    # get problem specific settings
+    Problem = getProblem(exp.problem)
+    problem = Problem(exp, idx)
+    env = problem.getEnvironment()
+    rep = problem.getRepresentation()
+
+    experiences = problem.sampleExperiences()
+    experiences = experiences[np.random.randint(0, len(experiences), size=100)]
+    agent = problem.getAgent()
+    glue = RlGlue(agent, env)
+
+    # Run the experiment
+    variances = []
+    glue.start()
+    for step in range(problem.getSteps()):
+        r, o, a, t = glue.step()
+        if t:
+            glue.start()
+
+        var_w, var_h = problem.agent.computeVarianceOfUpdates(experiences)
+
+        variances.append([np.mean([var_w, var_h]), var_w, var_h])
+
+    run_variances.append(variances)
+
+
+mean = np.mean(run_variances, 0)
+stderr = np.std(run_variances, 0, ddof=1) / np.sqrt(RUNS)
+
+# plt.plot(mean)
+# plt.show()
+# exit()
+
+# save things to disk
+save_context = exp.buildSaveContext(idx)
+save_context.ensureExists()
+
+path = up(save_context.resolve())
+np.save(path + '/variance_summary.npy', np.array([ mean, stderr, RUNS ]))

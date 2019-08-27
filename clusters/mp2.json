@@ -1,0 +1,7 @@
+{
+    "account": "def-whitem",
+    "time": "2:59:00",
+    "nodes": 32,
+    "memPerCpu": "2G",
+    "tasksPerNode": 4
+}
