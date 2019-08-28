@@ -1,7 +1,6 @@
 import numpy as np
 from PyExpUtils.results.paths import listResultsPaths
 from src.utils.arrays import first
-from src.utils.path import up
 
 class Result:
     def __init__(self, path, exp, idx):
@@ -73,5 +72,5 @@ def whereParameterEquals(results, param, value):
 
 def loadResults(exp, summary='errors_summary.npy'):
     for i, path in enumerate(listResultsPaths(exp)):
-        summary_path = up(path) + '/' + summary
+        summary_path = path + '/' + summary
         yield Result(summary_path, exp, i)

@@ -1,3 +1,3 @@
 {
-    "save_path": "results/{name}/{agent}/{params}/{run}"
+    "save_path": "results/{name}/{agent}/{params}"
 }

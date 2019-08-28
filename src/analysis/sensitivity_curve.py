@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 from src.analysis.results import getBestOverParameter
 
-def save(exp, name, trial = 0):
+def save(exp, name):
     exp_name = exp.getExperimentName()
-    save_path = f'experiments/{exp_name}/trials/{trial}'
+    save_path = f'experiments/{exp_name}'
     os.makedirs(save_path, exist_ok=True)
     plt.savefig(f'{save_path}/{name}.pdf')
 

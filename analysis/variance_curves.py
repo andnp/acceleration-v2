@@ -11,8 +11,6 @@ from src.analysis.learning_curve import plot, save
 from src.analysis.results import loadResults, whereParameterEquals
 from src.utils.model import loadExperiment
 
-trial = 0
-
 def columnReducer(col):
     return lambda m: m[:, col]
 
@@ -38,10 +36,11 @@ def generatePlot(exp_paths):
         plot(w, w_ax)
         plot(h, h_ax)
 
-    # plt.show()
+    plt.show()
+    exit()
 
     exp_name = exp.getExperimentName()
-    save_path = f'experiments/{exp_name}/trials/{trial}'
+    save_path = f'experiments/{exp_name}'
     os.makedirs(save_path, exist_ok=True)
     b_fig.savefig(f'{save_path}/both_variance-curve.pdf')
     w_fig.savefig(f'{save_path}/w_variance-curve.pdf')

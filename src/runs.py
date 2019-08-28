@@ -60,14 +60,12 @@ for run in range(RUNS):
 mean = np.mean(run_errors, 0)
 stderr = np.std(run_errors, 0, ddof=1) / np.sqrt(RUNS)
 
-plt.plot(mean)
-plt.show()
-exit()
+# plt.plot(mean)
+# plt.show()
+# exit()
 
 # save things to disk
 save_context = exp.buildSaveContext(idx)
 save_context.ensureExists()
 
-path = '/'.join(save_context.resolve().split('/')[:-1])
-
-np.save(path + '/errors_summary.npy', np.array([ mean, stderr, RUNS ]))
+np.save(save_context.resolve('errors_summary.npy'), np.array([ mean, stderr, RUNS ]))

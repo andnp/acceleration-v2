@@ -11,6 +11,9 @@ from src.problems.registry import getProblem
 from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
 from src.utils.path import up
+from src.utils.random import sample
+
+SAMPLE_EVERY=25
 
 # get the experiment model from JSON file
 exp = loadExperiment(sys.argv[2])
@@ -19,6 +22,7 @@ RUNS = int(sys.argv[1])
 
 run_variances = []
 for run in range(RUNS):
+    print(run)
     np.random.seed(run)
 
     # get problem specific settings
@@ -27,8 +31,10 @@ for run in range(RUNS):
     env = problem.getEnvironment()
     rep = problem.getRepresentation()
 
-    experiences = problem.sampleExperiences()
-    experiences = experiences[np.random.randint(0, len(experiences), size=100)]
+    # sort of a hack, but this only needs to happen the first time
+    if run == 0:
+        experience_generator = problem.sampleExperiences()
+
     agent = problem.getAgent()
     glue = RlGlue(agent, env)
 
@@ -40,9 +46,11 @@ for run in range(RUNS):
         if t:
             glue.start()
 
-        var_w, var_h = problem.agent.computeVarianceOfUpdates(experiences)
+        if step % SAMPLE_EVERY == 0:
+            experiences = experience_generator.sample(1000)
+            var_w, var_h = problem.agent.computeVarianceOfUpdates(experiences)
 
-        variances.append([np.mean([var_w, var_h]), var_w, var_h])
+            variances.append([np.mean([var_w, var_h]), var_w, var_h])
 
     run_variances.append(variances)
 
@@ -58,5 +66,4 @@ stderr = np.std(run_variances, 0, ddof=1) / np.sqrt(RUNS)
 save_context = exp.buildSaveContext(idx)
 save_context.ensureExists()
 
-path = up(save_context.resolve())
-np.save(path + '/variance_summary.npy', np.array([ mean, stderr, RUNS ]))
+np.save(save_context.resolve('variance_summary.npy'), np.array([ mean, stderr, RUNS ]))

@@ -22,7 +22,7 @@ args = SlurmArgs.SlurmArgsModel({
 
 def generateMissing(paths):
     for i, p in enumerate(paths):
-        summary_path = '/'.join(p.split('/')[:-1]) + '/variance_summary.npy'
+        summary_path = p + '/variance_summary.npy'
         if not os.path.exists(summary_path):
             yield i
 

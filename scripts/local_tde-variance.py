@@ -11,7 +11,7 @@ from src.utils.arrays import first
 
 def generateMissing(paths):
     for i, p in enumerate(paths):
-        summary_path = '/'.join(p.split('/')[:-1]) + '/tde_variance_summary.npy'
+        summary_path = p + '/tde_variance_summary.npy'
         if not os.path.exists(summary_path):
             yield i
 

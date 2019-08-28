@@ -49,12 +49,7 @@ for step in range(problem.getSteps()):
     errors.append(e)
 
 # save things to disk
-save_context = exp.buildSaveContext(idx, base='.tmp', use_tmp=True)
+save_context = exp.buildSaveContext(idx, base='results')
 save_context.ensureExists()
 
 np.save(save_context.resolve('errors.npy'), np.array(errors))
-# make sure results are saved to a tar file
-# this is better for the cluster harddrive health
-save_context.archive()
-# delete any temporary files (everything except for the tar file)
-save_context.remove()
