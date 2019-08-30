@@ -61,7 +61,7 @@ def getBestEnd(results):
     for r in results:
         a = r.mean()
         b = low.mean()
-        steps = len(a) // 0.1
+        steps = int(len(a) * 0.1)
         if np.mean(a[-steps:]) < np.mean(b[-steps:]):
             low = r
 

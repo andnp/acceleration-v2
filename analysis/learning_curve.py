@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 sys.path.append(os.getcwd())
 
 from src.analysis.learning_curve import plot, save
-from src.analysis.results import loadResults
+from src.analysis.results import loadResults, whereParameterEquals
 from src.utils.model import loadExperiment
 
 from src.utils.path import fileName
@@ -15,8 +15,11 @@ def generatePlot(exp_paths):
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         results = loadResults(exp)
+        results = whereParameterEquals(results, 'curve', 0)
 
-        plot(results, ax)
+        label = fileName(exp_path).replace('.json', '')
+
+        plot(results, ax, label=label, labelParams=['alpha', 'curve'])
 
     plt.show()
     # save(exp, f'learning-curve')
