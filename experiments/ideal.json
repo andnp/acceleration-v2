@@ -1,0 +1,11 @@
+{
+    "agent": "GTD2",
+    "problem": "Boyan",
+    "metaParameters": {
+        "ratio": 1.0,
+        "momentum": 0,
+        "curve": 0,
+        "alpha": 0.25,
+        "use_ideal_h": true
+    }
+}

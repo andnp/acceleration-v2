@@ -6,6 +6,7 @@ from src.problems.RandomNetworkCollision import RandomNetworkCollision
 from src.problems.BigRhoCollision import BigRhoCollision
 from src.problems.BairdCounterexample import BairdCounterexample
 from src.problems.BairdConvergence import BairdConvergence
+from src.problems.Boyan import Boyan
 
 def getProblem(name):
     if name == 'StandardCollision':
@@ -31,5 +32,8 @@ def getProblem(name):
 
     if name == 'BairdConvergence':
         return BairdConvergence
+
+    if name == 'Boyan':
+        return Boyan
 
     raise NotImplementedError()

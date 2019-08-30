@@ -11,10 +11,10 @@ def save(exp, name):
     os.makedirs(save_path, exist_ok=True)
     plt.savefig(f'{save_path}/{name}.pdf')
 
-def plot(results, ax):
+def plot(results, ax, color=None, label=None):
     best = getBest(results)
     print(best.exp.agent, best.params)
-    return plotBest(best, ax)
+    return plotBest(best, ax, color, label)
 
 
 def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True):

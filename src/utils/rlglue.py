@@ -1,3 +1,4 @@
+import numpy as np
 from RlGlue import BaseAgent
 
 def identity(s):
@@ -33,5 +34,5 @@ class OffPolicyWrapper(BaseAgent):
 
     def end(self, r):
         p = self.t_policy.ratio(self.b_policy, self.s_t, self.a_t)
-        self.agent.update(self.obs_t, self.a_t, self.obs_t, r, 0, p)
+        self.agent.update(self.obs_t, self.a_t, np.zeros_like(self.obs_t), r, 0, p)
         self.agent.reset()
