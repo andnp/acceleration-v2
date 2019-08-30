@@ -1,6 +1,8 @@
 import time
 import sys
 import os
+sys.path.append(os.getcwd())
+
 from src.utils.model import loadExperiment
 from PyExpUtils.runner import SlurmArgs
 from PyExpUtils.results.paths import listResultsPaths
