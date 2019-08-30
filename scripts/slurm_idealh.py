@@ -50,5 +50,5 @@ for path in args.experiment_paths:
         l = list(g)
         print("scheduling:", path, l)
         slurm.tasks = min([slurm.tasks, len(l)])
-        # schedule(slurm, args.executable + ' ' + path, l)
+        schedule(slurm, args.executable + ' ' + path, l)
         time.sleep(2)
