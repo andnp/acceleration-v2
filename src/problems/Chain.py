@@ -19,7 +19,7 @@ class Chain(BaseProblem):
         self.nsteps = perm["nsteps"]
 
         # build representation
-        self.rep = globals()[perm["representation"]](N)
+        self.rep = globals()[self.metaParameters["representation"]](N)
 
         # build environment
         # build agent
@@ -27,7 +27,7 @@ class Chain(BaseProblem):
 
         # build target policy
         self.target = Policies.fromStateArray(
-            [perm["target_policy"]]*N
+            [self.metaParameters["target_policy"]]*N
         )
 
         # on-policy version of this domain
@@ -71,7 +71,6 @@ class Chain(BaseProblem):
         return OffPolicyWrapper(self.agent, self.behavior, self.target, self.rep.encode)
 
     def compute_v(self, nstates, targetPolicy):
-        state_prob = 0.5
         gamma = self.getGamma()
         theta = 1e-8
 
@@ -104,10 +103,8 @@ class Chain(BaseProblem):
                     left_reward = 0.0
                     left_value = V[left]
 
-                V[s] = state_prob * (
-                    p_right * (right_reward + gamma*right_value) +
-                    p_left * (left_reward + gamma*left_value)
-                )
+                V[s] = p_right * (right_reward + gamma*right_value) +\
+                       p_left * (left_reward + gamma*left_value)
 
                 delta = max(delta, np.abs(v-V[s]))
         return V
