@@ -52,6 +52,12 @@ class BairdCounterexample(BaseProblem):
             self.rep.encode(i) for i in range(7)
         ])
 
+        # build transition probability matrix for computing ideal H
+        self.P = np.ones((7, 7)) * (1/7)
+
+        # build Reward structure for computing ideal H
+        self.R = np.zeros(7)
+
     def getGamma(self):
         return 0.99
 
@@ -77,4 +83,4 @@ class BairdCounterexample(BaseProblem):
         return np.sqrt(s)
 
     def sampleExperiences(self):
-        return np.load('baselines/experiences_BairdCounterexample.npy', allow_pickle=True)
+        raise NotImplementedError("This hasn't been implemented yet.")
