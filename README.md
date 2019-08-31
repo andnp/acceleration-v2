@@ -1,5 +1,56 @@
 # off-policy-acceleration
 
+## Setting up repo
+**This codebase only works with python 3.6 and above.**
+
+Packages are stored in a `requirements.txt` file (standard for python codebases).
+To install:
+```
+pip install -r requirements.txt
+```
+If `pip` is set to `python 2`, then you might need to do:
+```
+pip3 install -r requirements.txt
+```
+
+On machines that you do not have root access to (like compute canada machines), you will need to install in the user directory.
+You can do this with:
+```
+pip install --user -r requirements.txt
+```
+
+## Step-by-step example
+Here is a quick guide to run an already existent experiment on compute canada.
+```bash
+ssh $cedar
+cd path/to/acceleration-v2
+git pull # make sure you are up to date
+
+# remove any old results that you might have lying around
+# that way you don't accidentally zip them up and re-download them after the experiment
+rm -rf results &
+
+# check the cluster parameters
+# make sure to balance using many parallel cpu cores
+# while also being a good citizen of the resources (e.g. don't schedule 1000s of 2m jobs)
+nano clusters/cedar.json
+
+# run the experiment
+python scripts/slurm_runs.py clusters/cedar.json ./ 100 experiments/myExperiment/*.json
+
+# wait for a while
+# then zip and download results
+tar -czvf results.tar.gz results
+
+# go back to your laptop
+exit
+scp $cedar:~/path/to/acceleration-v2/results.tar.gz ./
+tar -xvf results.tar.gz
+
+# plot your results
+python analysis/learning_curve.py experiments/myExperiment/*.json
+```
+
 ## Organization Patterns
 
 ### Experiments
@@ -8,7 +59,7 @@ I choose to use `.json` files for human readability and because I am most comfor
 These are stored in the `experiments` folder, usually in a subdirectory with a short name for the experiment being run (e.g. `experiments/idealH` would specify an experiment that tests the effects of using h*).
 
 Experiment `.json` files look something like:
-```json
+```jsonc
 {
     "agent": "name of your agent (e.g. gtd2)",
     "problem": "name of the problem you're solving (e.g. randomwalk_inverted)",
@@ -67,13 +118,13 @@ I try to sort them into files that roughly name how/when they will be used (e.g.
 ### clusters
 This folder contains the job submission information that is needed to run on a cluster.
 These are also `.json` files that look like:
-```json
+```jsonc
 {
     "account": "which compute canada account to use",
     "time": "how much time the job is expected to take",
-    "nodes": "the number of cpus to use",
+    "nodes": "the number of cpu cores to use",
     "memPerCpu": "how much memory one parameter setting requires", // doesn't need to change
-    "tasksPerNode": "how many parameter settings to run in serial on each node"
+    "tasksPerNode": "how many parameter settings to run in serial on each cpu core"
 }
 ```
 The only thing that really needs to change are `time` and `tasksPerNode`.
@@ -137,3 +188,16 @@ python analysis/learning_curve.py ./experiments/idealH/gtd2_not.json
 ```
 python analysis/learning_curve.py ./experiments/idealH/gtd2_not.json ./experiments/idealH/gtd2.json
 ```
+
+## Entry Points
+There are usually several different entry points for one of my codebases.
+The entry points usually encode a different experiment, and they may not always be compatible with each other.
+
+Here is a list of the entry points at the time of writing:
+ - **src/runs.py** - This is the primary entry point. Running this will generate an `errors_summary.npy` result file for a single set of parameters over N runs.
+ - **src/update_variance.py** - This entry point will compute the variance of the updates for any method. It will generate a `variance_summary.npy` result file for a single set of parameters over N runs. **This requires the Problem to have a `sampleExperiences` method.**
+ - **src/ideal_h.py** - This is the latest and least tested entry point. It will run an average-over-runs experiment using the precomputed h*. It generates an `errors_summary.npy` result file for a single set of parameters over N runs. **This requires the Problem to have `R` and `P` defined.**
+
+Each of the entry points will also have its own high-level scripts for running on compute-canada or locally.
+These are a pain to maintain and work with right now, and they require a stupid amount of code-duplication (sorry about that!).
+They are a work in progress.

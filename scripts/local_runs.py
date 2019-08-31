@@ -8,17 +8,17 @@ from PyExpUtils.runner import Args, parallel
 from PyExpUtils.results.indices import listMissingResults, listIndices
 from src.utils.model import loadExperiment
 
-if len(sys.argv) < 5:
+if len(sys.argv) < 4:
     print('Please run again using')
-    print('python -m scripts.scriptName [path/to/executable] [runs] [base_path] [paths/to/descriptions]...')
+    print('python scripts/local_runs.py [runs] [base/path/to/results] [paths/to/descriptions]...')
     exit(0)
 
-runs = sys.argv[2]
+runs = sys.argv[1]
 args = Args.ArgsModel({
-    'experiment_paths': sys.argv[4:],
-    'base_path': sys.argv[3],
+    'experiment_paths': sys.argv[3:],
+    'base_path': sys.argv[2],
     'runs': 1,
-    'executable': sys.argv[1],
+    'executable': "python src/runs.py",
 })
 
 for path in args.experiment_paths:
