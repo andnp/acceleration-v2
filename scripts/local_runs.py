@@ -1,4 +1,7 @@
 import sys
+import os
+sys.path.append(os.getcwd())
+
 import subprocess
 import multiprocessing
 from PyExpUtils.runner import Args, parallel

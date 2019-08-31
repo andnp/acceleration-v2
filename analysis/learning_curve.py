@@ -15,11 +15,10 @@ def generatePlot(exp_paths):
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         results = loadResults(exp)
-        results = whereParameterEquals(results, 'curve', 0)
 
         label = fileName(exp_path).replace('.json', '')
 
-        plot(results, ax, label=label, labelParams=['alpha', 'curve'])
+        plot(results, ax, label=label)
 
     plt.show()
     # save(exp, f'learning-curve')

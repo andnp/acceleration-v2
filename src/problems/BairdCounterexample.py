@@ -45,7 +45,7 @@ class BairdCounterexample(BaseProblem):
         self.target = Policy.fromActionArray([0.0, 1.0])
 
         # initialize agent with starting weight parameters
-        self.agent.w = np.array([1, 1, 1, 1, 1, 1, 1, 10])
+        self.agent.theta[1] = np.array([1, 1, 1, 1, 1, 1, 1, 10])
 
         # compute the observable value for each state once
         self.all_observables = np.array([
