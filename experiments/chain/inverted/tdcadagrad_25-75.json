@@ -3,7 +3,7 @@
 
     "problem": "Chain",
     "nstates": 19,
-    "nsteps": 500,
+    "nsteps": 3000,
 
     "metaParameters": {
         "target_policy": [[0.25,0.75]],
