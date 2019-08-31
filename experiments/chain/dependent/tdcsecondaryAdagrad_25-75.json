@@ -1,5 +1,5 @@
 {
-    "agent": "GTD2adagrad",
+    "agent": "TDCsecondaryAdagrad",
 
     "problem": "Chain",
     "nstates": 19,
@@ -7,7 +7,7 @@
 
     "metaParameters": {
         "target_policy": [[0.25,0.75]],
-        "representation": "Inverted",
+        "representation": "Dependent",
         "ratio": 1.0,
         "alpha": [1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.00195313, 0.000976563],
         "alpha_h": [1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.00195313, 0.000976563]

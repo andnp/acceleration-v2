@@ -1,5 +1,5 @@
 {
-    "agent": "GTD2adagrad",
+    "agent": "TDCsecondaryAdagrad",
 
     "problem": "Chain",
     "nstates": 19,
