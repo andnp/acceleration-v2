@@ -15,7 +15,6 @@ def generatePlot(exp_paths):
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         results = loadResults(exp)
-        results = whereParameterEquals(results,"target_policy", [0.4,0.6])
 
         label = fileName(exp_path).replace('.json', '')
 

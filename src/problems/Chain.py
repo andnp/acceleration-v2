@@ -138,7 +138,22 @@ class OneHot(BaseRepresentation):
         return self.map[s]
 
     def features(self):
-        return self.map.shape[0]
+        return self.map.shape[1]
+
+class OneHotRedundant(BaseRepresentation):
+    def __init__(self, N):
+        self.map = np.zeros((N,N+1))
+        for i in range(N):
+            self.map[i,i] = 1.0
+            self.map[i,-1] = 1.0
+        print(self.map)
+        import sys;sys.exit()
+
+    def encode(self, s):
+        return self.map[s]
+
+    def features(self):
+        return self.map.shape[1]
 
 class Inverted(BaseRepresentation):
     def __init__(self, N):
