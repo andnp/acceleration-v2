@@ -16,7 +16,7 @@ class Chain(BaseEnvironment):
 
     def step(self, a):
         if a == LEFT:
-            self.state = max(self.state - 1, 0)
+            self.state = max(self.state - 1, -1)
 
         elif a == RIGHT:
             self.state = min(self.state + 1, self.states)
@@ -24,7 +24,7 @@ class Chain(BaseEnvironment):
         reward = 0
         terminal = False
 
-        if self.state == 0:
+        if self.state == -1:
             reward = -1
             terminal = True
 
