@@ -38,30 +38,11 @@ class BaseChain(BaseProblem):
             self.rep.encode(i) for i in range(N)
         ])
 
-        start = int(np.floor(N/2)+1)
-        P = np.zeros((N,N))
-        for i in range(1,N-1):
-            P[i,i-1] = 0.5
-            P[i,i+1] = 0.5
-        P[0,1] = 0.5
-        P[0,start] = 0.5
-        P[-1,-2] = 0.5
-        P[-1,start] = 0.5
-        steady = np.linalg.matrix_power(P,1000)
-        self.db = np.array(steady[start,:])
-
+        # computed by sampling
+        self.db=np.array([0.009984, 0.019972, 0.02996, 0.03996, 0.04996, 0.05998, 0.07,
+                          0.080048, 0.090096, 0.10008, 0.090096, 0.080048, 0.07, 0.05998,
+                          0.04996, 0.03996, 0.02996, 0.019972, 0.009984])
         # build transition probability matrix for computing ideal H
-        # self.P = np.zeros((N+1, N+1))
-        # for i in range(1,N):
-        #     self.P[i, i-1] = .5
-        #     self.P[i, i+1] = .5
-        # self.P[0,0] = 1.0
-        # self.P[N,N] = 1.0
-
-        # build Reward structure for computing ideal H
-        # self.R = np.zeros()
-        # self.R[0] = -1.0
-        # self.R[N] = 1.0
 
         self.v_pi = self.compute_v(N, self.target)
 
