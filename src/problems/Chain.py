@@ -38,11 +38,12 @@ class BaseChain(BaseProblem):
             self.rep.encode(i) for i in range(N)
         ])
 
-        # computed by sampling
-        self.db=np.array([0.009984, 0.019972, 0.02996, 0.03996, 0.04996, 0.05998, 0.07,
-                          0.080048, 0.090096, 0.10008, 0.090096, 0.080048, 0.07, 0.05998,
-                          0.04996, 0.03996, 0.02996, 0.019972, 0.009984])
-        # build transition probability matrix for computing ideal H
+        # (1/n+1) sum_{k=0}^n P^k gives a matrix with db in each row, where P is the markov chain
+        # induced by the behaviour policy
+        self.db=np.array([0.0099983, 0.019997, 0.0299957, 0.0399956, 0.0499955, 0.0599974,
+                          0.0699993, 0.080004, 0.0900087, 0.100017, 0.0900087, 0.080004,
+                          0.0699993, 0.0599974, 0.0499955, 0.0399956, 0.0299957, 0.019997,
+                          0.0099983])
 
         self.v_pi = self.compute_v(N, self.target)
 
