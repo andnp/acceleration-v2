@@ -6,7 +6,7 @@ from src.utils.rlglue import OffPolicyWrapper
 
 import src.utils.policies as Policies
 
-class Chain(BaseProblem):
+class BaseChain(BaseProblem):
     def __init__(self, exp, idx):
         super().__init__(exp, idx)
         self.exp = exp
@@ -19,16 +19,14 @@ class Chain(BaseProblem):
         self.nsteps = perm["nsteps"]
 
         # build representation
-        self.rep = globals()[self.metaParameters["representation"]](N)
+        self.rep = globals()[perm["representation"]](N)
 
         # build environment
         # build agent
         self.agent = self.Agent(self.rep.features(), self.metaParameters)
 
         # build target policy
-        self.target = Policies.fromStateArray(
-            [self.metaParameters["target_policy"]]*N
-        )
+        self.target = self.getTarget(N)
 
         # on-policy version of this domain
         self.behavior = Policies.fromStateArray(
@@ -54,6 +52,9 @@ class Chain(BaseProblem):
         # self.R[N] = 1.0
 
         self.v_pi = self.compute_v(N, self.target)
+
+    def getTarget(self):
+        return NotImplementedError()
 
     def getGamma(self):
         return 1.0
@@ -88,7 +89,7 @@ class Chain(BaseProblem):
                 v = V[s]
 
                 right=s+1
-                if right > nstates-1:
+                if right >= nstates:
                     right_reward=1
                     right_value=0
                 else:
@@ -114,6 +115,18 @@ class Chain(BaseProblem):
         d = self.agent.value(self.all_observables) - self.v_pi
         s = np.mean(np.square(d))
         return np.sqrt(s)
+
+class Chain4060(BaseChain):
+    def getTarget(self,N):
+        return Policies.fromStateArray(
+            [[0.4,0.6]]*N
+        )
+
+class Chain2575(BaseChain):
+    def getTarget(self,N):
+        return Policies.fromStateArray(
+            [[0.25,0.75]]*N
+        )
 
 class OneHot(BaseRepresentation):
     def __init__(self, N):
