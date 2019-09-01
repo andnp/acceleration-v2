@@ -146,8 +146,6 @@ class OneHotRedundant(BaseRepresentation):
         for i in range(N):
             self.map[i,i] = 1.0
             self.map[i,-1] = 1.0
-        print(self.map)
-        import sys;sys.exit()
 
     def encode(self, s):
         return self.map[s]
