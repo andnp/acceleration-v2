@@ -38,6 +38,18 @@ class BaseChain(BaseProblem):
             self.rep.encode(i) for i in range(N)
         ])
 
+        start = int(np.floor(N/2)+1)
+        P = np.zeros((N,N))
+        for i in range(1,N-1):
+            P[i,i-1] = 0.5
+            P[i,i+1] = 0.5
+        P[0,1] = 0.5
+        P[0,start] = 0.5
+        P[-1,-2] = 0.5
+        P[-1,start] = 0.5
+        steady = np.linalg.matrix_power(P,1000)
+        self.db = np.array(steady[start,:])
+
         # build transition probability matrix for computing ideal H
         # self.P = np.zeros((N+1, N+1))
         # for i in range(1,N):
@@ -113,7 +125,7 @@ class BaseChain(BaseProblem):
     def evaluateStep(self, step_data):
         # distance from v_pi
         d = self.agent.value(self.all_observables) - self.v_pi
-        s = np.mean(np.square(d))
+        s = np.dot(self.db, np.square(d))
         return np.sqrt(s)
 
 class Chain4060(BaseChain):
