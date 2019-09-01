@@ -21,7 +21,7 @@ def getAgent(name):
         return GTD2secondaryAdagrad
 
     elif name == 'TDCsecondaryAdagrad':
-        return GTD2secondaryAdagrad
+        return TDCsecondaryAdagrad
 
     elif name == 'TDCadagrad':
         return TDCadagrad
