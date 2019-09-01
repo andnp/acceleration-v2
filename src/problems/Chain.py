@@ -41,17 +41,17 @@ class Chain(BaseProblem):
         ])
 
         # build transition probability matrix for computing ideal H
-        self.P = np.zeros((N+1, N+1))
-        for i in range(1,N):
-            self.P[i, i-1] = .5
-            self.P[i, i+1] = .5
-        self.P[0,0] = 1.0
-        self.P[N,N] = 1.0
+        # self.P = np.zeros((N+1, N+1))
+        # for i in range(1,N):
+        #     self.P[i, i-1] = .5
+        #     self.P[i, i+1] = .5
+        # self.P[0,0] = 1.0
+        # self.P[N,N] = 1.0
 
         # build Reward structure for computing ideal H
-        self.R = np.zeros(N+2)
-        self.R[0] = -1.0
-        self.R[N] = 1.0
+        # self.R = np.zeros()
+        # self.R[0] = -1.0
+        # self.R[N] = 1.0
 
         self.v_pi = self.compute_v(N, self.target)
 
