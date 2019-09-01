@@ -37,7 +37,7 @@ for run in range(RUNS):
 
     A = X.T.dot(dB).dot(np.eye(X.shape[0]) - gamma * P).dot(X)
     b = X.T.dot(dB).dot(R)
-    C = np.linalg.inv(X.T.dot(dB).dot(X))
+    C = X.T.dot(dB).dot(X)
 
     agent = problem.getAgent()
     glue = RlGlue(agent, env)

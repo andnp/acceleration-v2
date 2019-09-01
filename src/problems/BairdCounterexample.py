@@ -45,7 +45,7 @@ class BairdCounterexample(BaseProblem):
         self.target = Policy.fromActionArray([0.0, 1.0])
 
         # initialize agent with starting weight parameters
-        self.agent.theta[1] = np.array([1, 1, 1, 1, 1, 1, 1, 10])
+        self.agent.theta[0] = np.array([1, 1, 1, 1, 1, 1, 1, 10])
 
         # compute the observable value for each state once
         self.all_observables = np.array([
@@ -62,7 +62,7 @@ class BairdCounterexample(BaseProblem):
         return 0.99
 
     def getSteps(self):
-        return 1000
+        return 2000
 
     def getEnvironment(self):
         return self.env

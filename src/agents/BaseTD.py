@@ -45,9 +45,11 @@ class BaseTD:
 
     # idealH
     def getIdealH(self):
-        A, b, Cinv = self.ideal_h_params
+        A, b, C = self.ideal_h_params
         w, _ = self.theta
-        h = Cinv.dot(-A.dot(w) + b)
+        s = np.linalg.lstsq(C, -A.dot(w) + b, rcond=None)
+        h = s[0]
+        # h = Cinv.dot(-A.dot(w) + b)
         return h
 
     # variance helpers
