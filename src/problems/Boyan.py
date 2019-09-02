@@ -63,7 +63,7 @@ class Boyan(BaseProblem):
             self.rep.encode(i) for i in range(len(self.db))
         ])
 
-        # build transition probability matrix for computing ideal H
+        # build transition probability matrix (under target policy) for computing ideal H
         self.P = np.zeros((13, 13))
         for i in range(11):
             self.P[i, i+1] = .5

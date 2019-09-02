@@ -52,8 +52,9 @@ class BairdCounterexample(BaseProblem):
             self.rep.encode(i) for i in range(7)
         ])
 
-        # build transition probability matrix for computing ideal H
-        self.P = np.ones((7, 7)) * (1/7)
+        # build transition probability matrix (under target policy) for computing ideal H
+        self.P = np.zeros((7, 7))
+        self.P[:, 6] = 1
 
         # build Reward structure for computing ideal H
         self.R = np.zeros(7)
