@@ -13,7 +13,7 @@ class GTD2(BaseTD):
         v = w.dot(x)
 
         if self.use_ideal_h:
-            h = self.getIdealH()
+            h = self.getIdealH() * p
 
         delta = p * (r + gamma * vp - v)
         delta_hat = h.dot(x)
