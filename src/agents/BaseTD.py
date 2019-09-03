@@ -45,9 +45,11 @@ class BaseTD:
 
     # idealH
     def getIdealH(self):
-        A, b, Cinv = self.ideal_h_params
+        A, b, C = self.ideal_h_params
         w, _ = self.theta
-        h = Cinv.dot(-A.dot(w) + b)
+        s = np.linalg.lstsq(C, -A.dot(w) + b, rcond=None)
+        h = s[0]
+        # h = Cinv.dot(-A.dot(w) + b)
         return h
 
     # variance helpers
@@ -55,3 +57,19 @@ class BaseTD:
         updates = map(lambda ex: self.computeGradient(*ex), experiences)
 
         return np.mean(np.std(list(updates), axis=0, ddof=1), axis=1)
+
+    # expectation helpers
+    def computeMeanOfUpdates(self, experiences):
+        updates = map(lambda ex: self.computeGradient(*ex), experiences)
+
+        return np.mean(np.mean(list(updates), axis=0), axis=1)
+
+    # effective stepsize helpers
+    def _stepsize(self, dtheta):
+        return self.stepsize
+
+    def effectiveStepsize(self, experiences):
+        updates = map(lambda ex: self.computeGradient(*ex), experiences)
+        stepsizes = map(self._stepsize, updates)
+
+        return np.mean(list(stepsizes), axis=0)

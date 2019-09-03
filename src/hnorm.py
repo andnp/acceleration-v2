@@ -1,5 +1,4 @@
 import numpy as np
-import random
 import tarfile
 import sys
 import os
@@ -11,16 +10,20 @@ from RlGlue import RlGlue
 from src.problems.registry import getProblem
 from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
+from src.utils.path import up
+from src.utils.random import sample
+
+SAMPLE_EVERY=25
 
 # get the experiment model from JSON file
 exp = loadExperiment(sys.argv[2])
 idx = int(sys.argv[3])
 RUNS = int(sys.argv[1])
 
-run_errors = []
+run_hnorm = []
 for run in range(RUNS):
+    print(run)
     np.random.seed(run)
-    random.seed(a=run)
 
     # get problem specific settings
     Problem = getProblem(exp.problem)
@@ -28,42 +31,31 @@ for run in range(RUNS):
     env = problem.getEnvironment()
     rep = problem.getRepresentation()
 
-    # set up the MDP for computing h*
     problem.setupIdealH()
 
-    agent = problem.getAgent()
-    glue = RlGlue(agent, env)
+    agent_wrapper = problem.getAgent()
+    glue = RlGlue(agent_wrapper, env)
 
     # Run the experiment
-    errors = []
+    hnorm = []
     glue.start()
-    broke = False
     for step in range(problem.getSteps()):
         r, o, a, t = glue.step()
         if t:
             glue.start()
 
-        e = problem.evaluateStep({
-            'step': step,
-            'reward': r,
-        })
+        # get access to original agent
+        h = agent_wrapper.agent.theta[1]
+        # h = agent_wrapper.agent.getIdealH()
+        norm = np.linalg.norm(h)
 
-        # if we've diverged, just go ahead and give up
-        # saves some computation and these runs are useless to me anyways
-        if np.isnan(e) or np.isinf(e):
-            fillRest(errors, np.nan, problem.getSteps())
-            broke = True
-            break
+        hnorm.append(norm)
 
-        errors.append(e)
-
-    run_errors.append(errors)
-    if broke:
-        break
+    run_hnorm.append(hnorm)
 
 
-mean = np.mean(run_errors, 0)
-stderr = np.std(run_errors, 0, ddof=1) / np.sqrt(RUNS)
+mean = np.mean(run_hnorm, 0)
+stderr = np.std(run_hnorm, 0, ddof=1) / np.sqrt(RUNS)
 
 # plt.plot(mean)
 # plt.show()
@@ -73,4 +65,4 @@ stderr = np.std(run_errors, 0, ddof=1) / np.sqrt(RUNS)
 save_context = exp.buildSaveContext(idx)
 save_context.ensureExists()
 
-np.save(save_context.resolve('errors_summary.npy'), np.array([ mean, stderr, RUNS ]))
+np.save(save_context.resolve('hnorm_summary.npy'), np.array([ mean, stderr, RUNS ]))

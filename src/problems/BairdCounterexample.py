@@ -3,6 +3,7 @@ from PyFixedReps.BaseRepresentation import BaseRepresentation
 from src.problems.BaseProblem import BaseProblem, StepModel
 from src.environments.Baird import Baird
 from src.utils.rlglue import OffPolicyWrapper
+from src.utils.SampleGenerator import SampleGenerator
 
 import src.utils.policies as Policy
 
@@ -27,6 +28,8 @@ class BairdRep(BaseRepresentation):
 class BairdCounterexample(BaseProblem):
     def __init__(self, exp, idx):
         super().__init__(exp, idx)
+        self.exp = exp
+        self.idx = idx
         # build state distribution
         self.db = np.ones(7) * (1/7)
         # build true value function
@@ -45,18 +48,25 @@ class BairdCounterexample(BaseProblem):
         self.target = Policy.fromActionArray([0.0, 1.0])
 
         # initialize agent with starting weight parameters
-        self.agent.theta[1] = np.array([1, 1, 1, 1, 1, 1, 1, 10])
+        self.agent.theta[0] = np.array([1, 1, 1, 1, 1, 1, 1, 10])
 
         # compute the observable value for each state once
         self.all_observables = np.array([
             self.rep.encode(i) for i in range(7)
         ])
 
+        # build transition probability matrix (under target policy) for computing ideal H
+        self.P = np.zeros((7, 7))
+        self.P[:, 6] = 1
+
+        # build Reward structure for computing ideal H
+        self.R = np.zeros(7)
+
     def getGamma(self):
         return 0.99
 
     def getSteps(self):
-        return 1000
+        return 2000
 
     def getEnvironment(self):
         return self.env
@@ -77,4 +87,6 @@ class BairdCounterexample(BaseProblem):
         return np.sqrt(s)
 
     def sampleExperiences(self):
-        return np.load('baselines/experiences_BairdCounterexample.npy', allow_pickle=True)
+        clone = BairdCounterexample(self.exp, self.idx)
+        gen = SampleGenerator(clone)
+        return gen

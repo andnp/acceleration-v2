@@ -15,10 +15,10 @@ class TDC(BaseTD):
         if self.use_ideal_h:
             h = self.getIdealH()
 
-        delta = p * (r + gamma * vp - v)
+        delta = r + gamma * vp - v
         delta_hat = h.dot(x)
 
-        dw = delta * x - gamma * delta_hat * xp
-        dh = (delta - delta_hat) * x
+        dw = p * (delta * x - gamma * delta_hat * xp)
+        dh = (p * delta - delta_hat) * x
 
         return [dw, dh]
