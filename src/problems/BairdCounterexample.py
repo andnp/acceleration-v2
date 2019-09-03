@@ -3,6 +3,7 @@ from PyFixedReps.BaseRepresentation import BaseRepresentation
 from src.problems.BaseProblem import BaseProblem, StepModel
 from src.environments.Baird import Baird
 from src.utils.rlglue import OffPolicyWrapper
+from src.utils.SampleGenerator import SampleGenerator
 
 import src.utils.policies as Policy
 
@@ -27,6 +28,8 @@ class BairdRep(BaseRepresentation):
 class BairdCounterexample(BaseProblem):
     def __init__(self, exp, idx):
         super().__init__(exp, idx)
+        self.exp = exp
+        self.idx = idx
         # build state distribution
         self.db = np.ones(7) * (1/7)
         # build true value function
@@ -84,4 +87,6 @@ class BairdCounterexample(BaseProblem):
         return np.sqrt(s)
 
     def sampleExperiences(self):
-        raise NotImplementedError("This hasn't been implemented yet.")
+        clone = BairdCounterexample(self.exp, self.idx)
+        gen = SampleGenerator(clone)
+        return gen

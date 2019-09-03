@@ -21,10 +21,18 @@ class SampleGenerator:
 
             g = 0 if d else gamma
             rho = target.ratio(behavior, s, a)
-            ex = rep.encode(s), a, rep.encode(sp), r, g, rho
+
+            # get the observable values from the representation
+            # if this is terminal, make sure the observation is an array of 0s
+            obs = rep.encode(s)
+            obsp = np.zeros(obs.shape) if d else rep.encode(sp)
+
+            ex = obs, a, obsp, r, g, rho
             experiences.append(ex)
 
             s = sp
+            if d:
+                s = env.start()
 
         self._generated = np.array(experiences)
         return self._generated
