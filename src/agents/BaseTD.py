@@ -58,6 +58,13 @@ class BaseTD:
 
         return np.mean(np.std(list(updates), axis=0, ddof=1), axis=1)
 
+    # expectation helpers
+    def computeMeanOfUpdates(self, experiences):
+        updates = map(lambda ex: self.computeGradient(*ex), experiences)
+
+        return np.mean(np.mean(list(updates), axis=0), axis=1)
+
+    # effective stepsize helpers
     def _stepsize(self, dtheta):
         return self.stepsize
 
