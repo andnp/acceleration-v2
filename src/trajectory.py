@@ -15,7 +15,7 @@ from src.utils.model import loadExperiment
 # get the experiment model from JSON file
 exp = loadExperiment(sys.argv[1])
 idx = 0
-RUNS = 1
+RUNS = 100
 
 run_errors = []
 run_wupdates = []
