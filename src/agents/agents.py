@@ -3,6 +3,7 @@ from .TDC import TDC
 from .GTD2 import GTD2
 from .GTD2adagrad import GTD2adagrad
 from .TDCadagrad import TDCadagrad
+from .AdaGrad import AdaGrad
 
 def getAgent(name):
     if name == 'TDC':
@@ -19,5 +20,8 @@ def getAgent(name):
 
     elif name == 'TD':
         return BaseTD
+
+    elif name == 'TDadagrad':
+        return AdaGrad
 
     raise Exception('Unexpected agent given')
