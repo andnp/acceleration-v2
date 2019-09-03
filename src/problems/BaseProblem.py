@@ -59,6 +59,10 @@ class BaseProblem:
         b = X.T.dot(dB).dot(R)
         C = X.T.dot(dB).dot(X)
 
+        self.A = A
+        self.b = b
+        self.C = C
+
         agent = self.getAgent()
         # well this sucks. first agent is the off-policy-wrapper
         # second agent is the actual TD agent
