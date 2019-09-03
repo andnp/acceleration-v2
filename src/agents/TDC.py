@@ -18,7 +18,7 @@ class TDC(BaseTD):
         delta = p * (r + gamma * vp - v)
         delta_hat = h.dot(x)
 
-        dw = delta * x - gamma * delta_hat * xp
+        self.dw = delta * x - gamma * delta_hat * xp
         dh = (delta - delta_hat) * x
 
-        return [dw, dh]
+        return [self.dw, dh]

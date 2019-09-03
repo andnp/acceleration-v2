@@ -13,6 +13,7 @@ class BaseTD:
         self.last_p = 1
         self.last_gamma = 1
         self.stepsize = np.tile([self.alpha, self.alpha_h], (features, 1)).T
+        self.dw = None
 
         self.ideal_h_params = (None, None, None)
 
@@ -23,9 +24,9 @@ class BaseTD:
 
         delta = p * (r + gamma * v_tp1 - v_t)
 
-        dw = delta * obs_t
+        self.dw = delta * obs_t
         dh = np.zeros(self.features)
-        return [ dw, dh ]
+        return [ self.dw, dh ]
 
     def update(self, obs_t, a_t, obs_tp1, r, gamma, p):
         dtheta = self.computeGradient(obs_t, a_t, obs_tp1, r, gamma, p)
