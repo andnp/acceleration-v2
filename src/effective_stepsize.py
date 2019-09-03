@@ -13,7 +13,7 @@ from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
 from src.utils.stats import exponentialSmoothing
 
-SAMPLE_EVERY = 2
+SAMPLE_EVERY = 100
 
 # get the experiment model from JSON file
 exp = loadExperiment(sys.argv[2])
