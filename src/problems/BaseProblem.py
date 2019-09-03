@@ -1,3 +1,4 @@
+import numpy as np
 from src.agents.agents import getAgent
 
 class StepModel():
@@ -45,3 +46,20 @@ class BaseProblem:
 
     def evaluateEpisode(self, episode):
         pass
+
+    def setupIdealH(self):
+        # TODO(andy): make this less attrocious
+        X = getattr(self, 'all_observables')
+        dB = np.diag(getattr(self, 'db'))
+        gamma = self.getGamma()
+        P = getattr(self, 'P')
+        R = getattr(self, 'R')
+
+        A = X.T.dot(dB).dot(np.eye(X.shape[0]) - gamma * P).dot(X)
+        b = X.T.dot(dB).dot(R)
+        C = X.T.dot(dB).dot(X)
+
+        agent = self.getAgent()
+        # well this sucks. first agent is the off-policy-wrapper
+        # second agent is the actual TD agent
+        agent.agent.ideal_h_params = (A, b, C)

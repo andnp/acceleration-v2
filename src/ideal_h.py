@@ -28,23 +28,11 @@ for run in range(RUNS):
     env = problem.getEnvironment()
     rep = problem.getRepresentation()
 
-    # Compute A, B, C for ideal H
-    X = problem.all_observables
-    dB = np.diag(problem.db)
-    gamma = problem.getGamma()
-    P = problem.P
-    R = problem.R
-
-    A = X.T.dot(dB).dot(np.eye(X.shape[0]) - gamma * P).dot(X)
-    b = X.T.dot(dB).dot(R)
-    C = X.T.dot(dB).dot(X)
+    # set up the MDP for computing h*
+    problem.setupIdealH()
 
     agent = problem.getAgent()
     glue = RlGlue(agent, env)
-
-    # well this sucks. first agent is the off-policy-wrapper
-    # second agent is the actual TD agent
-    agent.agent.ideal_h_params = (A, b, C)
 
     # Run the experiment
     errors = []
