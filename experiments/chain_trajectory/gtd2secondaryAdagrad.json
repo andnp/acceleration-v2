@@ -1,0 +1,14 @@
+{
+    "agent": "GTD2secondaryAdagrad",
+
+    "problem": "Chain4060",
+    "nstates": 19,
+    "nsteps": 3000,
+    "representation": "Dependent",
+
+    "metaParameters": {
+        "ratio": 1.0,
+        "alpha": 0.5,
+        "alpha_h": 0.00195313
+    }
+}
