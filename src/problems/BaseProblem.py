@@ -63,7 +63,7 @@ class BaseProblem:
         self.b = b
         self.C = C
 
-        agent = self.getAgent()
+        agent_wrapper = self.getAgent()
         # well this sucks. first agent is the off-policy-wrapper
         # second agent is the actual TD agent
-        agent.agent.ideal_h_params = (A, b, C)
+        agent_wrapper.agent.ideal_h_params = (A, b, C)
