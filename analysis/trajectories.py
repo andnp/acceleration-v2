@@ -37,8 +37,7 @@ def generatePlot(exp_paths):
                         np.dot(w1[t],w2[t]) / (np.linalg.norm(w1[t])*np.linalg.norm(w2[t]))
                     )
                 sim.append(cos_sim)
-            cos_sim = np.mean(sim, 0)
-            plt.plot(cos_sim, label="{}/{} cosine similarity".format(k,'td'))
+            plt.plot(np.mean(sim, 0), label="{}/{} cosine similarity".format(k,'td'))
     plt.legend()
     plt.show()
     plt.clf()
@@ -54,9 +53,11 @@ def generatePlot(exp_paths):
                     rank_corr.append(
                         stats.kendalltau(w1[t],w2[t])[0]
                     )
+                bad = np.argwhere(sim==np.nan)
+                if bad.shape[0]>0:
+                    sim[bad] = 1.0
                 sim.append(rank_corr)
-            rank_corr = np.mean(sim, 0)
-            plt.plot(rank_corr, label="{}/{} rank similarity".format(k,'td'))
+            plt.plot(np.nanmean(sim, 0), label="{}/{} rank similarity".format(k,'td'))
     plt.legend()
     plt.show()
     plt.clf()
@@ -73,8 +74,7 @@ def generatePlot(exp_paths):
                         np.linalg.norm(w1[t]-w2[t])
                     )
                 sim.append(l2)
-            l2 = np.mean(sim,0)
-            plt.plot(l2, label="{}/{} rank similarity".format(k,'td'))
+            plt.plot(np.mean(sim,0), label="{}/{} rank similarity".format(k,'td'))
     plt.legend()
     plt.show()
     plt.clf()
