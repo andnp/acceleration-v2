@@ -84,8 +84,7 @@ for run in range(RUNS):
         # ||np.dot(h, X)|| should go to zero
         X = problem.all_observables
         delta_hat = np.dot(X, h)
-        delta_hat_norm = np.linalg.norm(delta_hat)
-        collector.collect('delta_hat_norm', delta_hat_norm)
+        collector.collect('delta_hat', delta_hat)
 
         # if we've diverged, just go ahead and give up
         # saves some computation and these runs are useless to me anyways
@@ -105,7 +104,7 @@ rmspbe_data = collector.getStats('rmspbe')
 ss_data = collector.getStats('stepsize')
 hnorm_data = collector.getStats('hnorm')
 hupd_data = collector.getStats('h_update')
-dhn_data = collector.getStats('delta_hat_norm')
+dh_data = collector.getStats('delta_hat')
 
 # local plotting (for testing)
 # fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
@@ -119,7 +118,7 @@ dhn_data = collector.getStats('delta_hat_norm')
 
 # ax4.plot(hnorm_data[0])
 # ax5.plot(hupd_data[0])
-# ax6.plot(dhn_data[0])
+# ax6.plot(dh_data[0])
 
 # plt.show()
 # exit()
@@ -133,4 +132,4 @@ np.save(save_context.resolve('rmspbe_summary.npy'), np.array(rmspbe_data))
 np.save(save_context.resolve('stepsize_summary.npy'), np.array(ss_data))
 np.save(save_context.resolve('hnorm_summary.npy'), np.array(hnorm_data))
 np.save(save_context.resolve('hupd_summary.npy'), np.array(hupd_data))
-np.save(save_context.resolve('dhn_summary.npy'), np.array(dhn_data))
+np.save(save_context.resolve('dh_summary.npy'), np.array(dh_data))
