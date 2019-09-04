@@ -5,11 +5,18 @@ class BaseTD:
         self.features = features
         self.gamma = params['gamma']
         self.alpha = params['alpha']
+
         self.alpha_h = params.get('alpha_h')
         if self.alpha_h is None:
             self.alpha_h = params['ratio'] * self.alpha
 
+        self.h_variance = params.get('h_variance', 0)
+
         self.theta = np.zeros((2, features))
+
+        if self.h_variance > 0:
+            self.theta[1] = np.random.normal(0, self.h_variance, size=features)
+
         self.last_p = 1
         self.last_gamma = 1
         self.stepsize = np.tile([self.alpha, self.alpha_h], (features, 1)).T
