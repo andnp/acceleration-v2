@@ -34,7 +34,7 @@ class BaseChain(BaseProblem):
 
         # compute the observable value for each state once
         self.all_observables = np.array([
-            self.rep.encode(i) for i in range(N+1)
+            self.rep.encode(i) for i in range(N)
         ])
 
         # (1/n+1) sum_{k=0}^n P^k gives a matrix with db in each row, where P is the markov chain
@@ -42,21 +42,22 @@ class BaseChain(BaseProblem):
         self.db=np.array([0.0099983, 0.019997, 0.0299957, 0.0399956, 0.0499955, 0.0599974,
                           0.0699993, 0.080004, 0.0900087, 0.100017, 0.0900087, 0.080004,
                           0.0699993, 0.0599974, 0.0499955, 0.0399956, 0.0299957, 0.019997,
-                          0.0099983, 0])
+                          0.0099983])
 
         self.v_star = self.compute_v(N, self.target)
 
         # build transition probability matrix (under target)
-        self.P = np.zeros((N+1, N+1))
+        self.P = np.zeros((N, N))
         pl, pr = self.target.probs(0)
         self.P[0, 1] = pr
-        self.P[0, N] = pl
-        self.P[N, N] = 1
-        for i in range(1, N):
+        self.P[0, N // 2] = pl
+        self.P[N-1, N-2] = pl
+        self.P[N-1, N // 2] = pr
+        for i in range(1, N-1):
             self.P[i, i - 1] = pl
             self.P[i, i + 1] = pr
 
-        self.R = np.zeros(N+1)
+        self.R = np.zeros(N)
         self.R[0] = pl * -1
         self.R[N-1] = pr * 1
 
@@ -84,7 +85,7 @@ class BaseChain(BaseProblem):
         gamma = self.getGamma()
         theta = 1e-8
 
-        V = np.zeros(nstates+1)
+        V = np.zeros(nstates)
 
         delta = np.infty
         i=0
@@ -151,7 +152,7 @@ class Chain2575(BaseChain):
 
 class OneHot(BaseRepresentation):
     def __init__(self, N):
-        self.map = np.zeros((N+1,N))
+        self.map = np.zeros((N,N))
         for i in range(N):
             self.map[i,i] = 1.0
 
@@ -163,7 +164,7 @@ class OneHot(BaseRepresentation):
 
 class OneHotRedundant(BaseRepresentation):
     def __init__(self, N):
-        self.map = np.zeros((N+1,N+1))
+        self.map = np.zeros((N,N+1))
         for i in range(N):
             self.map[i,i] = 1.0
             self.map[i,-1] = 1.0
@@ -176,7 +177,7 @@ class OneHotRedundant(BaseRepresentation):
 
 class Inverted(BaseRepresentation):
     def __init__(self, N):
-        self.map = np.ones((N+1,N))
+        self.map = np.ones((N,N))
         for i in range(N):
             self.map[i,i] = 0.0
 
@@ -189,7 +190,7 @@ class Inverted(BaseRepresentation):
 class Dependent(BaseRepresentation):
     def __init__(self, N):
         nfeats = int(np.floor(N/2) + 1)
-        self.map = np.zeros((N+1,nfeats))
+        self.map = np.zeros((N,nfeats))
 
         idx = 0
         for i in range(nfeats):
