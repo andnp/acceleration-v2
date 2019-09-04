@@ -13,7 +13,7 @@ class BaseChain(BaseProblem):
         self.idx = idx
         perm = exp.getPermutation(idx)
 
-        N = perm["nstates"]
+        N = 19
         self.env = ChainEnv(N)
 
         self.nsteps = perm["nsteps"]
@@ -28,14 +28,13 @@ class BaseChain(BaseProblem):
         # build target policy
         self.target = self.getTarget(N)
 
-        # on-policy version of this domain
         self.behavior = Policies.fromStateArray(
             [[0.5,0.5]]*N
         )
 
         # compute the observable value for each state once
         self.all_observables = np.array([
-            self.rep.encode(i) for i in range(N)
+            self.rep.encode(i) for i in range(N+1)
         ])
 
         # (1/n+1) sum_{k=0}^n P^k gives a matrix with db in each row, where P is the markov chain
@@ -43,11 +42,27 @@ class BaseChain(BaseProblem):
         self.db=np.array([0.0099983, 0.019997, 0.0299957, 0.0399956, 0.0499955, 0.0599974,
                           0.0699993, 0.080004, 0.0900087, 0.100017, 0.0900087, 0.080004,
                           0.0699993, 0.0599974, 0.0499955, 0.0399956, 0.0299957, 0.019997,
-                          0.0099983])
+                          0.0099983, 0])
 
-        self.v_pi = self.compute_v(N, self.target)
+        self.v_star = self.compute_v(N, self.target)
 
-    def getTarget(self):
+        # build transition probability matrix (under target)
+        self.P = np.zeros((N+1, N+1))
+        pl, pr = self.target.probs(0)
+        self.P[0, 1] = pr
+        self.P[0, N] = pl
+        self.P[N, N] = 1
+        for i in range(1, N):
+            self.P[i, i - 1] = pl
+            self.P[i, i + 1] = pr
+
+        self.R = np.zeros(N+1)
+        self.R[0] = pl * -1
+        self.R[N-1] = pr * 1
+
+        self.setupIdealH()
+
+    def getTarget(self, n):
         return NotImplementedError()
 
     def getGamma(self):
@@ -69,8 +84,7 @@ class BaseChain(BaseProblem):
         gamma = self.getGamma()
         theta = 1e-8
 
-        V = np.zeros(nstates)
-
+        V = np.zeros(nstates+1)
 
         delta = np.infty
         i=0
@@ -106,9 +120,22 @@ class BaseChain(BaseProblem):
 
     def evaluateStep(self, step_data):
         # distance from v_pi
-        d = self.agent.value(self.all_observables) - self.v_pi
-        s = np.dot(self.db, np.square(d))
-        return np.sqrt(s)
+        d = self.agent.value(self.all_observables) - self.v_star
+        # weighted sum over squared distances
+        s = np.sum(self.db * np.square(d))
+
+        rmsve = np.sqrt(s)
+
+        w = self.agent.theta[0]
+        A = self.A
+        b = self.b
+        C = self.C
+
+        v = np.dot(-A, w) + b
+        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
+        rmspbe = np.sqrt(mspbe)
+
+        return rmsve, rmspbe
 
 class Chain4060(BaseChain):
     def getTarget(self,N):
@@ -124,7 +151,7 @@ class Chain2575(BaseChain):
 
 class OneHot(BaseRepresentation):
     def __init__(self, N):
-        self.map = np.zeros((N,N))
+        self.map = np.zeros((N+1,N))
         for i in range(N):
             self.map[i,i] = 1.0
 
@@ -136,7 +163,7 @@ class OneHot(BaseRepresentation):
 
 class OneHotRedundant(BaseRepresentation):
     def __init__(self, N):
-        self.map = np.zeros((N,N+1))
+        self.map = np.zeros((N+1,N+1))
         for i in range(N):
             self.map[i,i] = 1.0
             self.map[i,-1] = 1.0
@@ -149,7 +176,7 @@ class OneHotRedundant(BaseRepresentation):
 
 class Inverted(BaseRepresentation):
     def __init__(self, N):
-        self.map = np.ones((N,N))
+        self.map = np.ones((N+1,N))
         for i in range(N):
             self.map[i,i] = 0.0
 
@@ -162,7 +189,7 @@ class Inverted(BaseRepresentation):
 class Dependent(BaseRepresentation):
     def __init__(self, N):
         nfeats = int(np.floor(N/2) + 1)
-        self.map = np.zeros((N,nfeats))
+        self.map = np.zeros((N+1,nfeats))
 
         idx = 0
         for i in range(nfeats):
