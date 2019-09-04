@@ -75,11 +75,15 @@ class Boyan(BaseProblem):
         # build Reward structure for computing ideal H
         self.R = np.array([-3] * 12 + [-2])
 
+        # always do this since we need it for RMSPBE
+        # computes A, b, C
+        self.setupIdealH()
+
     def getGamma(self):
         return 1.0
 
     def getSteps(self):
-        return 3000
+        return 10000
 
     def getEnvironment(self):
         return self.env
@@ -97,7 +101,16 @@ class Boyan(BaseProblem):
         # weighted sum over squared distances
         s = np.sum(self.db * np.square(d))
 
-        return np.sqrt(s)
+        w = self.agent.theta[0]
+        A = self.A
+        b = self.b
+        C = self.C
+
+        v = np.dot(-A, w) + b
+        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
+        rmspbe = np.sqrt(mspbe)
+
+        return np.sqrt(s), rmspbe
 
     def sampleExperiences(self):
         clone = Boyan(self.exp, self.idx)

@@ -63,6 +63,7 @@ class BairdCounterexample(BaseProblem):
         self.R = np.zeros(7)
 
         # always do this since we need it for RMSPBE
+        # computes A, b, C
         self.setupIdealH()
 
     def getGamma(self):
