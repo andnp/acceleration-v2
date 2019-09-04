@@ -13,6 +13,9 @@ from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
 from src.utils.Collector import Collector
 
+def weightedNorm(X, d):
+    return np.sqrt(X.T.dot(np.diag(d)).dot(X))
+
 # get the experiment model from JSON file
 exp = loadExperiment(sys.argv[2])
 idx = int(sys.argv[3])
@@ -83,8 +86,8 @@ for run in range(RUNS):
 
         # ||np.dot(h, X)|| should go to zero
         X = problem.all_observables
-        delta_hat = np.dot(X, h)
-        collector.collect('delta_hat', delta_hat)
+        norm_delta_hat = weightedNorm(np.dot(X, h), problem.db)
+        collector.collect('norm_delta_hat', norm_delta_hat)
 
         # if we've diverged, just go ahead and give up
         # saves some computation and these runs are useless to me anyways
@@ -104,7 +107,7 @@ rmspbe_data = collector.getStats('rmspbe')
 ss_data = collector.getStats('stepsize')
 hnorm_data = collector.getStats('hnorm')
 hupd_data = collector.getStats('h_update')
-dh_data = collector.getStats('delta_hat')
+ndh_data = collector.getStats('norm_delta_hat')
 
 # local plotting (for testing)
 # fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
@@ -118,7 +121,7 @@ dh_data = collector.getStats('delta_hat')
 
 # ax4.plot(hnorm_data[0])
 # ax5.plot(hupd_data[0])
-# ax6.plot(dh_data[0])
+# ax6.plot(ndh_data[0])
 
 # plt.show()
 # exit()
@@ -132,4 +135,4 @@ np.save(save_context.resolve('rmspbe_summary.npy'), np.array(rmspbe_data))
 np.save(save_context.resolve('stepsize_summary.npy'), np.array(ss_data))
 np.save(save_context.resolve('hnorm_summary.npy'), np.array(hnorm_data))
 np.save(save_context.resolve('hupd_summary.npy'), np.array(hupd_data))
-np.save(save_context.resolve('dh_summary.npy'), np.array(dh_data))
+np.save(save_context.resolve('ndh_summary.npy'), np.array(ndh_data))
