@@ -69,7 +69,7 @@ class BairdCounterexample(BaseProblem):
         return 0.99
 
     def getSteps(self):
-        return 2000
+        return 5000
 
     def getEnvironment(self):
         return self.env
