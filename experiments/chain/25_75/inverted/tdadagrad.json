@@ -1,0 +1,13 @@
+{
+    "agent": "TDadagrad",
+
+    "problem": "Chain2575",
+    "nstates": 19,
+    "nsteps": 3000,
+    "representation": "Inverted",
+
+    "metaParameters": {
+        "ratio": 1.0,
+        "alpha": [1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.00195313, 0.000976563]
+    }
+}
