@@ -28,8 +28,8 @@ for run in range(RUNS):
     env = problem.getEnvironment()
     rep = problem.getRepresentation()
 
-    agent = problem.getAgent()
-    glue = RlGlue(agent, env)
+    agent_wrapper = problem.getAgent()
+    glue = RlGlue(agent_wrapper, env)
 
     # Run the experiment
     errors = []

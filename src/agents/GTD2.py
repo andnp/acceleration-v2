@@ -19,6 +19,6 @@ class GTD2(BaseTD):
         delta_hat = h.dot(x)
 
         dw = p * (delta_hat * x - gamma * delta_hat * xp)
-        dh = (p *  delta - delta_hat) * x
+        dh = (p * delta - delta_hat) * x
 
         return [dw, dh]

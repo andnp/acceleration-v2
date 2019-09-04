@@ -35,8 +35,8 @@ for run in range(RUNS):
     if run == 0:
         experience_generator = problem.sampleExperiences()
 
-    agent = problem.getAgent()
-    glue = RlGlue(agent, env)
+    agent_wrapper = problem.getAgent()
+    glue = RlGlue(agent_wrapper, env)
 
     # Run the experiment
     variances = []

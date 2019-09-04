@@ -31,8 +31,8 @@ for run in range(RUNS):
     # set up the MDP for computing h*
     problem.setupIdealH()
 
-    agent = problem.getAgent()
-    glue = RlGlue(agent, env)
+    agent_wrapper = problem.getAgent()
+    glue = RlGlue(agent_wrapper, env)
 
     # Run the experiment
     errors = []
