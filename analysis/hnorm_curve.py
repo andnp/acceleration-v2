@@ -3,8 +3,8 @@ import sys
 import matplotlib.pyplot as plt
 sys.path.append(os.getcwd())
 
-from src.analysis.learning_curve import plot, save
-from src.analysis.results import loadResults, whereParameterEquals
+from src.analysis.learning_curve import plotBest, save
+from src.analysis.results import loadResults, whereParameterEquals, getBestEnd, find
 from src.utils.model import loadExperiment
 
 from src.utils.path import fileName
@@ -14,11 +14,19 @@ def generatePlot(exp_paths):
     # ax.semilogx()
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
+
+        # load the errors and hnorm files
+        errors = loadResults(exp, 'errors_summary.npy')
         results = loadResults(exp, 'hnorm_summary.npy')
+
+        # choose the best parameters from the _errors_
+        best = getBestEnd(errors)
+
+        best_hnorm = find(results, best)
 
         label = fileName(exp_path).replace('.json', '')
 
-        plot(results, ax, label=label)
+        plotBest(best_hnorm, ax, label=label)
 
     plt.show()
     # save(exp, f'learning-curve')

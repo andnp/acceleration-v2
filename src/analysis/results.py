@@ -1,6 +1,7 @@
 import numpy as np
 from PyExpUtils.results.paths import listResultsPaths
 from src.utils.arrays import first
+from src.utils.dict import equal
 
 class Result:
     def __init__(self, path, exp, idx):
@@ -66,6 +67,12 @@ def getBestEnd(results):
             low = r
 
     return low
+
+def find(stream, other):
+    params = other.params
+    for res in stream:
+        if equal(params, res.params):
+            return res
 
 def whereParameterEquals(results, param, value):
     return filter(lambda r: r.params[param] == value, results)

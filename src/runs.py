@@ -97,20 +97,20 @@ hnorm_data = collector.getStats('hnorm')
 hupd_data = collector.getStats('h_update')
 
 # local plotting (for testing)
-fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
+# fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
 
-ax1.plot(error_data[0])
-ax2.plot(rmspbe_data[0])
+# ax1.plot(error_data[0])
+# ax2.plot(rmspbe_data[0])
 
-for m, label in zip(ss_data[0].T, ['w', 'h']):
-    ax3.plot(m, label=label)
-ax3.legend()
+# for m, label in zip(ss_data[0].T, ['w', 'h']):
+#     ax3.plot(m, label=label)
+# ax3.legend()
 
-ax4.plot(hnorm_data[0])
-ax5.plot(hupd_data[0])
+# ax4.plot(hnorm_data[0])
+# ax5.plot(hupd_data[0])
 
-plt.show()
-exit()
+# plt.show()
+# exit()
 
 # save things to disk
 save_context = exp.buildSaveContext(idx)
