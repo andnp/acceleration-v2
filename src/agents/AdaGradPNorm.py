@@ -8,11 +8,26 @@ class AdaGradPNorm(BaseTD):
         self.v1 = np.zeros((1, features))
         self.v2 = np.zeros((1, features))
         self.p = params.get("p_norm")
-        if self.p is None:
-            self.p = 2
+
+    def _stepsize(self):
+        # promote to an np.array just once to reduce unnecessary implicit casts by numpy
+        dtheta = np.array(self.dtheta)
+        v1 = self.v1 + np.square(dtheta[0])
+        v2 = self.v2 + np.power(dtheta[1], self.p)
+        S = np.array([np.sqrt(v1),np.power(v2, 1.0/self.p)])
+        ss = self.stepsize / (S + 1e-8)
+
+        # if the denominator has a 0, then we end up with massive spikes in stepsize
+        # if those spikes occur where the update is also 0, then we aren't actually making a huge update
+        # so to meaningfully visualize the stepsize, we can get rid of those spikes by making the stepsize 0 in those cases
+        # which is safe because the update was also 0
+        ss = np.where((S == 0) & (dtheta == 0), np.zeros_like(ss), ss)
+
+        return np.mean(ss, axis=1)
 
     def update(self, x, a, xp, r, gamma, p):
-        dw, dh = self.computeGradient(x, a, xp, r, gamma, p)
+        dtheta = self.computeGradient(x, a, xp, r, gamma, p)
+        dw,dh = dtheta
 
         self.v1 = self.v1 + np.square(dw)
         self.v2 = self.v2 + np.power(dh, self.p)
@@ -22,3 +37,4 @@ class AdaGradPNorm(BaseTD):
 
         self.last_p = p
         self.last_gamma = gamma
+        self.dtheta = dtheta
