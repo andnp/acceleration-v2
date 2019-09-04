@@ -14,7 +14,9 @@ class BaseTD:
         self.last_gamma = 1
         self.stepsize = np.tile([self.alpha, self.alpha_h], (features, 1)).T
 
+        # tracking variables - these are exposed only for data collection
         self.ideal_h_params = (None, None, None)
+        self.dtheta = None
 
     def computeGradient(self, obs_t, a_t, obs_tp1, r, gamma, p):
         w = self.theta[0]
@@ -35,6 +37,7 @@ class BaseTD:
 
         self.last_p = p
         self.last_gamma = gamma
+        self.dtheta = dtheta
 
     def reset(self):
         pass
@@ -67,9 +70,3 @@ class BaseTD:
     # effective stepsize helpers
     def _stepsize(self, dtheta):
         return self.stepsize
-
-    def effectiveStepsize(self, experiences):
-        updates = map(lambda ex: self.computeGradient(*ex), experiences)
-        stepsizes = map(self._stepsize, updates)
-
-        return np.mean(list(stepsizes), axis=0)
