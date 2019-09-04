@@ -11,13 +11,15 @@ from RlGlue import RlGlue
 from src.problems.registry import getProblem
 from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
+from src.utils.Collector import Collector
 
 # get the experiment model from JSON file
 exp = loadExperiment(sys.argv[2])
 idx = int(sys.argv[3])
 RUNS = int(sys.argv[1])
 
-run_errors = []
+collector = Collector()
+
 for run in range(RUNS):
     np.random.seed(run)
     random.seed(a=run)
@@ -28,11 +30,16 @@ for run in range(RUNS):
     env = problem.getEnvironment()
     rep = problem.getRepresentation()
 
+    is_using_ideal_h = problem.metaParameters.get('use_ideal_h', False)
+
+    # set up the MDP for computing h*
+    if is_using_ideal_h:
+        problem.setupIdealH()
+
     agent_wrapper = problem.getAgent()
     glue = RlGlue(agent_wrapper, env)
 
     # Run the experiment
-    errors = []
     glue.start()
     broke = False
     for step in range(problem.getSteps()):
@@ -40,34 +47,77 @@ for run in range(RUNS):
         if t:
             glue.start()
 
-        e = problem.evaluateStep({
+        # collect error from problem definition
+        rmsve, rmspbe = problem.evaluateStep({
             'step': step,
             'reward': r,
         })
 
+        collector.collect('errors', rmsve)
+        collector.collect('rmspbe', rmspbe)
+
+        # collect effective stepsize
+        ss_w, ss_h = problem.agent._stepsize()
+        collector.collect('stepsize', [ss_w, ss_h])
+
+        # collect the norm of h
+        if is_using_ideal_h:
+            h = agent_wrapper.agent.getIdealH()
+        else:
+            h = agent_wrapper.agent.theta[1]
+
+        h_norm = np.linalg.norm(h)
+        collector.collect('hnorm', h_norm)
+
+        # collect h update sizes
+        if is_using_ideal_h:
+            dh = np.zeros_like(h)
+        else:
+            dh = agent_wrapper.agent.dtheta[1]
+
+        update_size = np.linalg.norm(ss_h * dh)
+        collector.collect('h_update', update_size)
+
         # if we've diverged, just go ahead and give up
         # saves some computation and these runs are useless to me anyways
-        if np.isnan(e) or np.isinf(e):
-            fillRest(errors, np.nan, problem.getSteps())
+        if np.isnan(rmsve) or np.isinf(rmsve):
+            collector.fillRest(np.nan, problem.getSteps())
             broke = True
             break
 
-        errors.append(e)
-
-    run_errors.append(errors)
+    collector.reset()
     if broke:
         break
 
 
-mean = np.mean(run_errors, 0)
-stderr = np.std(run_errors, 0, ddof=1) / np.sqrt(RUNS)
+error_data = collector.getStats('errors')
+rmspbe_data = collector.getStats('rmspbe')
+ss_data = collector.getStats('stepsize')
+hnorm_data = collector.getStats('hnorm')
+hupd_data = collector.getStats('h_update')
 
-# plt.plot(mean)
-# plt.show()
-# exit()
+# local plotting (for testing)
+fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
+
+ax1.plot(error_data[0])
+ax2.plot(rmspbe_data[0])
+
+for m, label in zip(ss_data[0].T, ['w', 'h']):
+    ax3.plot(m, label=label)
+ax3.legend()
+
+ax4.plot(hnorm_data[0])
+ax5.plot(hupd_data[0])
+
+plt.show()
+exit()
 
 # save things to disk
 save_context = exp.buildSaveContext(idx)
 save_context.ensureExists()
 
-np.save(save_context.resolve('errors_summary.npy'), np.array([ mean, stderr, RUNS ]))
+np.save(save_context.resolve('errors_summary.npy'), np.array(error_data))
+np.save(save_context.resolve('rmspbe_summary.npy'), np.array(error_data))
+np.save(save_context.resolve('stepsize_summary.npy'), np.array(ss_data))
+np.save(save_context.resolve('hnorm_summary.npy'), np.array(hnorm_data))
+np.save(save_context.resolve('hupd_summary.npy'), np.array(hupd_data))

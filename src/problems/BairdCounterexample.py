@@ -62,6 +62,9 @@ class BairdCounterexample(BaseProblem):
         # build Reward structure for computing ideal H
         self.R = np.zeros(7)
 
+        # always do this since we need it for RMSPBE
+        self.setupIdealH()
+
     def getGamma(self):
         return 0.99
 
@@ -80,11 +83,21 @@ class BairdCounterexample(BaseProblem):
     def evaluateStep(self, step_data):
         # absolute distance from v_star
         d = self.agent.value(self.all_observables) - self.v_star
-
         # weighted sum over squared distances
         s = np.sum(self.db * np.square(d))
 
-        return np.sqrt(s)
+        rmsve = np.sqrt(s)
+
+        w = self.agent.theta[0]
+        A = self.A
+        b = self.b
+        C = self.C
+
+        v = np.dot(-A, w) + b
+        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
+        rmspbe = np.sqrt(mspbe)
+
+        return rmsve, rmspbe
 
     def sampleExperiences(self):
         clone = BairdCounterexample(self.exp, self.idx)
