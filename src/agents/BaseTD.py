@@ -75,5 +75,5 @@ class BaseTD:
         return np.mean(np.mean(list(updates), axis=0), axis=1)
 
     # effective stepsize helpers
-    def _stepsize(self, dtheta):
+    def _stepsize(self):
         return self.stepsize
