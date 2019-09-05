@@ -1,5 +1,5 @@
 import numpy as np
-from src.utils.arrays import fillRest
+from src.utils.arrays import fillRest, last
 
 class Collector:
     def __init__(self):
@@ -22,7 +22,13 @@ class Collector:
     def fillRest(self, value, steps):
         for k in self.run_data:
             arr = self.run_data[k]
-            fillRest(arr, value, steps)
+            l = last(arr)
+            v = value
+            if not np.isscalar(l):
+                v = np.zeros_like(l)
+                v.fill(value)
+
+            fillRest(arr, v, steps)
 
     def collect(self, name, value):
         arr = self.run_data.get(name, [])
