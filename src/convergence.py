@@ -90,9 +90,6 @@ for run in range(RUNS):
         collector.collect('hdiff', hdiff)
         collector.collect('wdiff', wdiff)
 
-    print(agent_wrapper.agent.theta[0])
-
-
     # add the run data to the global pool
     collector.reset()
 
@@ -106,10 +103,11 @@ fig, (ax1, ax2) = plt.subplots(1, 2)
 
 ax1.plot(wsim_data[0], label='w')
 ax1.plot(hsim_data[0], label='h')
+ax1.set_title('Cosine Similarity')
 
 ax2.plot(wdiff_data[0], label='w')
 ax2.plot(hdiff_data[0], label='h')
-
+ax2.set_title('Weighted Difference')
 
 plt.legend()
 
