@@ -1,0 +1,9 @@
+{
+    "agent": "TDCadagrad",
+    "problem": "Baird",
+    "metaParameters": {
+        "ratio": 2.0,
+        "alpha": 2.0,
+        "use_ideal_h": false
+    }
+}

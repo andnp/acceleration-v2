@@ -1,0 +1,9 @@
+{
+    "agent": "GTD2adagrad",
+    "problem": "Baird",
+    "metaParameters": {
+        "ratio": 1.0,
+        "alpha": 2.0,
+        "use_ideal_h": true
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "agent": "TDCadagrad",
+    "problem": "TCChain",
+    "nsteps": 3000,
+    "metaParameters": {
+        "ratio": 1.0,
+        "alpha": [2.0, 1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125],
+        "use_ideal_h": false,
+        "tilings": [1],
+        "tiles": [2, 3, 4, 6, 9, 12, 19]
+    }
+}

@@ -7,6 +7,9 @@ from src.utils.rlglue import OffPolicyWrapper
 import src.utils.policies as Policies
 
 class BaseChain(BaseProblem):
+    def _getRepresentation(self, n, perm):
+        return globals()[perm['representation']](n)
+
     def __init__(self, exp, idx):
         super().__init__(exp, idx)
         self.exp = exp
@@ -19,7 +22,7 @@ class BaseChain(BaseProblem):
         self.nsteps = perm["nsteps"]
 
         # build representation
-        self.rep = globals()[perm["representation"]](N)
+        self.rep = self._getRepresentation(N, perm)
 
         # build environment
         # build agent
