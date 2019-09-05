@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 sys.path.append(os.getcwd())
 
 from src.analysis.learning_curve import plot, save
-from src.analysis.results import loadResults, whereParameterEquals
+from src.analysis.results import loadResults, whereParameterEquals, getBestEnd, find
 from src.utils.model import loadExperiment
 
 from src.utils.path import fileName
@@ -20,8 +20,8 @@ def generatePlot(exp_paths):
 
         plot(results, ax, label=label, bestBy='auc')
 
-    plt.show()
-    # save(exp, f'learning-curve')
+    # plt.show()
+    save(exp, f'rmspbe_learning-curve')
     plt.clf()
 
 if __name__ == "__main__":
