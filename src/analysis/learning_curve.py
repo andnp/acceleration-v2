@@ -11,8 +11,14 @@ def save(exp, name):
     os.makedirs(save_path, exist_ok=True)
     plt.savefig(f'{save_path}/{name}.pdf')
 
-def plot(results, ax, color=None, label=None, labelParams=None):
-    best = getBestEnd(results)
+def plot(results, ax, color=None, label=None, labelParams=None, bestBy='end'):
+    if bestBy == 'end':
+        best = getBestEnd(results)
+    elif bestBy == 'auc':
+        best = getBest(results)
+    else:
+        raise Exception('I can only get best by "end" or "auc"')
+
     print(best.exp.agent, best.params)
     return plotBest(best, ax, color, label, labelParams=labelParams)
 

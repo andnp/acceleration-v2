@@ -18,7 +18,7 @@ def generatePlot(exp_paths):
 
         label = fileName(exp_path).replace('.json', '')
 
-        plot(results, ax, label=label)
+        plot(results, ax, label=label, bestBy='auc')
 
     plt.show()
     # save(exp, f'learning-curve')
