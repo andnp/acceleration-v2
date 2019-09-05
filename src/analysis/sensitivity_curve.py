@@ -24,8 +24,12 @@ def getMaxY(arr):
 
     return m
 
-def plotSensitivity(results, param, ax):
+def plotSensitivity(results, param, ax, label=None):
     best = getBestOverParameter(results, param)
+
+    for x in best:
+        res = best[x]
+        print(res.exp.agent + ': ', res.params)
 
     x = sorted(list(best))
     y = [np.mean(best[k].mean()) for k in x]
@@ -34,7 +38,9 @@ def plotSensitivity(results, param, ax):
 
     exp = best[x[0]].exp
 
-    ax.plot(x, y, label=exp.agent, linewidth=2)
+    label = exp.agent if label is None else label
+
+    ax.plot(x, y, label=label, linewidth=2)
     low_ci, high_ci = confidenceInterval(np.array(y), np.array(e))
     ax.fill_between(x, low_ci, high_ci, alpha=0.4)
 
