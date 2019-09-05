@@ -7,6 +7,7 @@ __pycache__
 test.json
 *.pyc
 .vscode
+.DS_Store
 
 paper/*
 !paper/paper.tex
