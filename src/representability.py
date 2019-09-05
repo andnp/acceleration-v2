@@ -13,6 +13,8 @@ from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
 from src.utils.Collector import Collector
 
+EVERY = 25
+
 def weightedNorm(X, d):
     return np.sqrt(X.T.dot(np.diag(d)).dot(X))
 
@@ -58,14 +60,15 @@ for run in range(RUNS):
         if t:
             glue.start()
 
-        # collect error from problem definition
-        rmsve, rmspbe = problem.evaluateStep({
-            'step': step,
-            'reward': r,
-        })
+        if step % EVERY == 0:
+            # collect error from problem definition
+            rmsve, rmspbe = problem.evaluateStep({
+                'step': step,
+                'reward': r,
+            })
 
-        collector.collect('errors', rmsve)
-        collector.collect('rmspbe', rmspbe)
+            collector.collect('errors', rmsve)
+            collector.collect('rmspbe', rmspbe)
 
     # add the run data to the global pool
     collector.reset()
