@@ -9,31 +9,36 @@ from src.utils.model import loadExperiment
 
 from src.utils.path import fileName
 
-def generatePlot(exp_paths):
+def generatePlot(exp_path):
     ax = plt.gca()
     # ax.semilogx()
-    for exp_path in exp_paths:
-        exp = loadExperiment(exp_path)
+    exp = loadExperiment(exp_path)
 
-        # load the errors and hnorm files
-        errors = loadResults(exp, 'errors_summary.npy')
-        results = loadResults(exp, 'stepsize_summary.npy')
+    # load the errors and hnorm files
+    errors = loadResults(exp, 'errors_summary.npy')
+    results = loadResults(exp, 'stepsize_summary.npy')
 
-        # choose the best parameters from the _errors_
-        best = getBestEnd(errors)
+    # choose the best parameters from the _errors_
+    best = getBestEnd(errors)
 
-        best_ss = find(results, best)
+    best_ss = find(results, best)
 
-        label = fileName(exp_path).replace('.json', '')
+    alg = exp.agent.replace('adagrad', '')
 
-        plotBest(best_ss, ax, label=label)
+    plotBest(best_ss, ax, label=['w', 'h'])
 
-    plt.show()
-    # save(exp, f'learning-curve')
+    # ax.set_ylim([0, 1])
+
+    # plt.show()
+    save(exp, f'stepsizes-{alg}')
     plt.clf()
 
 if __name__ == "__main__":
     exp_paths = sys.argv[1:]
-    tmp = loadExperiment(exp_paths[0])
 
-    generatePlot(exp_paths)
+    for exp_path in exp_paths:
+        f = fileName(exp_path)
+        if 'ideal' in f:
+            continue
+
+        generatePlot(exp_path)

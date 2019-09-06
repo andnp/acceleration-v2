@@ -6,6 +6,7 @@ sys.path.append(os.getcwd())
 
 from src.analysis.results import loadResults, getBest
 from src.utils.model import loadExperiment
+from src.utils.path import up, fileName
 
 exp_paths = sys.argv[1:]
 
@@ -17,9 +18,11 @@ for exp_path in exp_paths:
     print('agent:', exp.agent)
     print(best.params)
 
-    new_path = exp_path.replace('/sweeps/', '/best/')
+    f = fileName(exp_path)
+    new_path = up(exp_path) + '/best/' + f
+
     d = exp._d
     d['metaParameters'] = best.params
-    os.makedirs('/'.join(new_path.split('/')[:-1]), exist_ok=True)
+    os.makedirs(up(new_path), exist_ok=True)
     with open(new_path, 'w') as f:
         json.dump(d, f, indent=4)

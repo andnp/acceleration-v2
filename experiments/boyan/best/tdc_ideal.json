@@ -1,0 +1,10 @@
+{
+    "agent": "TDCadagrad",
+    "problem": "Boyan",
+    "metaParameters": {
+        "ratio": 2.0,
+        "alpha": 1.0,
+        "use_ideal_h": true,
+        "h_variance": 0.0
+    }
+}

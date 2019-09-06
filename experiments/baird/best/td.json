@@ -1,0 +1,10 @@
+{
+    "agent": "TDadagrad",
+    "problem": "Baird",
+    "metaParameters": {
+        "ratio": 2.0,
+        "alpha": 0.0078125,
+        "use_ideal_h": false,
+        "h_variance": 0.0
+    }
+}

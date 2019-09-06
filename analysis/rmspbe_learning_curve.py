@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 sys.path.append(os.getcwd())
 
 from src.analysis.learning_curve import plot, save
-from src.analysis.results import loadResults, whereParameterEquals
+from src.analysis.results import loadResults, whereParameterEquals, getBestEnd, find
+from src.analysis.colormap import colors
 from src.utils.model import loadExperiment
 
 from src.utils.path import fileName
@@ -16,12 +17,18 @@ def generatePlot(exp_paths):
         exp = loadExperiment(exp_path)
         results = loadResults(exp, 'rmspbe_summary.npy')
 
-        label = fileName(exp_path).replace('.json', '')
+        use_ideal_h = exp._d['metaParameters'].get('use_ideal_h', False)
+        dashed = use_ideal_h
+        color = colors[exp.agent]
 
-        plot(results, ax, label=label)
+        label = exp.agent.replace('adagrad', '')
+        if use_ideal_h:
+            label += '-h*'
 
-    plt.show()
-    # save(exp, f'learning-curve')
+        plot(results, ax, label=label, bestBy='auc', color=color, dashed=dashed)
+
+    # plt.show()
+    save(exp, f'rmspbe_learning-curve')
     plt.clf()
 
 if __name__ == "__main__":

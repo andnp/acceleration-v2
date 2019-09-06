@@ -40,3 +40,4 @@ for path in args.experiment_paths:
         continue
 
     subprocess.run(parallel_cmd, stdout=subprocess.PIPE, shell=True)
+    print('finished: ', path)

@@ -13,6 +13,8 @@ from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
 from src.utils.Collector import Collector
 
+EVERY = 10
+
 def weightedNorm(X, d):
     return np.sqrt(X.T.dot(np.diag(d)).dot(X))
 
@@ -49,6 +51,9 @@ for run in range(RUNS):
         r, o, a, t = glue.step()
         if t:
             glue.start()
+
+        if step % EVERY != 0:
+            continue
 
         # collect error from problem definition
         rmsve, rmspbe = problem.evaluateStep({
@@ -113,15 +118,21 @@ ndh_data = collector.getStats('norm_delta_hat')
 # fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
 
 # ax1.plot(error_data[0])
+# ax1.set_title('RMSVE')
 # ax2.plot(rmspbe_data[0])
+# ax2.set_title('RMSPBE')
 
 # for m, label in zip(ss_data[0].T, ['w', 'h']):
 #     ax3.plot(m, label=label)
 # ax3.legend()
+# ax3.set_title('stepsize')
 
 # ax4.plot(hnorm_data[0])
+# ax4.set_title('hnorm')
 # ax5.plot(hupd_data[0])
+# ax5.set_title('h update')
 # ax6.plot(ndh_data[0])
+# ax6.set_title('norm of delta_hat')
 
 # plt.show()
 # exit()
