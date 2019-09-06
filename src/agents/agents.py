@@ -8,6 +8,8 @@ from .gtd2.GTD2adagrad import GTD2adagrad
 from .gtd2.GTD2secondaryAdagrad import GTD2secondaryAdagrad
 from .gtd2.GTD2AdaGradPNorm import GTD2AdaGradPNorm
 from .optimizers.AdaGrad import AdaGrad
+from .etdc.ETDC import ETDC
+from .etdc.ETDCadagrad import ETDCadagrad
 
 def getAgent(name):
     if name == 'TDC':
@@ -38,5 +40,11 @@ def getAgent(name):
 
     elif name == 'GTD2AdaGradPNorm':
         return GTD2AdaGradPNorm
+
+    elif name == 'ETDC':
+        return ETDC
+
+    elif name == 'ETDCadagrad':
+        return ETDCadagrad
 
     raise Exception('Unexpected agent given')
