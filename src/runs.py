@@ -97,7 +97,7 @@ for run in range(RUNS):
         # if we've diverged, just go ahead and give up
         # saves some computation and these runs are useless to me anyways
         if np.isnan(rmsve) or np.isinf(rmsve):
-            collector.fillRest(np.nan, problem.getSteps())
+            collector.fillRest(np.nan, int(problem.getSteps() / EVERY))
             broke = True
             break
 

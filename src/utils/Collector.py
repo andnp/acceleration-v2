@@ -39,8 +39,11 @@ class Collector:
     def getStats(self, name):
         arr = self.all_data[name]
 
-        mean = np.mean(arr, axis=0)
         runs = len(arr)
+        min_len = min(map(lambda a: len(a), arr))
+
+        arr = list(map(lambda a: a[:min_len], arr))
+        mean = np.mean(arr, axis=0)
         stderr = np.std(arr, axis=0, ddof=1) / np.sqrt(runs)
 
         return [mean, stderr, runs]
