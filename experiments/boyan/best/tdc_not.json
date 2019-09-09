@@ -2,7 +2,7 @@
     "agent": "TDCadagrad",
     "problem": "Boyan",
     "metaParameters": {
-        "ratio": 2.0,
+        "ratio": 1.0,
         "alpha": 1.0,
         "use_ideal_h": false,
         "h_variance": 0.0

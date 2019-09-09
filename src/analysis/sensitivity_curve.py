@@ -14,7 +14,7 @@ def getMaxY(arr):
     m = arr[0]
     for y in arr:
         if np.isnan(y):
-            continue
+            return 1e6
 
         if y > 1.5 * m:
             continue
@@ -24,8 +24,8 @@ def getMaxY(arr):
 
     return m
 
-def plotSensitivity(results, param, ax, color=None, label=None, dashed=False):
-    best = getBestOverParameter(results, param)
+def plotSensitivity(results, param, ax, color=None, label=None, dashed=False, bestBy='end'):
+    best = getBestOverParameter(results, param, bestBy=bestBy)
 
     x = sorted(list(best))
     y = [np.mean(best[k].mean()) for k in x]
