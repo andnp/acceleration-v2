@@ -27,6 +27,8 @@ def generatePlot(exp_paths):
             label += '-h*'
 
         plot(results, ax, label=label, color=color, dashed=dashed)
+        ax.set_ylabel("RMSPBE")
+        ax.set_title("RMSPBE")
 
     ax = axes[0,1]
     for exp_path in exp_paths:
@@ -46,6 +48,7 @@ def generatePlot(exp_paths):
             label += '-h*'
 
         plotBest(best_rmspbe, ax, label=label, color=color, dashed=dashed)
+        ax.set_title("RMSVE")
 
     ax = axes[1,0]
     for exp_path in exp_paths:
@@ -69,6 +72,7 @@ def generatePlot(exp_paths):
             label += '-h*'
 
         plotBest(best_rmsve, ax, label=label, color=color, dashed=dashed)
+        ax.set_ylabel("RMSVE")
 
     ax = axes[1,1]
     for exp_path in exp_paths:
