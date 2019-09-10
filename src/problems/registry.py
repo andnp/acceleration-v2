@@ -1,6 +1,6 @@
 from src.problems.BairdCounterexample import BairdCounterexample
 from src.problems.Boyan import Boyan
-from src.problems.Chain import Chain2575, Chain4060
+from src.problems.Chain import Chain2575, Chain4060, Chain5050
 
 def getProblem(name):
     if name == 'Baird':
@@ -14,5 +14,8 @@ def getProblem(name):
 
     if name == 'Chain4060':
         return Chain4060
+
+    if name == 'Chain5050':
+        return Chain5050
 
     raise NotImplementedError()

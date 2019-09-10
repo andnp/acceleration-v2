@@ -144,6 +144,12 @@ class Chain4060(BaseChain):
             [[0.4,0.6]]*N
         )
 
+class Chain5050(BaseChain):
+    def getTarget(self,N):
+        return Policies.fromStateArray(
+            [[0.5,0.5]]*N
+        )
+
 class Chain2575(BaseChain):
     def getTarget(self,N):
         return Policies.fromStateArray(
