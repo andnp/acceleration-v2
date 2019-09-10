@@ -14,7 +14,7 @@ class ETD(BaseTD):
 
         delta = p * (r + gamma * v_tp1 - v_t)
 
-        dw = delta * obs_t
+        dw = delta * x * self.f
         dh = np.zeros(self.features)
 
         return [dw, dh]
