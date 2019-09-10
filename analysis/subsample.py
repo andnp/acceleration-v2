@@ -1,6 +1,8 @@
 import sys
 import math
 import os
+sys.path.append(os.getcwd())
+
 import numpy as np
 from functools import partial
 from multiprocessing.pool import Pool
