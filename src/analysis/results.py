@@ -78,7 +78,7 @@ def find(stream, other):
             return res
 
 def whereParameterEquals(results, param, value):
-    return filter(lambda r: r.params[param] == value, results)
+    return filter(lambda r: r.params.get(param, value) == value, results)
 
 def loadResults(exp, summary='errors_summary.npy'):
     for i, path in enumerate(listResultsPaths(exp)):
