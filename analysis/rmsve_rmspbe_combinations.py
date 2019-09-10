@@ -13,7 +13,10 @@ from src.utils.path import fileName
 def generatePlot(exp_paths):
     f, axes = plt.subplots(2,2)
     # ax.semilogx()
+
+    # RMSPBE plots
     ax = axes[0,0]
+    rmspbe_bounds = []
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         results = loadResults(exp, 'rmspbe_summary.npy')
@@ -26,7 +29,8 @@ def generatePlot(exp_paths):
         if use_ideal_h:
             label += '-h*'
 
-        plot(results, ax, label=label, color=color, dashed=dashed)
+        bounds = plot(results, ax, label=label, color=color, dashed=dashed)
+        rmspbe_bounds.append(bounds)
         ax.set_ylabel("RMSPBE")
         ax.set_title("RMSPBE")
 
@@ -47,10 +51,13 @@ def generatePlot(exp_paths):
         if use_ideal_h:
             label += '-h*'
 
-        plotBest(best_rmspbe, ax, label=label, color=color, dashed=dashed)
+        bounds = plotBest(best_rmspbe, ax, label=label, color=color, dashed=dashed)
+        rmspbe_bounds.append(bounds)
         ax.set_title("RMSVE")
 
+    # RMSVE plots
     ax = axes[1,0]
+    rmsve_bounds = []
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         rmsve = loadResults(exp, 'errors_summary.npy')
@@ -71,7 +78,8 @@ def generatePlot(exp_paths):
         if use_ideal_h:
             label += '-h*'
 
-        plotBest(best_rmsve, ax, label=label, color=color, dashed=dashed)
+        bounds = plotBest(best_rmsve, ax, label=label, color=color, dashed=dashed)
+        rmsve_bounds.append(bounds)
         ax.set_ylabel("RMSVE")
 
     ax = axes[1,1]
@@ -87,7 +95,19 @@ def generatePlot(exp_paths):
         if use_ideal_h:
             label += '-h*'
 
-        plot(results, ax, label=label, color=color, dashed=dashed)
+        bounds = plot(results, ax, label=label, color=color, dashed=dashed)
+        rmsve_bounds.append(bounds)
+
+    # rmspbe
+    lower = min(map(lambda x: x[0], rmspbe_bounds)) * 0.9
+    upper = max(map(lambda x: x[1], rmspbe_bounds)) * 1.05
+    axes[0, 0].set_ylim([lower, upper])
+    axes[0, 1].set_ylim([lower, upper])
+
+    lower = min(map(lambda x: x[0], rmsve_bounds)) * 0.9
+    upper = max(map(lambda x: x[1], rmsve_bounds)) * 1.05
+    axes[1, 0].set_ylim([lower, upper])
+    axes[1, 1].set_ylim([lower, upper])
 
     plt.show()
 

@@ -12,6 +12,20 @@ def save(exp, name):
     os.makedirs(save_path, exist_ok=True)
     plt.savefig(f'{save_path}/{name}.pdf')
 
+def getMaxY(arr):
+    m = arr[0]
+    for y in arr:
+        if np.isnan(y):
+            continue
+
+        if y > 100 * m:
+            return np.nan
+
+        if y > m:
+            m = y
+
+    return m
+
 def plot(results, ax, color=None, label=None, labelParams=None, bestBy='end', dashed=False):
     if bestBy == 'end':
         best = getBestEnd(results)
@@ -54,3 +68,8 @@ def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True, labe
             ax.fill_between(range(mean.shape[0]), low_ci, high_ci, color=base.get_color(), alpha=0.4)
 
     ax.legend()
+
+    max_y = getMaxY(mean) * 1.05
+    min_y = min(mean) * .95
+
+    return (min_y, max_y)
