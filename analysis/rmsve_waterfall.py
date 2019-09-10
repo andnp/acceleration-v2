@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 sys.path.append(os.getcwd())
 
-from src.analysis.learning_curve import plot, save
 from src.analysis.results import loadResults, whereParameterEquals
 from src.analysis.colormap import colors
 from src.utils.model import loadExperiment
@@ -17,8 +16,12 @@ DIVERGENCE_MULTIPLIER = 1.2
 ALG_WIDTH = 1
 # how wide should the lanes be?
 LANE_WIDTH = 0.25
-# above what value is a result considered "diverged"
-MAX_ACCEPTABLE = 20
+
+def getSavePath(exp):
+    exp_name = exp.getExperimentName()
+    save_path = f'experiments/{exp_name}/plots'
+    os.makedirs(save_path, exist_ok=True)
+    return save_path
 
 def generatePlot(exp_paths):
     ax = plt.gca()
@@ -37,9 +40,17 @@ def generatePlot(exp_paths):
 
         performance = []
         for r in results:
-            m = np.mean(r.mean())
-            if m > MAX_ACCEPTABLE:
+            curve = r.mean()
+            m = np.mean(curve)
+
+            # diverged if result doesn't exist
+            if np.isscalar(curve):
                 m = np.nan
+
+            # diverged if the end of the curve is higher than the start
+            elif curve[0] < curve[curve.shape[0] - 1]:
+                m = np.nan
+
             performance.append(m)
 
         performance = np.array(performance)
@@ -60,12 +71,21 @@ def generatePlot(exp_paths):
     x_offset = 0.5
     x_ticks = []
     x_labels = []
+
+    save_path = getSavePath(exp)
+
+    diverged_file = open(f'{save_path}/rmsve_waterfall_diverged.txt', 'w')
     for key in all_performance:
         data = all_performance[key]
 
         label = key
         performance = data['res']
         color = data['color']
+
+        num_diverged = sum(np.isnan(performance))
+        num_total = performance.shape[0]
+
+        diverged_file.write(f'perc: {num_diverged / num_total}; div: {num_diverged}; total: {num_total}\n')
 
         performance[np.isnan(performance)] = global_max * DIVERGENCE_MULTIPLIER
         ax.scatter([x_offset] * performance.shape[0] + np.random.uniform(-LANE_WIDTH, LANE_WIDTH, performance.shape[0]), performance, marker='o', facecolors='none', color=color)
@@ -79,7 +99,7 @@ def generatePlot(exp_paths):
     ax.set_xticklabels(x_labels)
 
     plt.show()
-    # save(exp, f'rmsve_waterfall')
+    # plt.savefig(f'{save_path}/rmsve_waterfall.pdf')
     plt.clf()
 
 if __name__ == "__main__":
