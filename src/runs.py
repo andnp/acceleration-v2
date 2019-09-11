@@ -13,7 +13,7 @@ from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
 from src.utils.Collector import Collector
 
-EVERY = 10
+EVERY = 50
 
 def weightedNorm(X, d):
     return np.sqrt(X.T.dot(np.diag(d)).dot(X))
