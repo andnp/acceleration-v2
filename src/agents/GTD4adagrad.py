@@ -13,6 +13,6 @@ class GTD4(AdaGrad):
         delta_hat = h.dot(x)
 
         dh = (p * delta - delta_hat) * x
-        dw = (delta * x - gamma * delta_hat * xp)
+        dw = (delta_hat * x - gamma * delta_hat * xp)
 
         return [dw, dh]

@@ -3,7 +3,7 @@ from src.agents.BaseTD import BaseTD
 from src.agents.optimizers.AdaGrad import AdaGrad
 
 
-class GTD5(AdaGrad):
+class TDC3(AdaGrad):
     def computeGradient(self, x, a, xp, r, gamma, p):
         w, h = self.theta
         vp = w.dot(xp)
@@ -13,6 +13,6 @@ class GTD5(AdaGrad):
         delta_hat = h.dot(x)
 
         dh = (p * delta - delta_hat) * x
-        dw = (delta_hat * x - gamma * delta_hat * xp)
+        dw = (delta * x - gamma * delta_hat * xp)
 
         return [dw, dh]
