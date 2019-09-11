@@ -1,5 +1,5 @@
 {
-    "agent": "GTD2adagrad",
+    "agent": "GTD5adagrad",
     "problem": "Baird",
     "metaParameters": {
         "ratio": 1.0,
