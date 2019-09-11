@@ -46,7 +46,7 @@ def everyN(arr, n):
 
 
 def loadResults(path):
-    summary_path = up(path) + '/errors_summary.npy'
+    summary_path = path + '/errors_summary.npy'
     return np.load(summary_path, allow_pickle=True), summary_path
 
 def processResultPath(new_base, resultAndPath):

@@ -27,8 +27,8 @@ def generatePlot(exp_paths):
 
         plot(results, ax, label=label, color=color, dashed=dashed)
 
-    # plt.show()
-    save(exp, f'rmsve_learning-curve')
+    plt.show()
+    # save(exp, f'rmsve_learning-curve')
     plt.clf()
 
 if __name__ == "__main__":
