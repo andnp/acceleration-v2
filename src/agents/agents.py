@@ -11,6 +11,7 @@ from .gtd2.GTD2AdaGradPNorm import GTD2AdaGradPNorm
 from .GTD3adagrad import GTD3
 from .GTD4adagrad import GTD4
 from .GTD5adagrad import GTD5
+from .GTD6adagrad import GTD6
 
 def getAgent(name):
     if name == 'TDC':
@@ -48,5 +49,7 @@ def getAgent(name):
         return GTD4
     elif name == 'GTD5adagrad':
         return GTD5
+    elif name == 'GTD6adagrad':
+        return GTD6
 
     raise Exception('Unexpected agent given')
