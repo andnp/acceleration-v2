@@ -99,15 +99,16 @@ def generatePlot(exp_paths):
         rmsve_bounds.append(bounds)
 
     # rmspbe
-    lower = min(map(lambda x: x[0], rmspbe_bounds)) * 0.9
-    upper = max(map(lambda x: x[1], rmspbe_bounds)) * 1.05
-    axes[0, 0].set_ylim([lower, upper])
-    axes[0, 1].set_ylim([lower, upper])
+    rmspbe_lower = min(map(lambda x: x[0], rmspbe_bounds)) * 0.9
+    rmspbe_upper = max(map(lambda x: x[1], rmspbe_bounds)) * 1.05
+    axes[0, 0].set_ylim([rmspbe_lower, rmspbe_upper])
+    axes[0, 1].set_ylim([rmspbe_lower, rmspbe_upper])
 
-    lower = min(map(lambda x: x[0], rmsve_bounds)) * 0.9
-    upper = max(map(lambda x: x[1], rmsve_bounds)) * 1.05
-    axes[1, 0].set_ylim([lower, upper])
-    axes[1, 1].set_ylim([lower, upper])
+    # rmsve
+    rmsve_lower = min(map(lambda x: x[0], rmsve_bounds)) * 0.9
+    rmsve_upper = max(map(lambda x: x[1], rmsve_bounds)) * 1.05
+    axes[1, 0].set_ylim([rmsve_lower, rmsve_upper])
+    axes[1, 1].set_ylim([rmsve_lower, rmsve_upper])
 
     plt.show()
 
