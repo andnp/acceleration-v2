@@ -1,0 +1,11 @@
+{
+    "agent": "GTD2adagrad",
+    "problem": "MediumChainTC5050",
+    "metaParameters": {
+        "use_ideal_h": false,
+        "ratio": 1.0,
+        "alpha": 0.05,
+        "tilings": [1, 2, 4, 8, 16],
+        "tiles": [9]
+    }
+}
