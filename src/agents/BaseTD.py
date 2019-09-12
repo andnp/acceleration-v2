@@ -17,7 +17,7 @@ class BaseTD:
         if self.h_variance > 0:
             self.theta[1] = np.random.normal(0, self.h_variance, size=features)
 
-        self.last_p = 1
+        self.last_p = 0
         self.last_gamma = 1
         self.stepsize = np.tile([self.alpha, self.alpha_h], (features, 1)).T
 

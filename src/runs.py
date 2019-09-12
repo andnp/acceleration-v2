@@ -134,8 +134,8 @@ ndh_data = collector.getStats('norm_delta_hat')
 # ax6.plot(ndh_data[0])
 # ax6.set_title('norm of delta_hat')
 
-# plt.show()
-# exit()
+plt.show()
+exit()
 
 # save things to disk
 save_context = exp.buildSaveContext(idx)
