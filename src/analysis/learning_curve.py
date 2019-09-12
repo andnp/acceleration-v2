@@ -69,6 +69,9 @@ def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True, labe
 
     ax.legend()
 
+    if len(mean.shape) > 1:
+        return (np.nan, np.nan)
+
     max_y = getMaxY(mean) * 1.05
     min_y = min(mean) * .95
 
