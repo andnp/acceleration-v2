@@ -1,7 +1,7 @@
 {
     "account": "rrg-whitem",
-    "time": "05:59:00",
-    "nodes": 32,
+    "time": "02:59:00",
+    "nodes": 8,
     "memPerCpu": "2G",
     "tasksPerNode": 5
 }
