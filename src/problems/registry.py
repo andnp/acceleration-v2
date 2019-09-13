@@ -3,6 +3,7 @@ from src.problems.Boyan import Boyan
 from src.problems.Chain import Chain2575, Chain4060, Chain5050
 from src.problems.MediumChain import MediumChainTabular5050
 from src.problems.MediumChainTC import MediumChainTC5050
+from src.problems.SmallChain import SmallChainTabular5050, SmallChainInverted5050, SmallChainDependent5050
 
 def getProblem(name):
     if name == 'Baird':
@@ -25,6 +26,15 @@ def getProblem(name):
 
     if name == 'MediumChainTC5050':
         return MediumChainTC5050
+
+    if name == 'SmallChainTabular5050':
+        return SmallChainTabular5050
+
+    if name == 'SmallChainDependent5050':
+        return SmallChainDependent5050
+
+    if name == 'SmallChainInverted5050':
+        return SmallChainInverted5050
 
     raise NotImplementedError()
 
