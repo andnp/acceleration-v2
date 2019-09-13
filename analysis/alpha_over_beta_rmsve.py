@@ -17,7 +17,7 @@ def generatePlot(exp_paths):
     for exp_path in exp_paths:
         i += 1
         exp = loadExperiment(exp_path)
-        results = loadResults(exp, 'rmsve_summary.npy')
+        results = loadResults(exp, 'errors_summary.npy')
 
         param_dict = splitOverParameter(results, 'ratio')
 
