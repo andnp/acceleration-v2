@@ -33,7 +33,7 @@ class Result:
     def stderr(self):
         return self._reducer(self._lazyLoad()[1])
 
-def getBestOverParameter(results, param, bestBy='auc'):
+def splitOverParameter(results, param):
     parts = {}
     for r in results:
         param_value = r.params[param]
@@ -42,6 +42,11 @@ def getBestOverParameter(results, param, bestBy='auc'):
             parts[param_value] = []
 
         parts[param_value].append(r)
+
+    return parts
+
+def getBestOverParameter(results, param, bestBy='end'):
+    parts = splitOverParameter(results, param)
 
     best = {}
     for k in parts:
