@@ -74,7 +74,7 @@ class BaseChain(BaseProblem):
         return 1.0
 
     def getSteps(self):
-        return 10000
+        return 1000
 
     def getEnvironment(self):
         return self.env
