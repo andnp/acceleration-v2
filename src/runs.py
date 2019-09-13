@@ -6,6 +6,7 @@ import os
 sys.path.append(os.getcwd())
 
 import matplotlib.pyplot as plt
+from src.utils.plotting import plot
 
 from RlGlue import RlGlue
 from src.problems.registry import getProblem
@@ -117,9 +118,9 @@ ndh_data = collector.getStats('norm_delta_hat')
 # local plotting (for testing)
 # fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
 
-# ax1.plot(error_data[0])
+# plot(ax1, error_data)
 # ax1.set_title('RMSVE')
-# ax2.plot(rmspbe_data[0])
+# plot(ax2, rmspbe_data)
 # ax2.set_title('RMSPBE')
 
 # for m, label in zip(ss_data[0].T, ['w', 'h']):
@@ -127,15 +128,15 @@ ndh_data = collector.getStats('norm_delta_hat')
 # ax3.legend()
 # ax3.set_title('stepsize')
 
-# ax4.plot(hnorm_data[0])
+# plot(ax4, hnorm_data)
 # ax4.set_title('hnorm')
-# ax5.plot(hupd_data[0])
+# plot(ax5, hupd_data)
 # ax5.set_title('h update')
-# ax6.plot(ndh_data[0])
+# plot(ax6, ndh_data)
 # ax6.set_title('norm of delta_hat')
 
-plt.show()
-exit()
+# plt.show()
+# exit()
 
 # save things to disk
 save_context = exp.buildSaveContext(idx)
