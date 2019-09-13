@@ -55,7 +55,9 @@ def getBestOverParameter(results, param, bestBy='auc'):
 def getBest(results):
     low = first(results)
     for r in results:
-        if np.mean(r.mean()) < np.mean(low.mean()):
+        am = np.mean(r.mean())
+        bm = np.mean(low.mean())
+        if np.isnan(bm) or am < bm:
             low = r
 
     return low
@@ -65,8 +67,10 @@ def getBestEnd(results):
     for r in results:
         a = r.mean()
         b = low.mean()
-        steps = int(len(a) * 0.1)
-        if np.mean(a[-steps:]) < np.mean(b[-steps:]):
+        steps = int(len(a) // 0.1)
+        am = np.mean(a[-steps:])
+        bm = np.mean(b[-steps:])
+        if np.isnan(bm) or am < bm:
             low = r
 
     return low
