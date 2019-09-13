@@ -144,16 +144,8 @@ class BaseChain(BaseProblem):
         return rmsve, rmspbe
 
 # ----------------
-# -- Off-policy --
+# -- On-policy --
 # ----------------
-
-# class Chain4060(BaseChain):
-#     def _getTarget(self):
-#         return Policy(lambda s: [.4, .6])
-
-# class Chain2575(BaseChain):
-#     def _getTarget(self):
-#         return Policy(lambda s: [.25, .75])
 
 class Chain5050(BaseChain):
     def _getTarget(self):
@@ -178,24 +170,6 @@ class ChainDependent(BaseChain):
 # ---------------
 # -- Resultant --
 # ---------------
-
-# class ChainInverted4060(Chain4060, ChainInverted):
-#     pass
-
-# class ChainInverted2575(Chain2575, ChainInverted):
-#     pass
-
-# class ChainTabular4060(Chain4060, ChainTabular):
-#     pass
-
-# class ChainTabular2575(Chain2575, ChainTabular):
-#     pass
-
-# class ChainDependent4060(Chain4060, ChainDependent):
-#     pass
-
-# class ChainDependent2575(Chain2575, ChainDependent):
-#     pass
 
 class SmallChainDependent5050(Chain5050, ChainDependent):
     pass
