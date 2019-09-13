@@ -108,35 +108,35 @@ for run in range(RUNS):
 
 
 # get stats over runs for each collected variable
-error_data = collector.getStats('errors')
-rmspbe_data = collector.getStats('rmspbe')
-ss_data = collector.getStats('stepsize')
-hnorm_data = collector.getStats('hnorm')
-hupd_data = collector.getStats('h_update')
-ndh_data = collector.getStats('norm_delta_hat')
+# error_data = collector.getStats('errors')
+# rmspbe_data = collector.getStats('rmspbe')
+# ss_data = collector.getStats('stepsize')
+# hnorm_data = collector.getStats('hnorm')
+# hupd_data = collector.getStats('h_update')
+# ndh_data = collector.getStats('norm_delta_hat')
 
-# local plotting (for testing)
-fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
+# # local plotting (for testing)
+# fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
 
-plot(ax1, error_data)
-ax1.set_title('RMSVE')
-plot(ax2, rmspbe_data)
-ax2.set_title('RMSPBE')
+# plot(ax1, error_data)
+# ax1.set_title('RMSVE')
+# plot(ax2, rmspbe_data)
+# ax2.set_title('RMSPBE')
 
-for m, label in zip(ss_data[0].T, ['w', 'h']):
-    ax3.plot(m, label=label)
-ax3.legend()
-ax3.set_title('stepsize')
+# for m, label in zip(ss_data[0].T, ['w', 'h']):
+#     ax3.plot(m, label=label)
+# ax3.legend()
+# ax3.set_title('stepsize')
 
-plot(ax4, hnorm_data)
-ax4.set_title('hnorm')
-plot(ax5, hupd_data)
-ax5.set_title('h update')
-plot(ax6, ndh_data)
-ax6.set_title('norm of delta_hat')
+# plot(ax4, hnorm_data)
+# ax4.set_title('hnorm')
+# plot(ax5, hupd_data)
+# ax5.set_title('h update')
+# plot(ax6, ndh_data)
+# ax6.set_title('norm of delta_hat')
 
-plt.show()
-exit()
+# plt.show()
+# exit()
 
 # save things to disk
 save_context = exp.buildSaveContext(idx)
