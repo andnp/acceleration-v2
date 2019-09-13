@@ -76,4 +76,4 @@ class BaseTD:
 
     # effective stepsize helpers
     def _stepsize(self):
-        return self.stepsize
+        return [self.alpha, self.alpha_h]
