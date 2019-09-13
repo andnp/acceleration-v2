@@ -108,14 +108,14 @@ for run in range(RUNS):
 
 
 # get stats over runs for each collected variable
-# error_data = collector.getStats('errors')
-# rmspbe_data = collector.getStats('rmspbe')
-# ss_data = collector.getStats('stepsize')
-# hnorm_data = collector.getStats('hnorm')
-# hupd_data = collector.getStats('h_update')
-# ndh_data = collector.getStats('norm_delta_hat')
+error_data = collector.getStats('errors')
+rmspbe_data = collector.getStats('rmspbe')
+ss_data = collector.getStats('stepsize')
+hnorm_data = collector.getStats('hnorm')
+hupd_data = collector.getStats('h_update')
+ndh_data = collector.getStats('norm_delta_hat')
 
-# # local plotting (for testing)
+# local plotting (for testing)
 # fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2)
 
 # plot(ax1, error_data)
