@@ -39,9 +39,6 @@ class Collector:
     def getStats(self, name):
         arr = self.all_data[name]
 
-        if name == 'stepsize':
-            return [np.nan, np.nan, 0]
-
         runs = len(arr)
         min_len = min(map(lambda a: len(a), arr))
 
