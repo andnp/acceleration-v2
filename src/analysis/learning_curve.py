@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 def confidenceInterval(mean, stderr):
     return (mean - stderr, mean + stderr)
 
-def save(exp, name):
+def save(exp, name, type='pdf'):
     exp_name = exp.getExperimentName()
     save_path = f'experiments/{exp_name}/plots'
     os.makedirs(save_path, exist_ok=True)
-    plt.savefig(f'{save_path}/{name}.pdf')
+    plt.savefig(f'{save_path}/{name}.{type}')
 
 def getMaxY(arr):
     m = arr[0]

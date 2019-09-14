@@ -32,7 +32,7 @@ def generatePlot(exp_paths):
         plotBest(best_rmspbe, ax, label=label, color=color, dashed=dashed)
 
     # plt.show()
-    save(exp, f'rmspbe_over_rmsve')
+    save(exp, f'rmspbe_over_rmsve', type='svg')
     plt.clf()
 
 if __name__ == "__main__":

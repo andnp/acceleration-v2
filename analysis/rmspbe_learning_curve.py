@@ -28,7 +28,7 @@ def generatePlot(exp_paths):
         plot(results, ax, label=label, bestBy='auc', color=color, dashed=dashed)
 
     # plt.show()
-    save(exp, f'rmspbe_learning-curve')
+    save(exp, f'rmspbe_learning-curve', type='svg')
     plt.clf()
 
 if __name__ == "__main__":
