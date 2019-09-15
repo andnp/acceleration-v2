@@ -5,7 +5,7 @@ from src.environments.Chain import Chain as ChainEnv
 from src.utils.rlglue import OffPolicyWrapper
 from src.utils.policies import Policy
 
-class BaseChain(BaseProblem):
+class MediumChain(BaseProblem):
     def _getTarget(self):
         return Policy(lambda s: [])
 
@@ -147,15 +147,15 @@ class BaseChain(BaseProblem):
 # -- Off-policy --
 # ----------------
 
-class Chain4060(BaseChain):
+class MediumChain4060(MediumChain):
     def _getTarget(self):
         return Policy(lambda s: [.4, .6])
 
-class Chain2575(BaseChain):
+class MediumChain2575(MediumChain):
     def _getTarget(self):
         return Policy(lambda s: [.25, .75])
 
-class Chain5050(BaseChain):
+class MediumChain5050(MediumChain):
     def _getTarget(self):
         return Policy(lambda s: [.5, .5])
 
@@ -163,15 +163,15 @@ class Chain5050(BaseChain):
 # -- Representation --
 # --------------------
 
-class ChainInverted(BaseChain):
+class ChainInverted(MediumChain):
     def _getRepresentation(self, n):
         return Inverted(n)
 
-class ChainTabular(BaseChain):
+class ChainTabular(MediumChain):
     def _getRepresentation(self, n):
         return Tabular(n)
 
-class ChainDependent(BaseChain):
+class ChainDependent(MediumChain):
     def _getRepresentation(self, n):
         return Dependent(n)
 
@@ -179,25 +179,25 @@ class ChainDependent(BaseChain):
 # -- Resultant --
 # ---------------
 
-class ChainInverted4060(Chain4060, ChainInverted):
+class ChainInverted4060(MediumChain4060, ChainInverted):
     pass
 
-class ChainInverted2575(Chain2575, ChainInverted):
+class ChainInverted2575(MediumChain2575, ChainInverted):
     pass
 
-class ChainTabular4060(Chain4060, ChainTabular):
+class ChainTabular4060(MediumChain4060, ChainTabular):
     pass
 
-class ChainTabular2575(Chain2575, ChainTabular):
+class ChainTabular2575(MediumChain2575, ChainTabular):
     pass
 
-class ChainDependent4060(Chain4060, ChainDependent):
+class ChainDependent4060(MediumChain4060, ChainDependent):
     pass
 
-class ChainDependent2575(Chain2575, ChainDependent):
+class ChainDependent2575(MediumChain2575, ChainDependent):
     pass
-    
-class MediumChainTabular5050(Chain5050, ChainTabular):
+
+class MediumChainTabular5050(MediumChain5050, ChainTabular):
     pass
 
 
