@@ -4,6 +4,7 @@ from src.problems.Chain import Chain2575, Chain4060, Chain5050
 from src.problems.MediumChain import MediumChainTabular5050
 from src.problems.MediumChainTC import MediumChainTC5050
 from src.problems.SmallChain import SmallChainTabular5050, SmallChainInverted5050, SmallChainDependent5050
+from src.problems.Spiral import Spiral
 
 def getProblem(name):
     if name == 'Baird':
@@ -35,6 +36,9 @@ def getProblem(name):
 
     if name == 'SmallChainInverted5050':
         return SmallChainInverted5050
+
+    if name == 'Spiral':
+        return Spiral
 
     raise NotImplementedError()
 

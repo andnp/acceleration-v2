@@ -1,9 +1,11 @@
 from .BaseTD import BaseTD
 from .tdc.TDC import TDC
+from .tdc.NonlinearTDC import NonlinearTDC
 from .tdc.TDCadagrad import TDCadagrad
 from .tdc.TDCsecondaryAdagrad import TDCsecondaryAdagrad
 from .tdc.TDCAdaGradPNorm import TDCAdaGradPNorm
 from .gtd2.GTD2 import GTD2
+from .gtd2.NonlinearGTD2 import NonlinearGTD2
 from .gtd2.GTD2adagrad import GTD2adagrad
 from .gtd2.GTD2secondaryAdagrad import GTD2secondaryAdagrad
 from .gtd2.GTD2AdaGradPNorm import GTD2AdaGradPNorm
@@ -17,8 +19,14 @@ def getAgent(name):
     if name == 'TDC':
         return TDC
 
+    if name == 'NonlinearTDC':
+        return NonlinearTDC
+
     elif name == 'GTD2':
         return GTD2
+
+    elif name == 'NonlinearGTD2':
+        return NonlinearGTD2
 
     elif name == 'GTD2adagrad':
         return GTD2adagrad
