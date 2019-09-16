@@ -1,0 +1,8 @@
+{
+    "agent": "TD",
+    "problem": "SmallChainInverted5050LeftZero",
+    "metaParameters": {
+        "ratio": 2.0,
+        "alpha": [0.5, 0.25, 0.12, 0.06, 0.03, 0.015, 0.008]
+    }
+}
