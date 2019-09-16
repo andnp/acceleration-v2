@@ -47,6 +47,9 @@ class BaseProblem:
     def evaluateEpisode(self, episode):
         pass
 
+    def getGradients(self):
+        return self.all_observables
+
     def setupIdealH(self):
         # TODO(andy): make this less attrocious
         X = getattr(self, 'all_observables')
