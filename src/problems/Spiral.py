@@ -20,7 +20,7 @@ class Spiral(BaseProblem):
         self.nsteps = perm["nsteps"]
 
         # build representation
-        self.rep = OneHot(3)
+        self.rep = Tabular(3)
 
         # build environment
         # build agent
@@ -68,7 +68,7 @@ class Spiral(BaseProblem):
 
     def evaluateStep(self, step_data):
         # distance from v_pi
-        d = self.agent.value(self.all_observables) - self.v_star
+        d = [self.agent.value(self.all_observables[i])-self.v_star[i] for i in range(N)]
         # weighted sum over squared distances
         s = np.sum(self.db * np.square(d))
 
@@ -80,39 +80,43 @@ class Spiral(BaseProblem):
         C = self.C
 
         v = np.dot(-A, w) + b
-        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
+        mspbe = v.dot(v) / C
         rmspbe = np.sqrt(mspbe)
 
         return rmsve, rmspbe
 
-class OneHot(BaseRepresentation):
+class Tabular(BaseRepresentation):
     def __init__(self, N):
-        self.map = np.zeros((N,N))
-
-        idx = 0
-        for i in range(N):
-            self.map[i,i] = 1
+        self.N = N
 
     def encode(self, s):
-        return self.map[s]
+        return s
 
     def features(self):
-        return self.map.shape[1]
+        return 1
 
 class SpiralValueFunction:
     def __init__(self, lambda_hat=0.866, epsilon=0.05):
         self.eps = epsilon
         self.lmda = lambda_hat
-        self.ab = np.array([[100,-70,-30],
-                           [23.094,-98.15,75.056]])
+        self.a = np.array([100,-70,-30])
+        self.b = np.array([23.094,-98.15,75.056])
 
-    def eval(self, x, w):
-        a,b = np.dot(self.ab, x)
+    def eval(self, s, w):
+        a,b = self.getCoeffs(s)
         return np.exp(self.eps*w)*(a*np.cos(self.lmda*w)-b*np.sin(self.lmda*w))
 
-    def Rop(self, x, w, h):
-        a, b = np.dot(self.ab, x)
+    def getCoeffs(self, s):
+        return self.a[s], self.b[s]
+
+    def grad(self, s, w):
+        a,b = self.getCoeffs(s)
         eps,lmda = self.eps, self.lmda
-        c, s = np.cos(w*lmda), np.sin(w*lmda)
-        return h*np.exp(eps*w)*((a*eps*eps-2*eps*lmda*b-a*lmda*lmda)*c - (b*eps*eps+2*a*eps*lmda-b*lmda*lmda)*s)
+        return np.array([np.exp(eps*w)*((eps*a-b*lmda)*np.cos(lmda*w)-(eps*b+a*lmda)*np.sin(lmda*w))])
+
+    def Rop(self, s, w, h):
+        a,b = self.getCoeffs(s)
+        eps,lmda = self.eps, self.lmda
+        cos, sin = np.cos(w*lmda), np.sin(w*lmda)
+        return np.array([h*np.exp(eps*w)*((a*eps*eps-2*eps*lmda*b-a*lmda*lmda)*cos - (b*eps*eps+2*a*eps*lmda-b*lmda*lmda)*sin)])
 
