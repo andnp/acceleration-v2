@@ -40,7 +40,7 @@ class BaseProblem:
         d = self.agent.value(X) - self.v_star
 
         # weighted sum over squared distances
-        s = weightedNorm(d, np.diag(self.db))
+        rmsve = weightedNorm(d, np.diag(self.db))
 
         w = self.agent.theta[0]
         A = self.A
@@ -51,7 +51,7 @@ class BaseProblem:
         mspbe = v.T.dot(Cinv).dot(v)
         rmspbe = np.sqrt(mspbe)
 
-        return np.sqrt(s), rmspbe
+        return rmsve, rmspbe
 
     def evaluateEpisode(self, episode):
         pass
