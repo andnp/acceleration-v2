@@ -1,6 +1,7 @@
 import numpy as np
 from PyFixedReps.BaseRepresentation import BaseRepresentation
 from src.problems.BaseProblem import BaseProblem, StepModel
+from src.problems.Chain import Inverted, Dependent, Tabular
 from src.environments.ChainLeftZero import ChainLeftZero as ChainEnv
 from src.utils.rlglue import OffPolicyWrapper
 from src.utils.policies import Policy
@@ -186,60 +187,6 @@ class SmallChainDependent5050LeftZero(Chain5050LeftZero, ChainDependentLeftZero)
 
 class SmallChainInverted5050LeftZero(Chain5050LeftZero, ChainInvertedLeftZero):
     pass
-    
+
 class SmallChainTabular5050LeftZero(Chain5050LeftZero, ChainTabularLeftZero):
     pass
-
-
-
-# --------------------
-# -- Representation --
-# --------------------
-
-class Inverted(BaseRepresentation):
-    def __init__(self, N):
-        m = np.ones((N,N)) - np.eye(N)
-
-        self.map = np.zeros((N+1, N))
-        self.map[:N] = (m.T / np.linalg.norm(m, axis = 1)).T
-
-    def encode(self, s):
-        return self.map[s]
-
-    def features(self):
-        return self.map.shape[1]
-
-class Tabular(BaseRepresentation):
-    def __init__(self, N):
-        m = np.eye(N)
-
-        self.map = np.zeros((N+1, N))
-        self.map[:N] = m
-
-    def encode(self, s):
-        return self.map[s]
-
-    def features(self):
-        return self.map.shape[1]
-
-class Dependent(BaseRepresentation):
-    def __init__(self, N):
-        nfeats = int(np.floor(N/2) + 1)
-        self.map = np.zeros((N+1,nfeats))
-
-        idx = 0
-        for i in range(nfeats):
-            self.map[idx,0:i+1] = 1
-            idx+=1
-
-        for i in range(nfeats-1,0,-1):
-            self.map[idx,-i:] = 1
-            idx+=1
-
-        self.map[:N] = (self.map[:N].T / np.linalg.norm(self.map[:N], axis = 1)).T
-
-    def encode(self, s):
-        return self.map[s]
-
-    def features(self):
-        return self.map.shape[1]

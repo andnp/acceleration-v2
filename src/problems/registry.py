@@ -1,6 +1,6 @@
 from src.problems.BairdCounterexample import BairdCounterexample
 from src.problems.Boyan import Boyan
-from src.problems.Chain import Chain2575, Chain4060, Chain5050
+from src.problems.Chain import ChainInverted5050, ChainInverted4060, ChainInverted2575, ChainTabular5050, ChainTabular4060, ChainTabular2575, ChainDependent5050, ChainDependent4060, ChainDependent2575
 from src.problems.MediumChain import MediumChainTabular5050
 from src.problems.MediumChainTC import MediumChainTC5050
 from src.problems.SmallChain import SmallChainTabular5050, SmallChainInverted5050, SmallChainDependent5050
@@ -13,14 +13,32 @@ def getProblem(name):
     if name == 'Boyan':
         return Boyan
 
-    if name == 'Chain2575':
-        return Chain2575
+    if name == 'ChainInverted5050':
+        return ChainInverted5050
 
-    if name == 'Chain4060':
-        return Chain4060
+    if name == 'ChainInverted4060':
+        return ChainInverted4060
 
-    if name == 'Chain5050':
-        return Chain5050
+    if name == 'ChainInverted2575':
+        return ChainInverted2575
+
+    if name == 'ChainTabular5050':
+        return ChainTabular5050
+
+    if name == 'ChainTabular4060':
+        return ChainTabular4060
+
+    if name == 'ChainTabular2575':
+        return ChainTabular2575
+
+    if name == 'ChainDependent5050':
+        return ChainDependent5050
+
+    if name == 'ChainDependent4060':
+        return ChainDependent4060
+
+    if name == 'ChainDependent2575':
+        return ChainDependent2575
 
     if name == 'MediumChainTabular5050':
         return MediumChainTabular5050

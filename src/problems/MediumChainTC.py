@@ -1,5 +1,6 @@
 import numpy as np
-from src.problems.MediumChain import MediumChain, MediumChain5050
+from src.problems.MediumChain import MediumChain
+from src.problems.Chain import Policy5050
 from PyFixedReps.TileCoder import TileCoder
 
 # ======== Tile coder ======
@@ -21,5 +22,5 @@ class TCChain(MediumChain):
 # -- Resultant --
 # ---------------
 
-class MediumChainTC5050(MediumChain5050, TCChain):
+class MediumChainTC5050(Policy5050, TCChain, MediumChain):
     pass

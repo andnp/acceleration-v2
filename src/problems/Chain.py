@@ -1,63 +1,73 @@
 import numpy as np
 from PyFixedReps.BaseRepresentation import BaseRepresentation
 from src.problems.BaseProblem import BaseProblem, StepModel
-from src.environments.Chain import Chain as ChainEnv
+from src.environments.Chain import Chain
 from src.utils.rlglue import OffPolicyWrapper
 
-import src.utils.policies as Policies
+from src.utils.policies import Policy
 
 class BaseChain(BaseProblem):
+    def _getTarget(self):
+        return Policy(lambda s: [])
+
+    def _getRepresentation(self, n):
+        return BaseRepresentation()
+
+    def _getSize(self):
+        return 19
+
+    def _getdb(self):
+        return np.array([
+            0.0099983, 0.019997, 0.0299957, 0.0399956, 0.0499955, 0.0599974,
+            0.0699993, 0.080004, 0.0900087, 0.100017, 0.0900087, 0.080004,
+            0.0699993, 0.0599974, 0.0499955, 0.0399956, 0.0299957, 0.019997,
+            0.0099983, 0
+        ])
+
     def __init__(self, exp, idx):
         super().__init__(exp, idx)
         self.exp = exp
         self.idx = idx
-        perm = exp.getPermutation(idx)
 
-        N = 19
-        self.env = ChainEnv(N)
+        N = self._getSize()
 
-        self.nsteps = perm["nsteps"]
+        self.env = Chain(N)
 
         # build representation
-        self.rep = globals()[perm["representation"]](N)
+        self.rep = self._getRepresentation(N)
 
         # build environment
         # build agent
         self.agent = self.Agent(self.rep.features(), self.metaParameters)
 
         # build target policy
-        self.target = self.getTarget(N)
+        self.target = self._getTarget()
 
-        self.behavior = Policies.fromStateArray(
-            [[0.5,0.5]]*N
-        )
+        self.behavior = Policy(lambda s: [0.5, 0.5])
 
         # compute the observable value for each state once
         self.all_observables = np.array([
-            self.rep.encode(i) for i in range(N)
+            self.rep.encode(i) for i in range(N + 1)
         ])
 
         # (1/n+1) sum_{k=0}^n P^k gives a matrix with db in each row, where P is the markov chain
         # induced by the behaviour policy
-        self.db=np.array([0.0099983, 0.019997, 0.0299957, 0.0399956, 0.0499955, 0.0599974,
-                          0.0699993, 0.080004, 0.0900087, 0.100017, 0.0900087, 0.080004,
-                          0.0699993, 0.0599974, 0.0499955, 0.0399956, 0.0299957, 0.019997,
-                          0.0099983])
+        self.db = self._getdb()
 
         self.v_star = self.compute_v(N, self.target)
 
         # build transition probability matrix (under target)
-        self.P = np.zeros((N, N))
+        self.P = np.zeros((N + 1, N + 1))
         pl, pr = self.target.probs(0)
         self.P[0, 1] = pr
-        self.P[0, N // 2] = pl
+        self.P[0, N] = pl
         self.P[N-1, N-2] = pl
-        self.P[N-1, N // 2] = pr
+        self.P[N-1, N] = pr
         for i in range(1, N-1):
             self.P[i, i - 1] = pl
             self.P[i, i + 1] = pr
 
-        self.R = np.zeros(N)
+        self.R = np.zeros(N + 1)
         self.R[0] = pl * -1
         self.R[N-1] = pr * 1
 
@@ -70,7 +80,7 @@ class BaseChain(BaseProblem):
         return 1.0
 
     def getSteps(self):
-        return self.nsteps
+        return 10000
 
     def getEnvironment(self):
         return self.env
@@ -85,27 +95,27 @@ class BaseChain(BaseProblem):
         gamma = self.getGamma()
         theta = 1e-8
 
-        V = np.zeros(nstates)
+        V = np.zeros(nstates + 1)
 
         delta = np.infty
-        i=0
+        i = 0
         while delta > theta:
-            i+=1
+            i += 1
             delta = 0.0
             for s in range(nstates):
                 p_left, p_right = targetPolicy.probs(s)
 
                 v = V[s]
 
-                right=s+1
+                right = s + 1
                 if right >= nstates:
-                    right_reward=1
-                    right_value=0
+                    right_reward = 1
+                    right_value = 0
                 else:
                     right_reward = 0.0
                     right_value = V[right]
 
-                left = s-1
+                left = s - 1
                 if left<0:
                     left_reward = -1.0
                     left_value = 0.0
@@ -113,85 +123,106 @@ class BaseChain(BaseProblem):
                     left_reward = 0.0
                     left_value = V[left]
 
-                V[s] = p_right * (right_reward + gamma*right_value) +\
-                       p_left * (left_reward + gamma*left_value)
+                V[s] = p_right * (right_reward + gamma * right_value) +\
+                       p_left * (left_reward + gamma * left_value)
 
-                delta = max(delta, np.abs(v-V[s]))
+                delta = max(delta, np.abs(v - V[s]))
+
         return V
 
-    def evaluateStep(self, step_data):
-        # distance from v_pi
-        d = self.agent.value(self.all_observables) - self.v_star
-        # weighted sum over squared distances
-        s = np.sum(self.db * np.square(d))
+# ----------------
+# -- Off-policy --
+# ----------------
 
-        rmsve = np.sqrt(s)
+class Policy5050:
+    def _getTarget(self):
+        return Policy(lambda s: [.5, .5])
 
-        w = self.agent.theta[0]
-        A = self.A
-        b = self.b
-        C = self.C
+class Policy4060:
+    def _getTarget(self):
+        return Policy(lambda s: [.4, .6])
 
-        v = np.dot(-A, w) + b
-        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
-        rmspbe = np.sqrt(mspbe)
+class Policy2575:
+    def _getTarget(self):
+        return Policy(lambda s: [.25, .75])
 
-        return rmsve, rmspbe
+# --------------------
+# -- Representation --
+# --------------------
 
-class Chain4060(BaseChain):
-    def getTarget(self,N):
-        return Policies.fromStateArray(
-            [[0.4,0.6]]*N
-        )
+class RepInverted:
+    def _getRepresentation(self, n):
+        return Inverted(n)
 
-class Chain5050(BaseChain):
-    def getTarget(self,N):
-        return Policies.fromStateArray(
-            [[0.5,0.5]]*N
-        )
+class RepTabular:
+    def _getRepresentation(self, n):
+        return Tabular(n)
 
-class Chain2575(BaseChain):
-    def getTarget(self,N):
-        return Policies.fromStateArray(
-            [[0.25,0.75]]*N
-        )
+class RepDependent:
+    def _getRepresentation(self, n):
+        return Dependent(n)
 
-class OneHot(BaseRepresentation):
-    def __init__(self, N):
-        self.map = np.zeros((N,N))
-        for i in range(N):
-            self.map[i,i] = 1.0
+# ---------------
+# -- Resultant --
+# ---------------
 
-    def encode(self, s):
-        return self.map[s]
+class ChainInverted5050(Policy5050, RepInverted, BaseChain):
+    pass
 
-    def features(self):
-        return self.map.shape[1]
+class ChainInverted4060(Policy4060, RepInverted, BaseChain):
+    pass
 
-class OneHotRedundant(BaseRepresentation):
-    def __init__(self, N):
-        self.map = np.zeros((N,N+1))
-        for i in range(N):
-            self.map[i,i] = 1.0
-            self.map[i,-1] = 1.0
+class ChainInverted2575(Policy2575, RepInverted, BaseChain):
+    pass
 
-    def encode(self, s):
-        return self.map[s]
+class ChainTabular5050(Policy5050, RepTabular, BaseChain):
+    pass
 
-    def features(self):
-        return self.map.shape[1]
+class ChainTabular4060(Policy4060, RepTabular, BaseChain):
+    pass
+
+class ChainTabular2575(Policy2575, RepTabular, BaseChain):
+    pass
+
+class ChainDependent5050(Policy5050, RepDependent, BaseChain):
+    pass
+
+class ChainDependent4060(Policy4060, RepDependent, BaseChain):
+    pass
+
+class ChainDependent2575(Policy2575, RepDependent, BaseChain):
+    pass
+
+
+# --------------------
+# -- Representation --
+# --------------------
 
 class Inverted(BaseRepresentation):
     def __init__(self, N):
-        self.map = np.ones((N,N))
-        for i in range(N):
-            self.map[i,i] = 0.0
+        m = np.ones((N,N)) - np.eye(N)
+
+        self.map = np.zeros((N+1, N))
+        self.map[:N] = (m.T / np.linalg.norm(m, axis = 1)).T
 
     def encode(self, s):
         return self.map[s]
 
     def features(self):
-        return self.map.shape[0]
+        return self.map.shape[1]
+
+class Tabular(BaseRepresentation):
+    def __init__(self, N):
+        m = np.eye(N)
+
+        self.map = np.zeros((N+1, N))
+        self.map[:N] = m
+
+    def encode(self, s):
+        return self.map[s]
+
+    def features(self):
+        return self.map.shape[1]
 
 class Dependent(BaseRepresentation):
     def __init__(self, N):
@@ -206,6 +237,8 @@ class Dependent(BaseRepresentation):
         for i in range(nfeats-1,0,-1):
             self.map[idx,-i:] = 1
             idx+=1
+
+        self.map[:N] = (self.map[:N].T / np.linalg.norm(self.map[:N], axis = 1)).T
 
     def encode(self, s):
         return self.map[s]
