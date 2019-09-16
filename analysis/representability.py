@@ -16,7 +16,6 @@ def generatePlot(exp_paths):
         exp = loadExperiment(exp_path)
         # residuals = loadResults(exp, 'residuals_summary.npy')
         results = loadResults(exp)
-        results = whereParameterEquals(results, 'tilings', 4)
 
         use_ideal_h = exp.getPermutation(0)['metaParameters'].get('use_ideal_h', False)
         agent = exp.agent.replace('adagrad', '')

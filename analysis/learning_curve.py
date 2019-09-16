@@ -16,8 +16,6 @@ def generatePlot(exp_paths):
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         results = loadResults(exp)
-        results = whereParameterEquals(results, 'tilings', 1)
-        results = whereParameterEquals(results, 'tiles', 9)
 
         use_ideal_h = exp._d['metaParameters'].get('use_ideal_h', False)
         dashed = use_ideal_h

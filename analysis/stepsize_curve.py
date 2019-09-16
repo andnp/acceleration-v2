@@ -17,8 +17,6 @@ def generatePlot(exp_path):
     # load the errors and hnorm files
     errors = loadResults(exp, 'errors_summary.npy')
     results = loadResults(exp, 'stepsize_summary.npy')
-    errors = whereParameterEquals(errors, 'tilings', 1)
-    errors = whereParameterEquals(errors, 'tiles', 9)
 
     # choose the best parameters from the _errors_
     best = getBestEnd(errors)
