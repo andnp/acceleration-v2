@@ -25,7 +25,7 @@ def generatePlot(exp_paths):
         if use_ideal_h:
             label += '-h*'
 
-        plot(results, ax, label=label, color=color, dashed=dashed)
+        plot(results, ax, label=label, color=color, dashed=dashed, bestBy='end')
 
     # plt.show()
     save(exp, f'rmsve_learning-curve', type='svg')

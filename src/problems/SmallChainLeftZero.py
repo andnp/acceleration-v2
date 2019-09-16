@@ -74,7 +74,7 @@ class BaseChainLeftZero(BaseProblem):
         return 1.0
 
     def getSteps(self):
-        return 10000
+        return 1000
 
     def getEnvironment(self):
         return self.env
@@ -160,7 +160,7 @@ class ChainInvertedLeftZero(BaseChainLeftZero):
         return Inverted(n)
 
     def getSteps(self):
-        return 2500
+        return 500
 
 
 class ChainTabularLeftZero(BaseChainLeftZero):
@@ -168,14 +168,14 @@ class ChainTabularLeftZero(BaseChainLeftZero):
         return Tabular(n)
 
     def getSteps(self):
-        return 1000
+        return 200
 
 class ChainDependentLeftZero(BaseChainLeftZero):
     def _getRepresentation(self, n):
         return Dependent(n)
 
     def getSteps(self):
-        return 2000
+        return 400
 
 # ---------------
 # -- Resultant --
