@@ -8,15 +8,41 @@ from src.analysis.learning_curve import plot, save, plotBest
 from src.analysis.results import loadResults, whereParameterEquals, getBest, getBestEnd, find
 from src.analysis.colormap import stepsize_colors as colors
 from src.utils.model import loadExperiment
+from src.utils.path import up
+from src.utils.arrays import first
 
 from src.utils.path import fileName
 
 def generatePlot(exp_paths):
     f, axes = plt.subplots(2,2)
 
+    # get LSTD solution
+    path = up(up(first(exp_paths))) + '/lstd.json'
+    exp = loadExperiment(path)
+    LSTD_rmsve_results = loadResults(exp, 'errors_summary.npy')
+    LSTD_rmspbe_results = loadResults(exp, 'rmspbe_summary.npy')
+
+    LSTD_rmsve = getBest(LSTD_rmsve_results)
+    LSTD_rmspbe = getBest(LSTD_rmspbe_results)
+
+    rmspbe_bounds = []
+    rmsve_bounds = []
+
+    bounds = plotBest(LSTD_rmspbe, axes[0, 0], color=colors['LSTD'], label='LSTD', alphaMain=0.5)
+    rmspbe_bounds.append(bounds)
+
+    bounds = plotBest(LSTD_rmspbe, axes[0, 1], color=colors['LSTD'], label='LSTD', alphaMain=0.5)
+    rmspbe_bounds.append(bounds)
+
+    bounds = plotBest(LSTD_rmsve, axes[1, 0], color=colors['LSTD'], label='LSTD', alphaMain=0.5)
+    rmsve_bounds.append(bounds)
+
+    bounds = plotBest(LSTD_rmsve, axes[1, 1], color=colors['LSTD'], label='LSTD', alphaMain=0.5)
+    rmsve_bounds.append(bounds)
+
+
     # RMSPBE plots
     ax = axes[0,0]
-    rmspbe_bounds = []
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         results = loadResults(exp, 'rmspbe_summary.npy')
@@ -64,7 +90,6 @@ def generatePlot(exp_paths):
 
     # RMSVE plots
     ax = axes[1,0]
-    rmsve_bounds = []
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         rmsve = loadResults(exp, 'errors_summary.npy')
@@ -108,6 +133,7 @@ def generatePlot(exp_paths):
         bounds = plot(unconst, ax, label=label + '_unc', color=color, dashed=True, bestBy='end')
         rmsve_bounds.append(bounds)
 
+
     # rmspbe
     rmspbe_lower = min(map(lambda x: x[0], rmspbe_bounds)) * 0.9
     rmspbe_upper = max(map(lambda x: x[1], rmspbe_bounds)) * 1.05
@@ -120,8 +146,8 @@ def generatePlot(exp_paths):
     axes[1, 0].set_ylim([rmsve_lower, rmsve_upper])
     axes[1, 1].set_ylim([rmsve_lower, rmsve_upper])
 
-    save(exp, f'rmsve_rmspbe_square')
-    # plt.show()
+    # save(exp, f'rmsve_rmspbe_square')
+    plt.show()
 
 if __name__ == "__main__":
     exp_paths = sys.argv[1:]

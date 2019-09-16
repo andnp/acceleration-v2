@@ -63,6 +63,7 @@ rmspbe_data = collector.getStats('rmspbe')
 # exit()
 
 # save things to disk
+del exp._d['metaParameters']['gamma']
 save_context = exp.buildSaveContext(0)
 save_context.ensureExists()
 

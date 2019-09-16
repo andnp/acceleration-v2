@@ -1,6 +1,9 @@
 import numpy as np
 from src.agents.agents import getAgent
 
+def weightedNorm(X, W):
+    return np.sqrt(X.T.dot(W).dot(X))
+
 class StepModel():
     def __init__(self, data):
         self.step = data['step']
@@ -41,8 +44,24 @@ class BaseProblem:
     def sampleExperiences(self):
         raise NotImplementedError()
 
-    def evaluateStep(self, step):
-        pass
+    def evaluateStep(self, step_data):
+        X = getattr(self, 'all_observables')
+        # absolute distance from v_star
+        d = self.agent.value(X) - self.v_star
+
+        # weighted sum over squared distances
+        s = weightedNorm(d, np.diag(self.db))
+
+        w = self.agent.theta[0]
+        A = self.A
+        b = self.b
+        C = self.C
+
+        v = np.dot(-A, w) + b
+        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
+        rmspbe = np.sqrt(mspbe)
+
+        return np.sqrt(s), rmspbe
 
     def evaluateEpisode(self, episode):
         pass
