@@ -54,7 +54,6 @@ class Spiral(BaseProblem):
         self.agent.stepsize /= np.linalg.norm(vals.T*np.diag(self.db)*grads)
 
     def setupIdealH(self):
-        obs = getattr(self, 'all_observables')
         X = self.getGradients()
 
         dB = np.diag(getattr(self, 'db'))
@@ -115,7 +114,6 @@ class Spiral(BaseProblem):
         mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
         rmspbe = np.sqrt(mspbe)
 
-        print(rmsve, rmspbe)
         return rmsve, rmspbe
 
     def getGradients(self):
