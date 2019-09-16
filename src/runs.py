@@ -14,7 +14,6 @@ from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
 from src.utils.Collector import Collector
 
-EVERY = 10
 
 def weightedNorm(X, d):
     return np.sqrt(X.T.dot(np.diag(d)).dot(X))
@@ -23,6 +22,11 @@ def weightedNorm(X, d):
 exp = loadExperiment(sys.argv[2])
 idx = int(sys.argv[3])
 RUNS = int(sys.argv[1])
+
+EVERY = exp.subsample
+
+if exp.agent == 'LSTD':
+    exit()
 
 collector = Collector()
 
