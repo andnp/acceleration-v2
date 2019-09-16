@@ -13,6 +13,8 @@ stepsize_colors = {
     'TDamsgrad': 'green',
     'TDschedule': 'black',
     'TD': 'orange',
+
+    'LSTD': 'red',
 }
 
 colors = {

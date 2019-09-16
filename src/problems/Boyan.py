@@ -23,6 +23,7 @@ class BoyanRep(BaseRepresentation):
             [0,    0,    0.5,  0.5 ],
             [0,    0,    0.25, 0.75],
             [0,    0,    0,    1   ],
+            [0,    0,    0,    0   ],
         ])
 
     def encode(self, s):
@@ -37,9 +38,9 @@ class Boyan(BaseProblem):
         self.exp = exp
         self.idx = idx
         # build state distribution
-        self.db = np.array([0.07757417, 0.07680082, 0.0768048, 0.07680444, 0.0767995, 0.07680488, 0.07680497, 0.07680541, 0.0768076, 0.07680623, 0.07680757, 0.07680545, 0.07757417])
+        self.db = np.array([0.07757417, 0.07680082, 0.0768048, 0.07680444, 0.0767995, 0.07680488, 0.07680497, 0.07680541, 0.0768076, 0.07680623, 0.07680757, 0.07680545, 0.07757417, 0])
         # build true value function
-        self.v_star = np.array([-24., -22., -20., -18., -16., -14., -12., -10., -8., -6., -4., -2., 0.])
+        self.v_star = np.array([-24., -22., -20., -18., -16., -14., -12., -10., -8., -6., -4., -2., 0., 0.])
 
         # build representation
         self.rep = BoyanRep()
@@ -64,16 +65,16 @@ class Boyan(BaseProblem):
         ])
 
         # build transition probability matrix (under target policy) for computing ideal H
-        self.P = np.zeros((13, 13))
+        self.P = np.zeros((14, 14))
         for i in range(11):
             self.P[i, i+1] = .5
             self.P[i, i+2] = .5
 
-        self.P[10, 11] = 1
         self.P[11, 12] = 1
+        self.P[12, 13] = 1
 
         # build Reward structure for computing ideal H
-        self.R = np.array([-3] * 12 + [-2])
+        self.R = np.array([-3] * 12 + [-2, 0])
 
         # always do this since we need it for RMSPBE
         # computes A, b, C
@@ -93,24 +94,6 @@ class Boyan(BaseProblem):
 
     def getAgent(self):
         return OffPolicyWrapper(self.agent, self.behavior, self.target, self.rep.encode)
-
-    def evaluateStep(self, step_data):
-        # absolute distance from v_star
-        d = self.agent.value(self.all_observables) - self.v_star
-
-        # weighted sum over squared distances
-        s = np.sum(self.db * np.square(d))
-
-        w = self.agent.theta[0]
-        A = self.A
-        b = self.b
-        C = self.C
-
-        v = np.dot(-A, w) + b
-        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
-        rmspbe = np.sqrt(mspbe)
-
-        return np.sqrt(s), rmspbe
 
     def sampleExperiences(self):
         clone = Boyan(self.exp, self.idx)
