@@ -1,6 +1,7 @@
 {
     "agent": "TDschedule",
     "problem": "SmallChainTabular5050",
+    "subsample": 10,
     "metaParameters": {
         "n0": [10, 100, 1000],
         "ratio": 0,

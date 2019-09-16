@@ -1,6 +1,7 @@
 {
     "agent": "TDschedule",
     "problem": "Boyan",
+    "subsample": 10,
     "metaParameters": {
         "n0": [10, 100, 1000],
         "ratio": 0,
