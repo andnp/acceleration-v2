@@ -1,8 +1,10 @@
 import os
 import sys
+import glob
 import matplotlib.pyplot as plt
 sys.path.append(os.getcwd())
 
+from itertools import tee
 from src.analysis.learning_curve import plot, save
 from src.analysis.results import loadResults, whereParameterEquals
 from src.analysis.colormap import colors
@@ -16,18 +18,15 @@ def generatePlot(exp_paths):
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         results = loadResults(exp)
-        results = whereParameterEquals(results, 'tilings', 1)
-        results = whereParameterEquals(results, 'tiles', 9)
+        const, unconst = tee(results)
 
-        use_ideal_h = exp._d['metaParameters'].get('use_ideal_h', False)
-        dashed = use_ideal_h
+        const = whereParameterEquals(const, 'ratio', 1)
+
         color = colors[exp.agent]
+        label = exp.agent
 
-        label = exp.agent.replace('adagrad', '')
-        if use_ideal_h:
-            label += '-h*'
-
-        plot(results, ax, label=label, color=color, dashed=dashed)
+        plot(unconst, ax, label=label + '_unc', color=color, dashed=True)
+        plot(const, ax, label=label, color=color, dashed=False)
 
     plt.show()
     # save(exp, f'rmsve_learning-curve')
@@ -35,6 +34,5 @@ def generatePlot(exp_paths):
 
 if __name__ == "__main__":
     exp_paths = sys.argv[1:]
-    tmp = loadExperiment(exp_paths[0])
 
     generatePlot(exp_paths)
