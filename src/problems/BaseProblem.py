@@ -36,13 +36,16 @@ class BaseProblem:
 
     def evaluateStep(self, step_data):
         X = getattr(self, 'X')
+        db = getattr(self, 'db')
+        v_star = getattr(self, 'v_star')
+        agent = self.getAgent().agent
         # absolute distance from v_star
-        d = self.agent.value(X) - self.v_star
+        d = agent.value(X) - v_star
 
         # weighted sum over squared distances
-        rmsve = weightedNorm(d, np.diag(self.db))
+        rmsve = weightedNorm(d, np.diag(db))
 
-        w = self.agent.theta[0]
+        w = agent.theta[0]
         A = self.A
         b = self.b
         Cinv = self.Cinv
