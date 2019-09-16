@@ -22,6 +22,9 @@ exp = loadExperiment(sys.argv[2])
 idx = int(sys.argv[3])
 RUNS = int(sys.argv[1])
 
+if exp.agent == 'LSTD':
+    exit()
+
 collector = Collector()
 
 for run in range(RUNS):
