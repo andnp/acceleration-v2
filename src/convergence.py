@@ -52,7 +52,7 @@ for run in range(RUNS):
     is_using_ideal_h = problem.metaParameters.get('use_ideal_h', False)
 
     # compute the optimal set of weights
-    X = problem.all_observables
+    X = problem.X
     dB = np.diag(problem.db)
 
     v_star = problem.v_star

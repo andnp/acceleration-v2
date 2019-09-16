@@ -80,7 +80,7 @@ for run in range(RUNS):
         collector.collect('h_update', update_size)
 
         # ||np.dot(h, X)|| should go to zero
-        X = problem.all_observables
+        X = problem.X
         norm_delta_hat = weightedNorm(np.dot(X, h), problem.db)
         collector.collect('norm_delta_hat', norm_delta_hat)
 

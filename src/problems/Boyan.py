@@ -60,7 +60,7 @@ class Boyan(BaseProblem):
         self.behavior = self.target
 
         # compute the observable value for each state once
-        self.all_observables = np.array([
+        self.X = np.array([
             self.rep.encode(i) for i in range(len(self.db))
         ])
 

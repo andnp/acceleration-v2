@@ -51,7 +51,7 @@ class BairdCounterexample(BaseProblem):
         self.agent.theta[0] = np.array([1, 1, 1, 1, 1, 1, 1, 10])
 
         # compute the observable value for each state once
-        self.all_observables = np.array([
+        self.X = np.array([
             self.rep.encode(i) for i in range(7)
         ])
 

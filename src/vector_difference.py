@@ -54,7 +54,7 @@ for run in range(RUNS):
     is_using_ideal_h = problem.metaParameters.get('use_ideal_h', False)
 
     # compute the optimal set of weights
-    X = problem.all_observables
+    X = problem.X
     dB = np.diag(problem.db)
     w_star = np.linalg.pinv(np.dot(X.T.dot(dB), X)).dot(X.T).dot(dB).dot(problem.v_star)
     norm_w_star = np.linalg.norm(w_star)

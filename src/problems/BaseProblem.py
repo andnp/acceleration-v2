@@ -45,7 +45,7 @@ class BaseProblem:
         raise NotImplementedError()
 
     def evaluateStep(self, step_data):
-        X = getattr(self, 'all_observables')
+        X = getattr(self, 'X')
         # absolute distance from v_star
         d = self.agent.value(X) - self.v_star
 
@@ -68,7 +68,7 @@ class BaseProblem:
 
     def setupIdealH(self):
         # TODO(andy): make this less attrocious
-        X = getattr(self, 'all_observables')
+        X = getattr(self, 'X')
         dB = np.diag(getattr(self, 'db'))
         gamma = self.getGamma()
         P = getattr(self, 'P')

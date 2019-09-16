@@ -46,7 +46,7 @@ class BaseChain(BaseProblem):
         self.behavior = Policy(lambda s: [0.5, 0.5])
 
         # compute the observable value for each state once
-        self.all_observables = np.array([
+        self.X = np.array([
             self.rep.encode(i) for i in range(N + 1)
         ])
 
