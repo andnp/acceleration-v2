@@ -55,10 +55,10 @@ class BaseProblem:
         w = self.agent.theta[0]
         A = self.A
         b = self.b
-        C = self.C
+        Cinv = self.Cinv
 
         v = np.dot(-A, w) + b
-        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
+        mspbe = v.T.dot(Cinv).dot(v)
         rmspbe = np.sqrt(mspbe)
 
         return np.sqrt(s), rmspbe
@@ -81,6 +81,7 @@ class BaseProblem:
         self.A = A
         self.b = b
         self.C = C
+        self.Cinv = np.linalg.pinv(C)
 
         agent_wrapper = self.getAgent()
         # well this sucks. first agent is the off-policy-wrapper
