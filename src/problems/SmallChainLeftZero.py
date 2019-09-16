@@ -1,6 +1,6 @@
 import numpy as np
 from PyFixedReps.BaseRepresentation import BaseRepresentation
-from src.problems.BaseProblem import BaseProblem, StepModel
+from src.problems.BaseProblem import BaseProblem
 from src.problems.Chain import Inverted, Dependent, Tabular
 from src.environments.ChainLeftZero import ChainLeftZero as ChainEnv
 from src.utils.rlglue import OffPolicyWrapper
@@ -124,25 +124,6 @@ class BaseChainLeftZero(BaseProblem):
                 delta = max(delta, np.abs(v - V[s]))
 
         return V
-
-    def evaluateStep(self, step_data):
-        # distance from v_pi
-        d = self.agent.value(self.all_observables) - self.v_star
-        # weighted sum over squared distances
-        s = np.sum(self.db * np.square(d))
-
-        rmsve = np.sqrt(s)
-
-        w = self.agent.theta[0]
-        A = self.A
-        b = self.b
-        C = self.C
-
-        v = np.dot(-A, w) + b
-        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
-        rmspbe = np.sqrt(mspbe)
-
-        return rmsve, rmspbe
 
 # ----------------
 # -- On-policy --

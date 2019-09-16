@@ -1,6 +1,6 @@
 import numpy as np
 from PyFixedReps.BaseRepresentation import BaseRepresentation
-from src.problems.BaseProblem import BaseProblem, StepModel
+from src.problems.BaseProblem import BaseProblem
 from src.environments.Boyan import Boyan as BoyanEnv
 from src.utils.rlglue import OffPolicyWrapper
 from src.utils.SampleGenerator import SampleGenerator

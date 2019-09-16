@@ -1,6 +1,6 @@
 import numpy as np
 from PyFixedReps.BaseRepresentation import BaseRepresentation
-from src.problems.BaseProblem import BaseProblem, StepModel
+from src.problems.BaseProblem import BaseProblem
 from src.environments.Baird import Baird
 from src.utils.rlglue import OffPolicyWrapper
 from src.utils.SampleGenerator import SampleGenerator
@@ -80,25 +80,6 @@ class BairdCounterexample(BaseProblem):
 
     def getAgent(self):
         return OffPolicyWrapper(self.agent, self.behavior, self.target, self.rep.encode)
-
-    def evaluateStep(self, step_data):
-        # absolute distance from v_star
-        d = self.agent.value(self.all_observables) - self.v_star
-        # weighted sum over squared distances
-        s = np.sum(self.db * np.square(d))
-
-        rmsve = np.sqrt(s)
-
-        w = self.agent.theta[0]
-        A = self.A
-        b = self.b
-        C = self.C
-
-        v = np.dot(-A, w) + b
-        mspbe = v.T.dot(np.linalg.pinv(C)).dot(v)
-        rmspbe = np.sqrt(mspbe)
-
-        return rmsve, rmspbe
 
     def sampleExperiences(self):
         clone = BairdCounterexample(self.exp, self.idx)

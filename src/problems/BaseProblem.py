@@ -4,16 +4,6 @@ from src.agents.agents import getAgent
 def weightedNorm(X, W):
     return np.sqrt(X.T.dot(W).dot(X))
 
-class StepModel():
-    def __init__(self, data):
-        self.step = data['step']
-        self.reward = data['reward']
-
-class EpisodeModel():
-    def __init__(self, data):
-        self.steps = data['steps']
-        self.total_reward = data['total_reward']
-
 class BaseProblem:
     def __init__(self, exp, idx):
         self.Agent = getAgent(exp.agent)

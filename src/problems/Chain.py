@@ -1,6 +1,6 @@
 import numpy as np
 from PyFixedReps.BaseRepresentation import BaseRepresentation
-from src.problems.BaseProblem import BaseProblem, StepModel
+from src.problems.BaseProblem import BaseProblem
 from src.environments.Chain import Chain
 from src.utils.rlglue import OffPolicyWrapper
 
