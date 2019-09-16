@@ -201,7 +201,7 @@ class Inverted(BaseRepresentation):
         m = np.ones((N,N)) - np.eye(N)
 
         self.map = np.zeros((N+1, N))
-        self.map[:N] = (self.map[:N].T / np.linalg.norm(self.map[:N], axis = 1)).T
+        self.map[:N] = (m.T / np.linalg.norm(m, axis = 1)).T
 
     def encode(self, s):
         return self.map[s]
