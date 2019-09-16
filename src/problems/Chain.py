@@ -227,7 +227,7 @@ class Tabular(BaseRepresentation):
 class Dependent(BaseRepresentation):
     def __init__(self, N):
         nfeats = int(np.floor(N/2) + 1)
-        self.map = np.zeros((N,nfeats))
+        self.map = np.zeros((N+1,nfeats))
 
         idx = 0
         for i in range(nfeats):
