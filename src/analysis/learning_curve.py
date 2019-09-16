@@ -10,6 +10,9 @@ def save(exp, name, type='pdf'):
     exp_name = exp.getExperimentName()
     save_path = f'experiments/{exp_name}/plots'
     os.makedirs(save_path, exist_ok=True)
+
+    fig = plt.gcf()
+    fig.set_size_inches((13, 12), forward=False)
     plt.savefig(f'{save_path}/{name}.{type}')
 
 def getMaxY(arr):
@@ -19,7 +22,7 @@ def getMaxY(arr):
             continue
 
         if y > 100 * m:
-            return np.nan
+            return m
 
         if y > m:
             m = y
@@ -69,7 +72,7 @@ def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True, labe
 
     ax.legend()
 
-    if len(mean.shape) > 1:
+    if len(mean.shape) > 1 and mean.shape[1] > 1:
         return (np.nan, np.nan)
 
     max_y = getMaxY(mean) * 1.05
