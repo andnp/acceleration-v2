@@ -1,3 +1,4 @@
+from .LSTD import LSTD
 from .BaseTD import BaseTD
 from .optimizers.AdaGrad import AdaGrad
 from .optimizers.Schedule import Schedule
@@ -79,5 +80,8 @@ def getAgent(name):
 
     elif name == 'ETD':
         return ETD
+
+    elif name == 'LSTD':
+        return LSTD
 
     raise Exception('Unexpected agent given')
