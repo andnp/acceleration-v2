@@ -1,0 +1,9 @@
+{
+    "agent": "TDschedule",
+    "problem": "SmallChainTabular5050LeftZero",
+    "metaParameters": {
+        "n0": [10, 100, 1000],
+        "ratio": 2.0,
+        "alpha": [2.0, 1.0, 0.5, 0.25, 0.12, 0.06, 0.03, 0.015, 0.008]
+    }
+}
