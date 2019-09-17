@@ -1,6 +1,6 @@
 {
     "agent": "TDadagrad",
-    "problem": "SmallChainTabular5050",
+    "problem": "SmallChainTabular5050LeftZero",
     "metaParameters": {
         "ratio": 2.0,
         "use_ideal_h": true,
