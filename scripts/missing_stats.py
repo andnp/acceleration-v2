@@ -9,7 +9,7 @@ from PyExpUtils.results.paths import listResultsPaths
 from PyExpUtils.utils.generator import group
 from PyExpUtils.runner.Slurm import schedule, slurmOptionsFromFile
 
-if len(sys.argv) < 4:
+if len(sys.argv) < 3:
     print('Please run again using')
     print('python scripts/missing_stats.py [base_path] [paths/to/descriptions]...')
     exit(0)

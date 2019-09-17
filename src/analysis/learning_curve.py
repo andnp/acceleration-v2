@@ -22,7 +22,7 @@ def getMaxY(arr):
         if np.isnan(y) or np.isinf(y):
             return m0
 
-        if y > 1.1 * m:
+        if y > 1.05 * m:
             return m0
 
         if y > m:

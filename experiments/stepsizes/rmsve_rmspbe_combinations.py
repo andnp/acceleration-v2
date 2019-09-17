@@ -137,20 +137,27 @@ def generatePlot(exp_paths):
     # rmspbe
     rmspbe_lower = min(map(lambda x: x[0], rmspbe_bounds)) * 0.9
     rmspbe_upper = max(map(lambda x: x[1], rmspbe_bounds)) * 1.05
+
+    if rmspbe_lower < 0.01:
+        rmspbe_lower = -0.01
+
     axes[0, 0].set_ylim([rmspbe_lower, rmspbe_upper])
     axes[0, 1].set_ylim([rmspbe_lower, rmspbe_upper])
 
     # rmsve
     rmsve_lower = min(map(lambda x: x[0], rmsve_bounds)) * 0.9
     rmsve_upper = max(map(lambda x: x[1], rmsve_bounds)) * 1.05
+
+    if rmsve_lower < 0.01:
+        rmsve_lower = -0.01
+
     axes[1, 0].set_ylim([rmsve_lower, rmsve_upper])
     axes[1, 1].set_ylim([rmsve_lower, rmsve_upper])
 
-    # save(exp, f'rmsve_rmspbe_square')
-    plt.show()
+    save(exp, f'rmsve_rmspbe_square', type='svg')
+    # plt.show()
 
 if __name__ == "__main__":
     exp_paths = sys.argv[1:]
-    tmp = loadExperiment(exp_paths[0])
 
     generatePlot(exp_paths)
