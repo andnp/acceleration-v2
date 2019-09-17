@@ -17,12 +17,13 @@ def save(exp, name, type='pdf'):
 
 def getMaxY(arr):
     m = arr[0]
+    m0 = m
     for y in arr:
-        if np.isnan(y):
-            continue
+        if np.isnan(y) or np.isinf(y):
+            return m0
 
-        if y > 100 * m:
-            return m
+        if y > 1.1 * m:
+            return m0
 
         if y > m:
             m = y
