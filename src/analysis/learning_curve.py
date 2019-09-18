@@ -19,7 +19,7 @@ def getMaxY(arr):
     m = arr[0]
     m0 = m
     for y in arr:
-        if np.isnan(y) or np.isinf(y):
+        if np.isnan(y) or np.isinf(y) or y > 1e5:
             return m0
 
         if y > 1.05 * m:

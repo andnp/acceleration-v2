@@ -89,6 +89,9 @@ def find(stream, other):
 def whereParameterEquals(results, param, value):
     return filter(lambda r: r.params.get(param, value) == value, results)
 
+def whereParameterGreaterEq(results, param, value):
+    return filter(lambda r: r.params.get(param, value) >= value, results)
+
 def loadResults(exp, summary='errors_summary.npy'):
     for i, path in enumerate(listResultsPaths(exp)):
         summary_path = path + '/' + summary

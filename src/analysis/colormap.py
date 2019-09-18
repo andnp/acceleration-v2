@@ -9,6 +9,11 @@ stepsize_colors = {
     'TDCschedule': 'black',
     'TDC': 'orange',
 
+    'HTDadagrad': 'blue',
+    'HTDamsgrad': 'green',
+    'HTDschedule': 'black',
+    'HTD': 'orange',
+
     'TDadagrad': 'blue',
     'TDamsgrad': 'green',
     'TDschedule': 'black',
@@ -22,6 +27,10 @@ colors = {
     'TDCadagrad': 'blue',
     'TDadagrad': 'red',
 
+    'GTD2schedule': 'green',
+    'TDCschedule': 'blue',
+    'TDschedule': 'red',
+
     'GTD2': 'green',
     'TDC': 'blue',
     'TD': 'red',
@@ -30,4 +39,5 @@ colors = {
     'TDCschedule': 'blue',
     'TDschedule': 'red',
 
+    'LSTD': 'black',
 }
