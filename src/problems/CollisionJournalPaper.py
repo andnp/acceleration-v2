@@ -11,7 +11,7 @@ class CollisionRep(BaseRepresentation):
     def __init__(self, run):
         # shape = [states, features, runs]
         m = np.load('src/representations/JournalCollision.npy')
-        print(m.shape)
+        # print(m.shape)
 
         r = run % 50
 
