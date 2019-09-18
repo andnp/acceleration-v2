@@ -25,6 +25,6 @@ class Collision(BaseEnvironment):
 
         elif a == RETREAT:
             self.start()
-            return (0.0, self.state, False)
+            return (0.0, self.state, True)
 
         raise NotImplementedError('Unknown action taken')

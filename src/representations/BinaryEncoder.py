@@ -25,6 +25,8 @@ class BinaryEncoder(BaseRepresentation):
 
             m.append(rep)
 
+        m.append(np.zeros(bits))
+
         self.map = m
 
     def encode(self, s):

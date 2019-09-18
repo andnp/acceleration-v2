@@ -5,8 +5,12 @@ from src.problems.MediumChain import MediumChainTabular5050
 from src.problems.MediumChainTC import MediumChainTC5050
 from src.problems.SmallChain import SmallChainTabular5050, SmallChainInverted5050, SmallChainDependent5050, SmallChainTabular4060, SmallChainInverted4060, SmallChainDependent4060
 from src.problems.SmallChainLeftZero import SmallChainTabular5050LeftZero, SmallChainInverted5050LeftZero, SmallChainDependent5050LeftZero
+from src.problems.Collision import Collision
 
 def getProblem(name):
+    if name == 'Collision':
+        return Collision
+
     if name == 'Baird':
         return BairdCounterexample
 
