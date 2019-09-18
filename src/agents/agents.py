@@ -19,6 +19,8 @@ from .etdc.ETDC import ETDC
 from .etdc.ETDCadagrad import ETDCadagrad
 from .etdc.ETD import ETD
 from .etdc.ETDadagrad import ETDadagrad
+from .smooth_tdc.SmoothTDC import SmoothTDC
+from .smooth_tdc.SmoothTDCschedule import SmoothTDCschedule
 
 def getAgent(name):
     if name == 'TDC':
@@ -80,6 +82,12 @@ def getAgent(name):
 
     elif name == 'ETD':
         return ETD
+
+    elif name == 'SmoothTDC':
+        return SmoothTDC
+
+    elif name == 'SmoothTDCschedule':
+        return SmoothTDCschedule
 
     elif name == 'LSTD':
         return LSTD

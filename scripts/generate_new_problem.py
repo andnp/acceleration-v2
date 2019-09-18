@@ -8,7 +8,7 @@ from src.utils.path import fileName, up
 
 prob_folder = sys.argv[1]
 new_prob = sys.argv[2]
-jsons = glob.glob(f'{prob_folder}/**/*.json')
+jsons = glob.glob(f'{prob_folder}/**/*.json', recursive=True)
 
 old_prob = fileName(prob_folder)
 
