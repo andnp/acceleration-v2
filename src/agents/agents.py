@@ -19,6 +19,9 @@ from .etdc.ETDC import ETDC
 from .etdc.ETDCadagrad import ETDCadagrad
 from .etdc.ETD import ETD
 from .etdc.ETDadagrad import ETDadagrad
+from .htd.HTD import HTD
+from .htd.HTDadagrad import HTDadagrad
+from .htd.HTDschedule import HTDschedule
 
 def getAgent(name):
     if name == 'TDC':
@@ -83,5 +86,14 @@ def getAgent(name):
 
     elif name == 'LSTD':
         return LSTD
+
+    elif name == 'HTD':
+        return HTD
+
+    elif name == 'HTDadagrad':
+        return HTDadagrad
+
+    elif name == 'HTDschedule':
+        return HTDschedule
 
     raise Exception('Unexpected agent given')

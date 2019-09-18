@@ -13,7 +13,7 @@ from src.utils.model import loadExperiment
 from src.utils.arrays import first
 from src.utils.path import fileName, up
 
-error = 'rmsve'
+error = 'rmspbe'
 
 # name = 'policy'
 # problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'Baird']
@@ -37,14 +37,15 @@ def generatePlotTTA(ax, exp_paths, bounds):
         results = loadResults(exp, errorfile)
         const, unconst = tee(results)
 
-        const = whereParameterEquals(const, 'ratio', 1)
-
         color = colors[exp.agent]
         label = exp.agent
 
         if error == 'rmsve':
             rmspbe = loadResults(exp, 'rmspbe_summary.npy')
             rmspbe_unconst, rmspbe_const = tee(rmspbe)
+
+            rmspbe_const = whereParameterEquals(rmspbe_const, 'ratio', 2)
+
             best_rmspbe_unconst = getBest(rmspbe_unconst)
             best_rmspbe_const = getBest(rmspbe_const)
 
@@ -52,6 +53,7 @@ def generatePlotTTA(ax, exp_paths, bounds):
             best_const = find(const, best_rmspbe_const)
 
         elif error == 'rmspbe':
+            const = whereParameterEquals(const, 'ratio', 2)
             best_unconst = getBest(unconst)
             best_const = getBest(const)
 
@@ -129,4 +131,4 @@ if __name__ == "__main__":
 
     width = len(problems) * 8
     f.set_size_inches((width, 24), forward=False)
-    plt.savefig(f'{save_path}/{name}_{error}.png', dpi=250)
+    plt.savefig(f'{save_path}/{name}_{error}_eta2.png', dpi=250)
