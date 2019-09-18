@@ -2,14 +2,30 @@ import numpy as np
 from PyExpUtils.utils.fp import once
 from src.problems.BaseProblem import BaseProblem
 from src.environments.Collision import Collision as CollisionEnv
-from src.representations.BinaryEncoder import BinaryEncoder
 from src.utils.rlglue import OffPolicyWrapper
 from src.utils.SampleGenerator import SampleGenerator
 import src.utils.policies as Policy
+from PyFixedReps.BaseRepresentation import BaseRepresentation
 
-class Collision(BaseProblem):
+class CollisionRep(BaseRepresentation):
+    def __init__(self, run):
+        # shape = [states, features, runs]
+        m = np.load('src/representations/JournalCollision.npy')
+        print(m.shape)
+
+        r = run % 50
+
+        self.map = m[:, :, r]
+
+    def encode(self, s):
+        return self.map[s]
+
+    def features(self):
+        return self.map.shape[1]
+
+class CollisionJournalPaper(BaseProblem):
     def _buildRepresentation(self, run):
-        return BinaryEncoder(active=3, bits=6, states=8)
+        return CollisionRep(run)
 
     def __init__(self, exp, idx):
         super().__init__(exp, idx)

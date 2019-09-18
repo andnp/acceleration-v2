@@ -26,4 +26,8 @@ colors = {
     'TDC': 'blue',
     'TD': 'red',
 
+    'GTD2schedule': 'green',
+    'TDCschedule': 'blue',
+    'TDschedule': 'red',
+
 }
