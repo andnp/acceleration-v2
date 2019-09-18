@@ -23,14 +23,17 @@ stepsize_colors = {
 }
 
 colors = {
+    'HTDadagrad': 'purple',
     'GTD2adagrad': 'green',
     'TDCadagrad': 'blue',
     'TDadagrad': 'red',
 
+    'HTDschedule': 'purple',
     'GTD2schedule': 'green',
     'TDCschedule': 'blue',
     'TDschedule': 'red',
 
+    'HTD': 'purple',
     'GTD2': 'green',
     'TDC': 'blue',
     'TD': 'red',
