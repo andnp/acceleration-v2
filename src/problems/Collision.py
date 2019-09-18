@@ -54,7 +54,7 @@ class Collision(BaseProblem):
         return 0.9
 
     def getSteps(self):
-        return 5000
+        return 20000
 
     def getEnvironment(self):
         return self.env
