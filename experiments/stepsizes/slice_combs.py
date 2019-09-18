@@ -13,7 +13,7 @@ from src.utils.arrays import first
 
 from src.utils.path import fileName, up
 
-stepsize = 'schedule'
+stepsize = 'constant'
 
 def generatePlot(exp_paths):
     f, axes = plt.subplots(2,2)
