@@ -60,12 +60,15 @@ def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True, labe
     if type(label) != list:
         label = [label] * mean.shape[1]
 
-    if dashed:
-        dashes = ':'
-    else:
-        dashes = None
+    if type(dashed) != list:
+        dashed = [dashed] * mean.shape[1]
 
     for i in range(mean.shape[1]):
+        if dashed[i]:
+            dashes = ':'
+        else:
+            dashes = None
+
         base, = ax.plot(mean[:, i], linestyle=dashes, label=label[i] + params, color=color, alpha=alphaMain, linewidth=2)
         if stderr:
             (low_ci, high_ci) = confidenceInterval(mean[:, i], ste[:, i])

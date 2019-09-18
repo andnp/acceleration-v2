@@ -6,32 +6,30 @@ sys.path.append(os.getcwd())
 
 from itertools import tee
 from src.analysis.learning_curve import plot, save, plotBest
-from src.analysis.results import loadResults, whereParameterEquals, getBest
+from src.analysis.results import loadResults, whereParameterEquals, getBest, find
 from src.analysis.colormap import stepsize_colors as colors
 from src.utils.model import loadExperiment
 
 from src.utils.arrays import first
 from src.utils.path import fileName, up
 
-error = 'rmspbe'
+error = 'rmsve'
 
 # name = 'policy'
 # problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'Baird']
 
 # name = 'features'
-# problems = ['SmallChainTabular5050', 'SmallChainInverted5050', 'Boyan']
+# problems = ['SmallChainTabular5050', 'SmallChainInverted5050', 'SmallChainDependent5050' 'Boyan']
 
 name = 'all'
-problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'Boyan', 'Baird']
+problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
 
 algorithms = ['gtd2', 'gtd2_h', 'tdc', 'tdc_h', 'td']
 
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'
-    bestBy = 'end'
 elif error == 'rmspbe':
     errorfile = 'rmspbe_summary.npy'
-    bestBy = 'auc'
 
 def generatePlotTTA(ax, exp_paths, bounds):
     for exp_path in exp_paths:
@@ -44,10 +42,24 @@ def generatePlotTTA(ax, exp_paths, bounds):
         color = colors[exp.agent]
         label = exp.agent
 
-        b = plot(unconst, ax, label=label + '_unc', color=color, dashed=True, bestBy=bestBy)
+        if error == 'rmsve':
+            rmspbe = loadResults(exp, 'rmspbe_summary.npy')
+            rmspbe_unconst, rmspbe_const = tee(rmspbe)
+            best_rmspbe_unconst = getBest(rmspbe_unconst)
+            best_rmspbe_const = getBest(rmspbe_const)
+
+            best_unconst = find(unconst, best_rmspbe_unconst)
+            best_const = find(const, best_rmspbe_const)
+
+        elif error == 'rmspbe':
+            best_unconst = getBest(unconst)
+            best_const = getBest(const)
+
+
+        b = plotBest(best_unconst, ax, label=label + '_unc', color=color, dashed=True)
         bounds.append(b)
 
-        b = plot(const, ax, label=label, color=color, dashed=False, bestBy=bestBy)
+        b = plotBest(best_const, ax, label=label, color=color, dashed=False)
         bounds.append(b)
 
 def generatePlotSSA(ax, exp_paths, bounds):
@@ -58,7 +70,16 @@ def generatePlotSSA(ax, exp_paths, bounds):
         color = colors[exp.agent]
         label = exp.agent
 
-        b = plot(results, ax, label=label, color=color, dashed=False, bestBy=bestBy)
+        if error == 'rmsve':
+            rmspbe = loadResults(exp, 'rmspbe_summary.npy')
+            best_rmspbe = getBest(rmspbe)
+
+            best = find(results, best_rmspbe)
+
+        elif error == 'rmspbe':
+            best = getBest(results)
+
+        b = plotBest(best, ax, label=label, color=color, dashed=False)
         bounds.append(b)
 
 
@@ -101,6 +122,7 @@ if __name__ == "__main__":
 
 
     # plt.show()
+    # exit()
 
     save_path = 'experiments/stepsizes/plots'
     os.makedirs(save_path, exist_ok=True)
