@@ -13,26 +13,30 @@ class SmallChain(BaseChain):
         return np.array([0.111111, 0.222222, 0.333333, 0.222222, 0.111111, 0])
 
     def getSteps(self):
-        return 3000
+        return 2000
 
 # ---------------
 # -- Resultant --
 # ---------------
 
 class SmallChainDependent5050(Policy5050, RepDependent, SmallChain):
-    pass
+    def getSteps(self):
+        return 3000
 
 class SmallChainInverted5050(Policy5050, RepInverted, SmallChain):
-    pass
+    def getSteps(self):
+        return 6000
 
 class SmallChainTabular5050(Policy5050, RepTabular, SmallChain):
     pass
 
 class SmallChainDependent4060(Policy4060, RepDependent, SmallChain):
-    pass
+    def getSteps(self):
+        return 3000
 
 class SmallChainInverted4060(Policy4060, RepInverted, SmallChain):
-    pass
+    def getSteps(self):
+        return 6000
 
 class SmallChainTabular4060(Policy4060, RepTabular, SmallChain):
     pass
