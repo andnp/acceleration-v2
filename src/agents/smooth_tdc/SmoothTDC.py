@@ -24,14 +24,15 @@ class SmoothTDC(BaseTD):
             raise NotImplementedError('Expected "average" to be either "buffer" or "ema"')
 
     def _emaDelta(self, delta):
-        A = self.smoothing * self.A + (1 - self.smoothing) * delta
         o = self.o + self.smoothing * (1 - self.o)
+        ss = self.smoothing / o
+        A = ss * self.A + (1 - ss) * delta
 
         if self.update_buffer:
             self.A = A
             self.o = o
 
-        return A / o
+        return A
 
     def _bufferDelta(self, delta):
         if self.update_buffer:
