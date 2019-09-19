@@ -1,8 +1,9 @@
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+from itertools import tee
 
-from src.analysis.results import getBestOverParameter
+from src.analysis.results import getBestOverParameter, find
 
 def save(exp, name, type='pdf'):
     exp_name = exp.getExperimentName()
@@ -12,9 +13,10 @@ def save(exp, name, type='pdf'):
 
 def getMaxY(arr):
     m = arr[0]
+    m0 = m
     for y in arr:
         if np.isnan(y):
-            return 1e6
+            return m0
 
         if y > 1.5 * m:
             continue
@@ -24,15 +26,25 @@ def getMaxY(arr):
 
     return m
 
-def plotSensitivity(results, param, ax, color=None, label=None, dashed=False, bestBy='end'):
-    best = getBestOverParameter(results, param, bestBy=bestBy)
+def plotSensitivity(results, param, ax, overStream=None, color=None, label=None, dashed=False, bestBy='end'):
+    overStream = results if overStream is None else overStream
+    bestStream = getBestOverParameter(overStream, param, bestBy=bestBy)
 
     if bestBy == 'end':
         metric = lambda m: np.mean(m[-int(m.shape[0] * .1):])
     elif bestBy == 'auc':
         metric = np.mean
 
-    x = sorted(list(best))
+    x = sorted(list(bestStream))
+    if overStream:
+        best = {}
+        teed = tee(results, len(x))
+        for i, k in enumerate(x):
+            best[k] = find(teed[i], bestStream[k])
+
+    else:
+        best = bestStream
+
     y = [metric(best[k].mean()) for k in x]
 
     e = [metric(best[k].stderr()) for k in x]

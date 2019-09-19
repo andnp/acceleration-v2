@@ -28,6 +28,11 @@ colors = {
     'TDCadagrad': 'blue',
     'TDadagrad': 'red',
 
+    'HTDamsgrad': 'purple',
+    'GTD2amsgrad': 'green',
+    'TDCamsgrad': 'blue',
+    'TDamsgrad': 'red',
+
     'HTDschedule': 'purple',
     'GTD2schedule': 'green',
     'TDCschedule': 'blue',

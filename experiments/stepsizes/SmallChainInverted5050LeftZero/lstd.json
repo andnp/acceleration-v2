@@ -1,0 +1,6 @@
+{
+    "agent": "LSTD",
+    "problem": "SmallChainInverted5050LeftZero",
+    "subsample": 10,
+    "metaParameters": {}
+}
