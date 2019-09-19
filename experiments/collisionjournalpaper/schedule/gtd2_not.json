@@ -1,5 +1,5 @@
 {
-    "agent": "HTDschedule",
+    "agent": "GTD2schedule",
     "problem": "CollisionJournalPaper",
     "metaParameters": {
         "n0": [10, 100, 1000],
