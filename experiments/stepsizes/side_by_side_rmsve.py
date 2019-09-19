@@ -24,7 +24,7 @@ error = 'rmspbe'
 name = 'all'
 problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
 
-algorithms = ['gtd2', 'gtd2_h', 'tdc', 'tdc_h', 'td']
+algorithms = ['gtd2', 'gtd2_h', 'tdc', 'tdc_h', 'htd', 'td']
 
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'

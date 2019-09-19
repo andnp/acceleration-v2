@@ -13,7 +13,7 @@ from src.utils.arrays import first
 
 from src.utils.path import fileName, up
 
-stepsize = 'constant'
+stepsize = 'schedule'
 
 def generatePlot(exp_paths):
     f, axes = plt.subplots(2,2)
@@ -207,6 +207,8 @@ if __name__ == "__main__":
         paths.append(exp_path)
 
     generatePlot(paths)
+
+    # plt.show()
 
     exp_name = fileName(up(exp.getExperimentName()))
     save_path = f'experiments/stepsizes/plots'
