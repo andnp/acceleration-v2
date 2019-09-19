@@ -36,7 +36,7 @@ for run in range(RUNS):
 
     # get problem specific settings
     Problem = getProblem(exp.problem)
-    problem = Problem(exp, idx)
+    problem = Problem(exp, idx + run * RUNS)
     env = problem.getEnvironment()
     rep = problem.getRepresentation()
 
