@@ -1,0 +1,11 @@
+{
+    "agent": "TDschedule",
+    "problem": "SmallChainInverted5050",
+    "subsample": 25,
+    "metaParameters": {
+        "n0": 100,
+        "ratio": 0,
+        "alpha": 0.5,
+        "use_ideal_h": false
+    }
+}

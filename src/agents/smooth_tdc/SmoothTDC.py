@@ -17,6 +17,7 @@ class SmoothTDC(BaseTD):
         elif self.average == 'ema':
             self.smoothing = 1 - 1/self.buffer_size
             self.A = 0
+            self.o = 0
         elif self.average == 'window':
             self.buffer = CircularBuffer(self.buffer_size)
         else:
@@ -24,11 +25,13 @@ class SmoothTDC(BaseTD):
 
     def _emaDelta(self, delta):
         A = self.smoothing * self.A + (1 - self.smoothing) * delta
+        o = self.o + self.smoothing * (1 - self.o)
 
         if self.update_buffer:
             self.A = A
+            self.o = o
 
-        return A
+        return A / o
 
     def _bufferDelta(self, delta):
         if self.update_buffer:

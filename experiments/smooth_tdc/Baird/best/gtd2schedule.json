@@ -1,0 +1,11 @@
+{
+    "agent": "GTD2schedule",
+    "problem": "Baird",
+    "subsample": 25,
+    "metaParameters": {
+        "n0": 1000,
+        "ratio": 1,
+        "alpha": 0.0078125,
+        "use_ideal_h": false
+    }
+}

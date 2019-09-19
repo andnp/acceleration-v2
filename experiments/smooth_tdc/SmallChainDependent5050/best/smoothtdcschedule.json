@@ -1,0 +1,13 @@
+{
+    "agent": "SmoothTDCschedule",
+    "problem": "SmallChainDependent5050",
+    "subsample": 25,
+    "metaParameters": {
+        "n0": 100,
+        "ratio": 1,
+        "alpha": 0.125,
+        "use_ideal_h": false,
+        "averageType": "buffer",
+        "buffer": 2
+    }
+}
