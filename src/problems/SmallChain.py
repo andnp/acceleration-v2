@@ -20,23 +20,19 @@ class SmallChain(BaseChain):
 # ---------------
 
 class SmallChainDependent5050(Policy5050, RepDependent, SmallChain):
-    def getSteps(self):
-        return 3000
+    pass
 
 class SmallChainInverted5050(Policy5050, RepInverted, SmallChain):
-    def getSteps(self):
-        return 6000
+    pass
 
 class SmallChainTabular5050(Policy5050, RepTabular, SmallChain):
     pass
 
 class SmallChainDependent4060(Policy4060, RepDependent, SmallChain):
-    def getSteps(self):
-        return 3000
+    pass
 
 class SmallChainInverted4060(Policy4060, RepInverted, SmallChain):
-    def getSteps(self):
-        return 6000
+    pass
 
 class SmallChainTabular4060(Policy4060, RepTabular, SmallChain):
     pass
