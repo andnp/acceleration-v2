@@ -70,10 +70,6 @@ class Boyan(BaseProblem):
             self.P[i, i+1] = .5
             self.P[i, i+2] = .5
 
-        for i in range(4, 8):
-            self.P[i, i + 1] = .5
-            self.P[i, 0:4] = .5 / 4
-
         self.P[11, 12] = 1
         self.P[12, 13] = 1
 
