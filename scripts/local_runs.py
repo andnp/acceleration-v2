@@ -34,7 +34,10 @@ for path in args.experiment_paths:
         'cores': multiprocessing.cpu_count(),
     })
 
-    parallel_cmd = parallel_cmd.insist()
+    try:
+        parallel_cmd = parallel_cmd.insist()
+    except:
+        continue
 
     if len(parallel_cmd.split(' ::: ')[1]) == 0:
         continue
