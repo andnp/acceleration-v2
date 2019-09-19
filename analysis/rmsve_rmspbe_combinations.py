@@ -29,7 +29,7 @@ def generatePlot(exp_paths):
         if use_ideal_h:
             label += '-h*'
 
-        bounds = plot(results, ax, label=label, color=color, dashed=dashed)
+        bounds = plot(results, ax, label=label, color=color, dashed=dashed)#, bestby=auc or end
         rmspbe_bounds.append(bounds)
         ax.set_ylabel("RMSPBE")
         ax.set_title("RMSPBE")
@@ -40,7 +40,7 @@ def generatePlot(exp_paths):
         rmsve = loadResults(exp, 'errors_summary.npy')
         results = loadResults(exp, 'rmspbe_summary.npy')
 
-        best = getBestEnd(rmsve)
+        best = getBestEnd(rmsve) # getBest(rmsve)
         best_rmspbe = find(results, best)
 
         use_ideal_h = exp._d['metaParameters'].get('use_ideal_h', False)
