@@ -11,6 +11,6 @@ class HTD(BaseTD):
         delta_hat = h.dot(x)
 
         dh = (p * delta * x - delta_hat * (x - gamma * xp))
-        dw = p * delta * x - (x - gamma * xp) * (p * x - x).dot(h)
+        dw = p * delta * x + (x - gamma * xp) * (p - 1) * delta_hat
 
         return [dw, dh]
