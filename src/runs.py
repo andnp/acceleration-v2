@@ -30,13 +30,14 @@ if exp.agent == 'LSTD':
 
 collector = Collector()
 
+num_params = exp.permutations()
 for run in range(RUNS):
     np.random.seed(run)
     random.seed(a=run)
 
     # get problem specific settings
     Problem = getProblem(exp.problem)
-    problem = Problem(exp, idx + run * RUNS)
+    problem = Problem(exp, idx + run * num_params)
     env = problem.getEnvironment()
     rep = problem.getRepresentation()
 
