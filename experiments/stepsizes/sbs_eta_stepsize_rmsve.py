@@ -24,7 +24,7 @@ from src.utils.path import fileName, up
 # problems = ['SmallChainTabular5050', 'SmallChainInverted5050', 'SmallChainDependent5050' 'Boyan']
 
 name = 'all'
-problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
+problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
 
 algorithms = ['gtd2', 'tdc']
 stepsizes = ['constant', 'adagrad', 'schedule']
@@ -104,6 +104,8 @@ if __name__ == "__main__":
 
                 axes[i, 2 * j].set_ylim([lower, upper])
                 axes[i, 2 * j + 1].set_ylim([lower, upper])
+                axes[i, 2 * j].axvline(1, linestyle=':', color='grey', linewidth=0.5)
+                axes[i, 2 * j + 1].axvline(1, linestyle=':', color='grey', linewidth=0.5)
 
 
     # plt.show()

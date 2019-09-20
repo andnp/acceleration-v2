@@ -14,12 +14,16 @@ class SmoothTDC(BaseTD):
         self.buffer_size = params['buffer']
         if self.average == 'buffer':
             self.buffer = CircularBuffer(self.buffer_size)
+        elif self.average == 'window':
+            self.buffer = CircularBuffer(self.buffer_size)
         elif self.average == 'ema':
             self.smoothing = 1 - 1/self.buffer_size
             self.A = 0
             self.o = 0
-        elif self.average == 'window':
-            self.buffer = CircularBuffer(self.buffer_size)
+        elif self.average == 'ema_x':
+            self.smoothing = 1 - 1/self.buffer_size
+            self.A = np.zeros(features)
+            self.o = 0
         else:
             raise NotImplementedError('Expected "average" to be either "buffer" or "ema"')
 
@@ -50,11 +54,13 @@ class SmoothTDC(BaseTD):
 
     def _smoothDelta(self, delta, x, xp, r, gamma):
         if self.average == 'buffer':
-            return self._bufferDelta(delta)
-        elif self.average == 'ema':
-            return self._emaDelta(delta)
+            return self._bufferDelta(delta) * x
         elif self.average == 'window':
-            return self._windowDelta(x, xp, r, gamma)
+            return self._windowDelta(x, xp, r, gamma) * x
+        elif self.average == 'ema':
+            return self._emaDelta(delta) * x
+        elif self.average == 'ema_x':
+            return self._emaDelta(delta * x)
         else:
             raise Exception()
 
@@ -66,10 +72,12 @@ class SmoothTDC(BaseTD):
         if self.use_ideal_h:
             h = self.getIdealH()
 
-        delta = self._smoothDelta(r + gamma * vp - v, x, xp, r, gamma)
+        exp_delta_x = self._smoothDelta(r + gamma * vp - v, x, xp, r, gamma)
+
+        delta = r + gamma * vp - v
         delta_hat = h.dot(x)
 
-        dw = p * (delta * x - gamma * delta_hat * xp)
+        dw = p * (exp_delta_x - gamma * delta_hat * xp)
         dh = (p * delta - delta_hat) * x
 
         return [dw, dh]

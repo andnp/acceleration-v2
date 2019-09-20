@@ -24,6 +24,7 @@ from .htd.HTDadagrad import HTDadagrad
 from .htd.HTDschedule import HTDschedule
 from .smooth_tdc.SmoothTDC import SmoothTDC
 from .smooth_tdc.SmoothTDCschedule import SmoothTDCschedule
+from .smooth_tdc.SmoothTDCadagrad import SmoothTDCadagrad
 
 def getAgent(name):
     if name == 'TDC':
@@ -88,6 +89,9 @@ def getAgent(name):
 
     elif name == 'SmoothTDC':
         return SmoothTDC
+
+    elif name == 'SmoothTDCadagrad':
+        return SmoothTDCadagrad
 
     elif name == 'SmoothTDCschedule':
         return SmoothTDCschedule
