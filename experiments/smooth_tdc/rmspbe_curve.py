@@ -35,14 +35,15 @@ def generatePlot(exp_paths):
                 'window': 'black',
             }
             plot(agents['ema'], ax, label=label + '_ema', bestBy='auc', color=smooth_colors['ema'], dashed=dashed)
-            plot(agents['buffer'], ax, label=label + '_buffer', bestBy='auc', color=smooth_colors['buffer'], dashed=dashed)
-            plot(agents['window'], ax, label=label + '_window', bestBy='auc', color=smooth_colors['window'], dashed=dashed)
+            # plot(agents['buffer'], ax, label=label + '_buffer', bestBy='auc', color=smooth_colors['buffer'], dashed=dashed)
+            # plot(agents['window'], ax, label=label + '_window', bestBy='auc', color=smooth_colors['window'], dashed=dashed)
 
         else:
             color = colors[exp.agent]
             plot(results, ax, label=label, bestBy='auc', color=color, dashed=dashed)
 
-    # plt.show()
+    plt.show()
+    exit()
     # save(exp, f'rmspbe', type='png')
     problem = fileName(exp.getExperimentName())
     save_path = f'plots/'

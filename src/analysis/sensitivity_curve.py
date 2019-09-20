@@ -27,16 +27,12 @@ def getMaxY(arr):
     return m
 
 def plotSensitivity(results, param, ax, overStream=None, color=None, label=None, dashed=False, bestBy='end'):
-    overStream = results if overStream is None else overStream
+    useOtherStream = overStream is not None
+    overStream = overStream if useOtherStream else results
     bestStream = getBestOverParameter(overStream, param, bestBy=bestBy)
 
-    if bestBy == 'end':
-        metric = lambda m: np.mean(m[-int(m.shape[0] * .1):])
-    elif bestBy == 'auc':
-        metric = np.mean
-
     x = sorted(list(bestStream))
-    if overStream:
+    if useOtherStream:
         best = {}
         teed = tee(results, len(x))
         for i, k in enumerate(x):
@@ -45,8 +41,13 @@ def plotSensitivity(results, param, ax, overStream=None, color=None, label=None,
     else:
         best = bestStream
 
-    y = [metric(best[k].mean()) for k in x]
 
+    if bestBy == 'end':
+        metric = lambda m: np.mean(m[-int(m.shape[0] * .1):])
+    elif bestBy == 'auc':
+        metric = np.mean
+
+    y = [metric(best[k].mean()) for k in x]
     e = [metric(best[k].stderr()) for k in x]
 
     exp = best[x[0]].exp

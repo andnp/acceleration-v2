@@ -2,18 +2,19 @@ import os
 import sys
 import glob
 import matplotlib.pyplot as plt
+import numpy as np
 sys.path.append(os.getcwd())
 
 from itertools import tee
 from src.analysis.sensitivity_curve import plotSensitivity, save
-from src.analysis.results import loadResults, whereParameterEquals, getBest, find
+from src.analysis.results import loadResults, whereParameterEquals, getBest, find, getBestEnd
 from src.analysis.colormap import colors
 from src.utils.model import loadExperiment
 
 from src.utils.arrays import first
 from src.utils.path import fileName, up
 
-error = 'rmspbe'
+error = 'rmsve'
 
 # name = 'test'
 # problems = ['SmallChainTabular5050', 'Boyan']
@@ -38,9 +39,6 @@ elif error == 'rmspbe':
 def generatePlotTTA(ax, exp_paths, bestBy, bounds):
     ax.set_xscale("log", basex=2)
     for exp_path in exp_paths:
-        if 'amsgrad' in exp_path:
-            continue
-
         exp = loadExperiment(exp_path)
         results = loadResults(exp, errorfile)
 
@@ -49,6 +47,26 @@ def generatePlotTTA(ax, exp_paths, bestBy, bounds):
 
         b = plotSensitivity(results, 'ratio', ax, color=color, label=label, bestBy=bestBy)
         bounds.append(b)
+
+def generatePlotSTA(ax, exp_paths, bestBy, bounds):
+    for exp_path in exp_paths:
+        exp = loadExperiment(exp_path)
+        results = loadResults(exp, errorfile)
+
+        color = colors[exp.agent]
+        label = exp.agent
+
+        if bestBy == 'end':
+            metric = lambda m: np.mean(m[-int(m.shape[0] * .1):])
+            best = getBestEnd(results)
+        elif bestBy == 'auc':
+            metric = np.mean
+            best = getBest(results)
+
+        m = metric(best.mean())
+        ax.hlines(m, 2**-6, 2**6, color=color, label=label)
+
+        bounds.append([m, m])
 
 if __name__ == "__main__":
     f, axes = plt.subplots(len(stepsizes), len(problems) * 2)
@@ -59,11 +77,15 @@ if __name__ == "__main__":
             for alg in algorithms:
                 if ss == 'constant':
                     exp_paths = glob.glob(f'experiments/stepsizes/{problem}/{alg}/{alg}.json')
+                    td_paths = [f'experiments/stepsizes/{problem}/td/td.json']
                 else:
                     exp_paths = glob.glob(f'experiments/stepsizes/{problem}/{alg}/{alg}{ss}.json')
+                    td_paths = glob.glob(f'experiments/stepsizes/{problem}/td/td{ss}.json')
 
 
                 generatePlotTTA(axes[i, 2 * j], exp_paths, 'auc', bounds)
+                generatePlotSTA(axes[i, 2 * j], td_paths, 'auc', bounds)
+                generatePlotSTA(axes[i, 2 * j + 1], td_paths, 'end', bounds)
                 generatePlotTTA(axes[i, 2 * j + 1], exp_paths, 'end', bounds)
 
                 lower = min(map(lambda x: x[0], bounds)) * 0.9
@@ -72,12 +94,16 @@ if __name__ == "__main__":
                 if lower < 0.01:
                     lower = -0.01
 
+                if upper > 100:
+                    upper = 8
+
                 if i == 0:
                     axes[i, 2 * j].set_title(f'{problem}\n{ss}')
                 else:
                     axes[i, 2 * j].set_title(f'{ss}')
 
                 axes[i, 2 * j].set_ylim([lower, upper])
+                axes[i, 2 * j + 1].set_ylim([lower, upper])
 
 
     # plt.show()
@@ -89,4 +115,4 @@ if __name__ == "__main__":
     width = len(problems) * 8
     height = len(stepsizes) * (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/ss_eta_{name}_{error}.png', dpi=250)
+    plt.savefig(f'{save_path}/ss_eta_{name}_{error}.png', dpi=125)
