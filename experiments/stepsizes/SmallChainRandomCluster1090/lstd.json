@@ -1,0 +1,6 @@
+{
+    "agent": "LSTD",
+    "problem": "SmallChainRandomCluster1090",
+    "subsample": 250,
+    "metaParameters": {}
+}

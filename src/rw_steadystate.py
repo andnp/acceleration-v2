@@ -2,8 +2,8 @@ import numpy as np
 
 N = 5
 
-pl = 0.5
-pr = 0.5
+pl = 0.01
+pr = 0.99
 
 P = np.zeros((N, N))
 P[0, 1] = pr

@@ -33,17 +33,18 @@ class BaseChain(BaseProblem):
 
         self.env = Chain(N)
 
-        # build representation
-        self.rep = self._getRepresentation(N)
-
-        # build environment
-        # build agent
-        self.agent = self.Agent(self.rep.features(), self.metaParameters)
-
         # build target policy
         self.target = self._getTarget()
 
         self.behavior = Policy(lambda s: [0.5, 0.5])
+
+        self.v_star = self.compute_v(N, self.target)
+
+        # build representation
+        self.rep = self._getRepresentation(N)
+
+        # build agent
+        self.agent = self.Agent(self.rep.features(), self.metaParameters)
 
         # compute the observable value for each state once
         self.X = np.array([
@@ -53,8 +54,6 @@ class BaseChain(BaseProblem):
         # (1/n+1) sum_{k=0}^n P^k gives a matrix with db in each row, where P is the markov chain
         # induced by the behaviour policy
         self.db = self._getdb()
-
-        self.v_star = self.compute_v(N, self.target)
 
         # build transition probability matrix (under target)
         self.P = np.zeros((N + 1, N + 1))
@@ -145,6 +144,10 @@ class Policy4060:
 class Policy2575:
     def _getTarget(self):
         return Policy(lambda s: [.25, .75])
+
+class Policy1090:
+    def _getTarget(self):
+        return Policy(lambda s: [.1, .9])
 
 # --------------------
 # -- Representation --

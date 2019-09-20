@@ -3,7 +3,7 @@ from src.problems.Boyan import Boyan
 from src.problems.Chain import ChainInverted5050, ChainInverted4060, ChainInverted2575, ChainTabular5050, ChainTabular4060, ChainTabular2575, ChainDependent5050, ChainDependent4060, ChainDependent2575
 from src.problems.MediumChain import MediumChainTabular5050
 from src.problems.MediumChainTC import MediumChainTC5050
-from src.problems.SmallChain import SmallChainTabular5050, SmallChainInverted5050, SmallChainDependent5050, SmallChainTabular4060, SmallChainInverted4060, SmallChainDependent4060
+from src.problems.SmallChain import SmallChainTabular5050, SmallChainInverted5050, SmallChainDependent5050, SmallChainTabular4060, SmallChainInverted4060, SmallChainDependent4060, SmallChainRandomCluster5050, SmallChainRandomCluster4060, SmallChainRandomCluster1090
 from src.problems.SmallChainLeftZero import SmallChainTabular5050LeftZero, SmallChainInverted5050LeftZero, SmallChainDependent5050LeftZero
 from src.problems.Collision import Collision
 from src.problems.CollisionJournalPaper import CollisionJournalPaper
@@ -80,6 +80,15 @@ def getProblem(name):
 
     if name == 'SmallChainTabular5050LeftZero':
         return SmallChainTabular5050LeftZero
+
+    if name == 'SmallChainRandomCluster5050':
+        return SmallChainRandomCluster5050
+
+    if name == 'SmallChainRandomCluster4060':
+        return SmallChainRandomCluster4060
+
+    if name == 'SmallChainRandomCluster1090':
+        return SmallChainRandomCluster1090
 
     raise NotImplementedError()
 

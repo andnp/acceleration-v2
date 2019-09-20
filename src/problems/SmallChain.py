@@ -1,6 +1,7 @@
 import numpy as np
 from PyFixedReps.BaseRepresentation import BaseRepresentation
-from src.problems.Chain import BaseChain, Policy5050, Policy4060, RepDependent, RepInverted, RepTabular
+from src.representations.RandomCluster import RandomCluster
+from src.problems.Chain import BaseChain, Policy5050, Policy4060, Policy1090, RepDependent, RepInverted, RepTabular
 from src.environments.Chain import Chain as ChainEnv
 from src.utils.rlglue import OffPolicyWrapper
 from src.utils.policies import Policy
@@ -14,6 +15,10 @@ class SmallChain(BaseChain):
 
     def getSteps(self):
         return 3000
+
+class RepRandomCluster:
+    def _getRepresentation(self, n):
+        return RandomCluster(int(n // 2) + 1, getattr(self, 'v_star'))
 
 # ---------------
 # -- Resultant --
@@ -36,3 +41,15 @@ class SmallChainInverted4060(Policy4060, RepInverted, SmallChain):
 
 class SmallChainTabular4060(Policy4060, RepTabular, SmallChain):
     pass
+
+class SmallChainRandomCluster5050(Policy5050, RepRandomCluster, SmallChain):
+    def getSteps(self):
+        return 10000
+
+class SmallChainRandomCluster4060(Policy4060, RepRandomCluster, SmallChain):
+    def getSteps(self):
+        return 10000
+
+class SmallChainRandomCluster1090(Policy1090, RepRandomCluster, SmallChain):
+    def getSteps(self):
+        return 20000
