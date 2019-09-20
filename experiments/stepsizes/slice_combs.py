@@ -13,7 +13,7 @@ from src.utils.arrays import first
 
 from src.utils.path import fileName, up
 
-stepsize = 'amsgrad'
+stepsize = sys.argv[1]
 
 def generatePlot(exp_paths):
     f, axes = plt.subplots(2,2)
@@ -186,11 +186,11 @@ def generatePlot(exp_paths):
     axes[1, 1].set_ylim([rmsve_lower, rmsve_upper])
 
 if __name__ == "__main__":
-    exp_paths = sys.argv[1:]
+    exp_paths = sys.argv[2:]
 
     paths = []
     for exp_path in exp_paths:
-        if 'lstd' in exp_path:
+        if 'lstd' in exp_path or 'htd' in exp_path:
             continue
 
         if stepsize != 'constant' and stepsize not in exp_path:
@@ -211,9 +211,9 @@ if __name__ == "__main__":
     # plt.show()
 
     exp_name = fileName(up(exp.getExperimentName()))
-    save_path = f'experiments/stepsizes/plots'
+    save_path = f'experiments/stepsizes/plots/2x2'
     os.makedirs(save_path, exist_ok=True)
 
     fig = plt.gcf()
     fig.set_size_inches((13, 12), forward=False)
-    plt.savefig(f'{save_path}/{exp_name}_square_{stepsize}.png', dpi=250)
+    plt.savefig(f'{save_path}/{exp_name}_square_{stepsize}.png', dpi=125)

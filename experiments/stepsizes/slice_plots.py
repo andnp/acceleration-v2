@@ -2,6 +2,7 @@ import glob
 import subprocess
 
 problems = glob.glob('experiments/stepsizes/*')
+stepsizes = ['amsgrad', 'adagrad', 'schedule', 'constant']
 
 def last(path):
     parts = path.split('/')
@@ -9,7 +10,8 @@ def last(path):
 
 problems = [p for p in problems if '.' not in last(p) and last(p) != 'plots']
 
-for problem in problems:
-    experiments = problem + '/**/*.json'
+for ss in stepsizes:
+    for problem in problems:
+        experiments = problem + '/**/*.json'
 
-    subprocess.run(f'python experiments/stepsizes/slice_combs.py {experiments}', stdout=subprocess.PIPE, shell=True)
+        subprocess.run(f'python experiments/stepsizes/slice_combs.py {ss} {experiments}', stdout=subprocess.PIPE, shell=True)

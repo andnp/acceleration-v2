@@ -131,4 +131,4 @@ if __name__ == "__main__":
 
     width = len(problems) * 8
     f.set_size_inches((width, 24), forward=False)
-    plt.savefig(f'{save_path}/{name}_{error}_eta2.png', dpi=250)
+    plt.savefig(f'{save_path}/{name}_{error}_eta2.png', dpi=125)

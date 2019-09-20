@@ -83,4 +83,4 @@ if __name__ == "__main__":
     width = len(problems) * 8
     height = len(algorithms) * (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/eta_{name}_{error}.png', dpi=250)
+    plt.savefig(f'{save_path}/eta_{name}_{error}.png', dpi=125)

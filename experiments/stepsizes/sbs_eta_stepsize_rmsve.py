@@ -115,4 +115,4 @@ if __name__ == "__main__":
     width = len(problems) * 8
     height = len(stepsizes) * (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/ss_eta_{name}_rmsve-over-rmspbe.png', dpi=250)
+    plt.savefig(f'{save_path}/ss_eta_{name}_rmsve-over-rmspbe.png', dpi=125)
