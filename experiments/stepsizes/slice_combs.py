@@ -220,7 +220,7 @@ if __name__ == "__main__":
 
     paths = []
     for exp_path in exp_paths:
-        if 'lstd' in exp_path or 'htd' in exp_path or 'ema' in exp_path:
+        if 'lstd' in exp_path or 'htd' in exp_path or ('tdc_ema' in exp_path and not 'tdc_ema_x' in exp_path):
             continue
 
         if stepsize != 'constant' and stepsize not in exp_path:

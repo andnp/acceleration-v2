@@ -16,4 +16,5 @@ for bestBy in metrics:
         for problem in problems:
             experiments = problem + '/**/*.json'
 
+            print(problem, ss, bestBy)
             subprocess.run(f'python experiments/stepsizes/slice_combs.py {ss} {bestBy} {experiments}', stdout=subprocess.PIPE, shell=True)
