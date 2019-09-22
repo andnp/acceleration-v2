@@ -59,8 +59,14 @@ def generatePlot(exp_paths):
         const = whereParameterGreaterEq(const, 'ratio', 1)
 
         use_ideal_h = exp._d['metaParameters'].get('use_ideal_h', False)
-        color = colors[exp.agent]
-        label = exp.agent
+
+        agent = exp.agent
+        if 'SmoothTDC' in agent:
+            average = exp._d['metaParameters']['averageType']
+            agent += '_' + average
+
+        color = colors[agent]
+        label = agent
 
         if not (exp.agent in ['TDadagrad', 'TDschedule', 'TD', 'TDamsgrad'] or use_ideal_h):
             bounds = plot(unconst, ax, label=label + '_unc', color=color, dashed=True, bestBy=bestBy)
@@ -85,8 +91,14 @@ def generatePlot(exp_paths):
         const = whereParameterGreaterEq(const, 'ratio', 1)
 
         use_ideal_h = exp._d['metaParameters'].get('use_ideal_h', False)
-        color = colors[exp.agent]
-        label = exp.agent
+
+        agent = exp.agent
+        if 'SmoothTDC' in agent:
+            average = exp._d['metaParameters']['averageType']
+            agent += '_' + average
+
+        color = colors[agent]
+        label = agent
 
         if not (exp.agent in ['TDadagrad', 'TDschedule', 'TD', 'TDamsgrad'] or use_ideal_h):
             best = metric(const)
@@ -120,8 +132,14 @@ def generatePlot(exp_paths):
         const = whereParameterGreaterEq(const, 'ratio', 1)
 
         use_ideal_h = exp._d['metaParameters'].get('use_ideal_h', False)
-        color = colors[exp.agent]
-        label = exp.agent
+
+        agent = exp.agent
+        if 'SmoothTDC' in agent:
+            average = exp._d['metaParameters']['averageType']
+            agent += '_' + average
+
+        color = colors[agent]
+        label = agent
 
         if not (exp.agent in ['TDadagrad', 'TDschedule', 'TD', 'TDamsgrad'] or use_ideal_h):
             # best PBE using AUC
@@ -157,8 +175,14 @@ def generatePlot(exp_paths):
         const = whereParameterGreaterEq(const, 'ratio', 1)
 
         use_ideal_h = exp._d['metaParameters'].get('use_ideal_h', False)
-        color = colors[exp.agent]
-        label = exp.agent
+
+        agent = exp.agent
+        if 'SmoothTDC' in agent:
+            average = exp._d['metaParameters']['averageType']
+            agent += '_' + average
+
+        color = colors[agent]
+        label = agent
 
         if not (exp.agent in ['TDadagrad', 'TDschedule', 'TD', 'TDamsgrad'] or use_ideal_h):
             bounds = plot(const, ax, label=label, color=color, dashed=False, bestBy=bestBy)

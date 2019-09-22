@@ -14,7 +14,7 @@ from src.utils.arrays import fillRest
 from src.utils.model import loadExperiment
 from src.utils.Collector import Collector
 
-EVERY = 10
+EVERY = 250
 
 # get the experiment model from JSON file
 exp = loadExperiment(sys.argv[2])
