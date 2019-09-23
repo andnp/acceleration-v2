@@ -44,23 +44,23 @@ class SmoothTDC(BaseTD):
 
         return np.mean(self.buffer.getAll())
 
-    def _windowDelta(self, x, xp, r, gamma):
+    def _windowDelta(self, x, xp, r, gamma, p):
         if self.update_buffer:
-            self.buffer.add((x, xp, r, gamma))
+            self.buffer.add((x, xp, r, gamma, p))
 
         w, h = self.theta
-        deltas = list(map(lambda ex: ex[2] + ex[3] * w.dot(ex[1]) - w.dot(ex[0]), self.buffer.getAll()))
+        deltas = list(map(lambda ex: ex[4] * (ex[2] + ex[3] * w.dot(ex[1]) - w.dot(ex[0])), self.buffer.getAll()))
         return np.mean(deltas)
 
-    def _smoothDelta(self, delta, x, xp, r, gamma):
+    def _smoothDelta(self, delta, x, xp, r, gamma, p):
         if self.average == 'buffer':
-            return self._bufferDelta(delta) * x
+            return self._bufferDelta(p * delta) * x
         elif self.average == 'window':
-            return self._windowDelta(x, xp, r, gamma) * x
+            return self._windowDelta(x, xp, r, gamma, p) * x
         elif self.average == 'ema':
-            return self._emaDelta(delta) * x
+            return self._emaDelta(p * delta) * x
         elif self.average == 'ema_x':
-            return self._emaDelta(delta * x)
+            return self._emaDelta(p * delta * x)
         else:
             raise Exception()
 
@@ -72,12 +72,12 @@ class SmoothTDC(BaseTD):
         if self.use_ideal_h:
             h = self.getIdealH()
 
-        exp_delta_x = self._smoothDelta(r + gamma * vp - v, x, xp, r, gamma)
+        exp_delta_x = self._smoothDelta(r + gamma * vp - v, x, xp, r, gamma, p)
 
         delta = r + gamma * vp - v
         delta_hat = h.dot(x)
 
-        dw = p * (exp_delta_x - gamma * delta_hat * xp)
+        dw = (exp_delta_x - p * gamma * delta_hat * xp)
         dh = (p * delta - delta_hat) * x
 
         return [dw, dh]
