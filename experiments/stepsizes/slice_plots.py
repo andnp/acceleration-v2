@@ -1,20 +1,26 @@
 import glob
 import subprocess
+from multiprocessing.pool import Pool
+from functools import partial
 
-problems = glob.glob('experiments/stepsizes/*')
-stepsizes = ['amsgrad', 'adagrad', 'schedule', 'constant']
-metrics = ['end', 'auc']
+def runSlice(ss, bestBy, problem):
+    experiments = problem + '/**/*.json'
+    print(problem, ss, bestBy)
+    subprocess.run(f'python experiments/stepsizes/slice_combs.py {ss} {bestBy} {experiments}', stdout=subprocess.PIPE, shell=True)
 
-def last(path):
-    parts = path.split('/')
-    return parts[len(parts) - 1]
+if __name__ == "__main__":
+    pool = Pool()
 
-problems = [p for p in problems if '.' not in last(p) and last(p) != 'plots']
+    problems = glob.glob('experiments/stepsizes/*')
+    stepsizes = ['amsgrad', 'adagrad', 'schedule', 'constant']
+    metrics = ['end', 'auc']
 
-for bestBy in metrics:
-    for ss in stepsizes:
-        for problem in problems:
-            experiments = problem + '/**/*.json'
+    def last(path):
+        parts = path.split('/')
+        return parts[len(parts) - 1]
 
-            print(problem, ss, bestBy)
-            subprocess.run(f'python experiments/stepsizes/slice_combs.py {ss} {bestBy} {experiments}', stdout=subprocess.PIPE, shell=True)
+    problems = [p for p in problems if '.' not in last(p) and last(p) != 'plots']
+
+    for bestBy in metrics:
+        for ss in stepsizes:
+            pool.map(partial(runSlice, ss, bestBy), problems)
