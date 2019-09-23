@@ -14,7 +14,7 @@ class SmallChain(BaseChain):
         return np.array([0.111111, 0.222222, 0.333333, 0.222222, 0.111111, 0])
 
     def getSteps(self):
-        return 3000
+        return 10000
 
 class RepRandomCluster:
     def _getRepresentation(self, n):
