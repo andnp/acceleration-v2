@@ -18,11 +18,13 @@ class SmallChain(BaseChain):
 
 class RepRandomCluster:
     def _getRepresentation(self, n):
-        return RandomCluster(int(n // 2) + 1, getattr(self, 'v_star'))
+        size = getattr(self, 'metaParameters').get('size', int(n // 2) + 1)
+        return RandomCluster(size, getattr(self, 'v_star'))
 
 class RepRandomOuterCluster:
     def _getRepresentation(self, n):
-        return RandomOuterCluster(int(n // 2) + 1, getattr(self, 'v_star'))
+        size = getattr(self, 'metaParameters').get('size', int(n // 2) + 1)
+        return RandomOuterCluster(size, getattr(self, 'v_star'))
 
 # ---------------
 # -- Resultant --
@@ -56,8 +58,8 @@ class SmallChainRandomCluster4060(Policy4060, RepRandomCluster, SmallChain):
 
 class SmallChainRandomCluster1090(Policy1090, RepRandomCluster, SmallChain):
     def getSteps(self):
-        return 20000
+        return 10000
 
 class SmallChainOuterRandomCluster1090(Policy1090, RepRandomOuterCluster, SmallChain):
     def getSteps(self):
-        return 20000
+        return 10000
