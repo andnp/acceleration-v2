@@ -1,0 +1,13 @@
+{
+    "agent": "SmoothTDCschedule",
+    "problem": "SmallChainTabular5050",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 10,
+        "ratio": 0.03125,
+        "alpha": 1.0,
+        "use_ideal_h": false,
+        "averageType": "ema_x",
+        "buffer": 2
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "agent": "GTD2",
+    "problem": "Baird",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0,
+        "alpha": 0.015625,
+        "use_ideal_h": true
+    }
+}

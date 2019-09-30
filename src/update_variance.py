@@ -13,12 +13,12 @@ from src.utils.model import loadExperiment
 from src.utils.path import up
 from src.utils.random import sample
 
-SAMPLE_EVERY=100
-
 # get the experiment model from JSON file
 exp = loadExperiment(sys.argv[2])
 idx = int(sys.argv[3])
 RUNS = int(sys.argv[1])
+
+SAMPLE_EVERY=exp.subsample * 10
 
 run_variances = []
 for run in range(RUNS):
@@ -58,9 +58,9 @@ for run in range(RUNS):
 mean = np.mean(run_variances, 0)
 stderr = np.std(run_variances, 0, ddof=1) / np.sqrt(RUNS)
 
-plt.plot(mean)
-plt.show()
-exit()
+# plt.plot(mean)
+# plt.show()
+# exit()
 
 # save things to disk
 save_context = exp.buildSaveContext(idx)

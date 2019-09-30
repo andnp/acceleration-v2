@@ -1,0 +1,11 @@
+{
+    "agent": "TDschedule",
+    "problem": "SmallChainRandomCluster4060",
+    "subsample": 250,
+    "metaParameters": {
+        "n0": 100,
+        "ratio": 0,
+        "alpha": 1.0,
+        "use_ideal_h": false
+    }
+}

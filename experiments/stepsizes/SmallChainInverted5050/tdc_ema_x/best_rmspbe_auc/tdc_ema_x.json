@@ -1,0 +1,12 @@
+{
+    "agent": "SmoothTDC",
+    "problem": "SmallChainInverted5050",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0.0625,
+        "alpha": 0.125,
+        "use_ideal_h": false,
+        "averageType": "ema_x",
+        "buffer": 128
+    }
+}

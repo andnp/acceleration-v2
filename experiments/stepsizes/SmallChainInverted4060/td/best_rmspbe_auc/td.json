@@ -1,0 +1,10 @@
+{
+    "agent": "TD",
+    "problem": "SmallChainInverted4060",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0,
+        "alpha": 0.125,
+        "use_ideal_h": false
+    }
+}

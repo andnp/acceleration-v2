@@ -1,0 +1,11 @@
+{
+    "agent": "HTDschedule",
+    "problem": "SmallChainInverted4060",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 100,
+        "ratio": 1,
+        "alpha": 0.5,
+        "use_ideal_h": false
+    }
+}

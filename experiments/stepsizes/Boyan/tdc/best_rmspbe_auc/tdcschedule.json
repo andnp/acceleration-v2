@@ -1,0 +1,11 @@
+{
+    "agent": "TDCschedule",
+    "problem": "Boyan",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 1000,
+        "ratio": 1,
+        "alpha": 1.0,
+        "use_ideal_h": false
+    }
+}

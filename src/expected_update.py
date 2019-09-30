@@ -13,12 +13,12 @@ from src.utils.model import loadExperiment
 from src.utils.path import up
 from src.utils.random import sample
 
-SAMPLE_EVERY=25
-
 # get the experiment model from JSON file
 exp = loadExperiment(sys.argv[2])
 idx = int(sys.argv[3])
 RUNS = int(sys.argv[1])
+
+SAMPLE_EVERY = exp.subsample * 10
 
 run_variances = []
 for run in range(RUNS):
@@ -50,6 +50,9 @@ for run in range(RUNS):
             experiences = experience_generator.sample(1000)
             var_w, var_h = problem.agent.computeMeanOfUpdates(experiences)
 
+            var_w = np.abs(var_w)
+            var_h = np.abs(var_h)
+
             variances.append([np.mean([var_w, var_h]), var_w, var_h])
 
     run_variances.append(variances)
@@ -66,4 +69,4 @@ stderr = np.std(run_variances, 0, ddof=1) / np.sqrt(RUNS)
 save_context = exp.buildSaveContext(idx)
 save_context.ensureExists()
 
-np.save(save_context.resolve('variance_summary.npy'), np.array([ mean, stderr, RUNS ]))
+np.save(save_context.resolve('expupd_summary.npy'), np.array([ mean, stderr, RUNS ]))

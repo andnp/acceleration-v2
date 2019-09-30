@@ -1,0 +1,10 @@
+{
+    "agent": "TDC",
+    "problem": "Boyan",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0.015625,
+        "alpha": 0.25,
+        "use_ideal_h": false
+    }
+}

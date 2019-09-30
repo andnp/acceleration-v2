@@ -1,0 +1,10 @@
+{
+    "agent": "GTD2adagrad",
+    "problem": "SmallChainOuterRandomCluster1090",
+    "subsample": 250,
+    "metaParameters": {
+        "ratio": 8,
+        "alpha": 0.125,
+        "use_ideal_h": false
+    }
+}

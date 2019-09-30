@@ -1,0 +1,13 @@
+{
+    "agent": "SmoothTDCschedule",
+    "problem": "Baird",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 100,
+        "ratio": 4,
+        "alpha": 0.015625,
+        "use_ideal_h": false,
+        "averageType": "ema",
+        "buffer": 128
+    }
+}

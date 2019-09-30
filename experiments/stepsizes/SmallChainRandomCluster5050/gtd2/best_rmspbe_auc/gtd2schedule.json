@@ -1,0 +1,11 @@
+{
+    "agent": "GTD2schedule",
+    "problem": "SmallChainRandomCluster5050",
+    "subsample": 250,
+    "metaParameters": {
+        "n0": 1000,
+        "ratio": 1,
+        "alpha": 0.5,
+        "use_ideal_h": false
+    }
+}

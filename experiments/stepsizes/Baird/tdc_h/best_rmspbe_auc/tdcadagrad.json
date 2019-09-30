@@ -1,0 +1,10 @@
+{
+    "agent": "TDCadagrad",
+    "problem": "Baird",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0,
+        "alpha": 1.0,
+        "use_ideal_h": true
+    }
+}

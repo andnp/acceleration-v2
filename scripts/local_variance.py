@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.append(os.getcwd())
 import subprocess
 import multiprocessing
 from functools import partial
@@ -28,7 +29,7 @@ if __name__ == "__main__":
         'executable': "python src/update_variance.py " + sys.argv[1],
     })
 
-    pool = Pool()
+    pool = Pool(multiprocessing.cpu_count() - 1)
 
     cmds = []
     for path in args.experiment_paths:

@@ -1,11 +1,14 @@
 import numpy as np
 from src.agents.agents import getAgent
+from src.utils.SampleGenerator import SampleGenerator
 
 def weightedNorm(X, W):
     return np.sqrt(X.T.dot(W).dot(X))
 
 class BaseProblem:
     def __init__(self, exp, idx):
+        self.exp = exp
+        self.idx = idx
         self.Agent = getAgent(exp.agent)
 
         # what parameter permutation should we use
@@ -32,7 +35,9 @@ class BaseProblem:
         raise NotImplementedError()
 
     def sampleExperiences(self):
-        raise NotImplementedError()
+        clone = self.__class__(self.exp, self.idx)
+        gen = SampleGenerator(clone)
+        return gen
 
     def evaluateStep(self, step_data):
         X = getattr(self, 'X')

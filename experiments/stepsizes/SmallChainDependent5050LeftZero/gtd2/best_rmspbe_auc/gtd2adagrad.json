@@ -1,0 +1,10 @@
+{
+    "agent": "GTD2adagrad",
+    "problem": "SmallChainDependent5050LeftZero",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 4,
+        "alpha": 0.0625,
+        "use_ideal_h": false
+    }
+}

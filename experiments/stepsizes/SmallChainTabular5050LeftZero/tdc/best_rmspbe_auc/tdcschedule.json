@@ -1,0 +1,11 @@
+{
+    "agent": "TDCschedule",
+    "problem": "SmallChainTabular5050LeftZero",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 10,
+        "ratio": 0.015625,
+        "alpha": 1.0,
+        "use_ideal_h": false
+    }
+}

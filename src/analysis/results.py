@@ -72,7 +72,6 @@ def getBestEnd(results):
     for r in results:
         a = r.mean()
         b = low.mean()
-        # steps = int(len(a) // 0.1)
         steps = int(len(a) * 0.1)
         am = np.mean(a[-steps:])
         bm = np.mean(b[-steps:])

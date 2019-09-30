@@ -1,0 +1,10 @@
+{
+    "agent": "HTDadagrad",
+    "problem": "SmallChainDependent4060",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0.015625,
+        "alpha": 0.125,
+        "use_ideal_h": false
+    }
+}

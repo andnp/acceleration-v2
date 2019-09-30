@@ -1,0 +1,11 @@
+{
+    "agent": "TDCschedule",
+    "problem": "SmallChainRandomCluster5050",
+    "subsample": 250,
+    "metaParameters": {
+        "n0": 1000,
+        "ratio": 0.5,
+        "alpha": 0.5,
+        "use_ideal_h": false
+    }
+}

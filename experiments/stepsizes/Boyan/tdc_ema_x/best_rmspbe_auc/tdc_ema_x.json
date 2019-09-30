@@ -1,0 +1,12 @@
+{
+    "agent": "SmoothTDC",
+    "problem": "Boyan",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0.25,
+        "alpha": 0.5,
+        "use_ideal_h": false,
+        "averageType": "ema_x",
+        "buffer": 32
+    }
+}

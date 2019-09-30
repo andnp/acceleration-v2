@@ -1,0 +1,10 @@
+{
+    "agent": "TDC",
+    "problem": "SmallChainOuterRandomCluster1090",
+    "subsample": 250,
+    "metaParameters": {
+        "ratio": 2,
+        "alpha": 0.0625,
+        "use_ideal_h": false
+    }
+}

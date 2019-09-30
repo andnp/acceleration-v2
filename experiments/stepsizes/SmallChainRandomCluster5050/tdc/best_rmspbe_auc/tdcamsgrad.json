@@ -1,0 +1,12 @@
+{
+    "agent": "TDCamsgrad",
+    "problem": "SmallChainRandomCluster5050",
+    "subsample": 250,
+    "metaParameters": {
+        "momentum": 0.9,
+        "curve": 0.999,
+        "ratio": 1,
+        "alpha": 0.015625,
+        "use_ideal_h": false
+    }
+}

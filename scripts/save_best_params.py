@@ -12,14 +12,14 @@ exp_paths = sys.argv[1:]
 
 for exp_path in exp_paths:
     exp = loadExperiment(exp_path)
-    results = loadResults(exp)
+    results = loadResults(exp, 'rmspbe_summary.npy')
     best = getBest(results)
     print('---------------------')
     print('agent:', exp.agent)
     print(best.params)
 
     f = fileName(exp_path)
-    new_path = up(exp_path) + '/best/' + f
+    new_path = up(exp_path) + '/best_rmspbe_auc/' + f
 
     d = exp._d
     d['metaParameters'] = best.params

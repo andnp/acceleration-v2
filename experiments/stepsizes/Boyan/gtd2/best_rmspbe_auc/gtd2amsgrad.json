@@ -1,0 +1,12 @@
+{
+    "agent": "GTD2amsgrad",
+    "problem": "Boyan",
+    "subsample": 10,
+    "metaParameters": {
+        "momentum": 0.9,
+        "curve": 0.999,
+        "ratio": 2,
+        "alpha": 0.0625,
+        "use_ideal_h": false
+    }
+}
