@@ -14,7 +14,7 @@ from src.utils.model import loadExperiment
 from src.utils.arrays import first
 from src.utils.path import fileName, up
 
-error = 'rmspbe'
+error = 'rmsve'
 
 # name = 'test'
 # problems = ['SmallChainTabular5050', 'Boyan']
