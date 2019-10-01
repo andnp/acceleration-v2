@@ -33,6 +33,9 @@ class Result:
     def stderr(self):
         return self._reducer(self._lazyLoad()[1])
 
+    def runs(self):
+        return self._reducer(self._lazyLoad()[2])
+
 def splitOverParameter(results, param):
     parts = {}
     for r in results:

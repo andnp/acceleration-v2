@@ -64,17 +64,7 @@ def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True, labe
         dashed = [dashed] * mean.shape[1]
 
     for i in range(mean.shape[1]):
-        if dashed[i]:
-            dashes = ':'
-        else:
-            dashes = None
-
-        base, = ax.plot(mean[:, i], linestyle=dashes, label=label[i] + params, color=color, alpha=alphaMain, linewidth=2)
-        if stderr:
-            (low_ci, high_ci) = confidenceInterval(mean[:, i], ste[:, i])
-            ax.fill_between(range(mean.shape[0]), low_ci, high_ci, color=base.get_color(), alpha=0.4)
-
-    ax.legend()
+        lineplot(ax, mean[:, i], ste[:, i], color=color, label=label[i] + params, alphaMain=alphaMain, dashed=dashed[i])
 
     if len(mean.shape) > 1 and mean.shape[1] > 1:
         return (np.nan, np.nan)
@@ -83,3 +73,16 @@ def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True, labe
     min_y = min(mean) * .95
 
     return (min_y, max_y)
+
+def lineplot(ax, mean, stderr=None, color=None, label=None, alphaMain=None, dashed=None):
+    if dashed:
+        dashes = ':'
+    else:
+        dashes = None
+
+    base, = ax.plot(mean, linestyle=dashes, label=label, color=color, alpha=alphaMain, linewidth=2)
+    if stderr is not None:
+        (low_ci, high_ci) = confidenceInterval(mean, stderr)
+        ax.fill_between(range(mean.shape[0]), low_ci, high_ci, color=base.get_color(), alpha=0.4)
+
+    ax.legend()

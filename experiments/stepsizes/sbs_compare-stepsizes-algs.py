@@ -13,7 +13,7 @@ from src.utils.model import loadExperiment
 from src.utils.arrays import first
 from src.utils.path import fileName, up
 
-error = 'rmsve'
+error = 'rmspbe'
 
 # name = 'policy'
 # problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'Baird']
@@ -25,7 +25,7 @@ name = 'all'
 problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'SmallChainRandomCluster1090', 'SmallChainRandomCluster4060', 'SmallChainRandomCluster5050', 'SmallChainOuterRandomCluster1090', 'Boyan', 'Baird']
 
 algorithms = ['gtd2', 'tdc']
-stepsizes = ['constant', 'adagrad', 'amsgrad', 'schedule']
+stepsizes = ['constant', 'schedule']
 
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'

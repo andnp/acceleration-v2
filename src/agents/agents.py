@@ -25,6 +25,9 @@ from .htd.HTDschedule import HTDschedule
 from .smooth_tdc.SmoothTDC import SmoothTDC
 from .smooth_tdc.SmoothTDCschedule import SmoothTDCschedule
 from .smooth_tdc.SmoothTDCadagrad import SmoothTDCadagrad
+from .regh_tdc.ReghTDC import ReghTDC
+from .regh_tdc.ReghTDCadagrad import ReghTDCadagrad
+from .regh_tdc.ReghTDCschedule import ReghTDCschedule
 
 def getAgent(name):
     if name == 'TDC':
@@ -107,5 +110,14 @@ def getAgent(name):
 
     elif name == 'HTDschedule':
         return HTDschedule
+
+    elif name == 'ReghTDC':
+        return ReghTDC
+
+    elif name == 'ReghTDCadagrad':
+        return ReghTDCadagrad
+
+    elif name == 'ReghTDCschedule':
+        return ReghTDCschedule
 
     raise Exception('Unexpected agent given')
