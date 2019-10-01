@@ -14,7 +14,7 @@ from src.utils.model import loadExperiment
 from src.utils.arrays import first
 from src.utils.path import fileName, up
 
-error = 'rmsve'
+error = 'rmspbe'
 
 # name = 'test'
 # problems = ['SmallChainTabular5050', 'Boyan']
@@ -25,10 +25,14 @@ error = 'rmsve'
 # name = 'features'
 # problems = ['SmallChainTabular5050', 'SmallChainInverted5050', 'SmallChainDependent5050' 'Boyan']
 
-name = 'all'
-problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'SmallChainRandomCluster1090', 'SmallChainRandomCluster4060', 'SmallChainRandomCluster5050', 'SmallChainOuterRandomCluster1090', 'Boyan', 'Baird']
+name = 'regh'
+problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
+algorithms = ['gtd2', 'tdc', 'regh_tdc']
 
-algorithms = ['gtd2', 'tdc', 'tdc_ema_x']
+# name = 'all'
+# problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'SmallChainRandomCluster1090', 'SmallChainRandomCluster4060', 'SmallChainRandomCluster5050', 'SmallChainOuterRandomCluster1090', 'Boyan', 'Baird']
+# algorithms = ['gtd2', 'tdc', 'tdc_ema_x']
+
 stepsizes = ['constant', 'adagrad', 'schedule']
 
 if error == 'rmsve':
@@ -124,9 +128,11 @@ if __name__ == "__main__":
                 upper = 8
 
             if i == 0:
-                axes[i, 2 * j].set_title(f'{problem}\n{ss}')
+                axes[i, 2 * j].set_title(f'{problem}\n{ss}\nauc')
             else:
-                axes[i, 2 * j].set_title(f'{ss}')
+                axes[i, 2 * j].set_title(f'{ss} - auc')
+
+            axes[i, 2 * j + 1].set_title(f'{ss} - end')
 
             axes[i, 2 * j].set_ylim([lower, upper])
             axes[i, 2 * j + 1].set_ylim([lower, upper])

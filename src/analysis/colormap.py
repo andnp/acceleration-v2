@@ -29,6 +29,7 @@ colors = {
     'GTD2adagrad': 'green',
     'TDCadagrad': 'blue',
     'TDadagrad': 'red',
+    'ReghTDCadagrad': 'purple',
 
     'SmoothTDCamsgrad_ema': 'orange',
     'SmoothTDCamsgrad_ema_x': 'black',
@@ -36,6 +37,7 @@ colors = {
     'GTD2amsgrad': 'green',
     'TDCamsgrad': 'blue',
     'TDamsgrad': 'red',
+    'ReghTDCamsgrad': 'purple',
 
     'SmoothTDCschedule_ema': 'orange',
     'SmoothTDCschedule_ema_x': 'black',
@@ -43,6 +45,7 @@ colors = {
     'GTD2schedule': 'green',
     'TDCschedule': 'blue',
     'TDschedule': 'red',
+    'ReghTDCschedule': 'purple',
 
     'SmoothTDC_ema': 'orange',
     'SmoothTDC_ema_x': 'black',
@@ -50,6 +53,7 @@ colors = {
     'GTD2': 'green',
     'TDC': 'blue',
     'TD': 'red',
+    'ReghTDC': 'purple',
 
     'LSTD': 'black',
 }

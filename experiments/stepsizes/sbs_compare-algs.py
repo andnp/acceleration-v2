@@ -21,11 +21,16 @@ error = 'rmsve'
 # name = 'features'
 # problems = ['SmallChainTabular5050', 'SmallChainInverted5050', 'SmallChainDependent5050' 'Boyan']
 
-name = 'all'
-problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'SmallChainRandomCluster1090', 'SmallChainRandomCluster4060', 'SmallChainRandomCluster5050', 'SmallChainOuterRandomCluster1090', 'Boyan', 'Baird']
+name = 'regh'
+problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
+algorithms = ['gtd2', 'tdc', 'td', 'regh_tdc']
+stepsizes = ['constant', 'adagrad', 'schedule']
 
-algorithms = ['gtd2', 'tdc', 'td']
-stepsizes = ['constant', 'adagrad', 'amsgrad', 'schedule']
+# name = 'all'
+# problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'SmallChainRandomCluster1090', 'SmallChainRandomCluster4060', 'SmallChainRandomCluster5050', 'SmallChainOuterRandomCluster1090', 'Boyan', 'Baird']
+# algorithms = ['gtd2', 'tdc', 'td']
+# stepsizes = ['constant', 'adagrad', 'amsgrad', 'schedule']
+
 
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'
@@ -57,6 +62,9 @@ def generatePlotTTA(ax, exp_paths, bounds):
         const = whereParameterGreaterEq(const, 'ratio', 1)
         best_unconst = getBest(unconst)
         best_const = getBest(const)
+
+        if 'Regh' in label:
+            print(best_const.params)
 
 
         b = plotBest(best_unconst, ax, label=label + '_unc', color=color, dashed=True)
