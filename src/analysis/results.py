@@ -60,6 +60,15 @@ def getBestOverParameter(results, param, bestBy='end'):
 
     return best
 
+def sliceOverParameter(results, slicer, param):
+    parts = splitOverParameter(results, param)
+
+    sl = {}
+    for k in parts:
+        sl[k] = find(parts[k], slicer, ignore=[param])
+
+    return sl
+
 def getBest(results):
     low = first(results)
     for r in results:
@@ -83,10 +92,10 @@ def getBestEnd(results):
 
     return low
 
-def find(stream, other):
+def find(stream, other, ignore=[]):
     params = other.params
     for res in stream:
-        if equal(params, res.params):
+        if equal(params, res.params, ignore):
             return res
 
 def whereParameterEquals(results, param, value):

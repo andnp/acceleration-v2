@@ -6,7 +6,7 @@ sys.path.append(os.getcwd())
 
 from itertools import tee
 from src.analysis.learning_curve import plot, save, plotBest
-from src.analysis.results import loadResults, whereParameterGreaterEq, getBest, find
+from src.analysis.results import loadResults, whereParameterGreaterEq, whereParameterEquals, getBest, find
 from src.analysis.colormap import colors
 from src.utils.model import loadExperiment
 
@@ -23,7 +23,7 @@ error = 'rmsve'
 
 name = 'regh'
 problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
-algorithms = ['gtd2', 'tdc', 'td', 'regh_tdc']
+algorithms = ['gtd2', 'tdc', 'td', 'regh_tdc', 'htd']
 stepsizes = ['constant', 'adagrad', 'schedule']
 
 # name = 'all'
@@ -60,6 +60,7 @@ def generatePlotTTA(ax, exp_paths, bounds):
 
         # elif error == 'rmspbe':
         const = whereParameterGreaterEq(const, 'ratio', 1)
+        const = whereParameterEquals(const, 'reg_h', 0.8)
         best_unconst = getBest(unconst)
         best_const = getBest(const)
 

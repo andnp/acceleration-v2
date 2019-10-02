@@ -1,0 +1,4 @@
+ss: schedule; problem: Baird; alg: GTD2schedule; perc: 0.5769230769230769; div: 180; total: 312
+ss: schedule; problem: Baird; alg: TDCschedule; perc: 0.7243589743589743; div: 226; total: 312
+ss: schedule; problem: Baird; alg: TDschedule; perc: 1.0; div: 24; total: 24
+ss: schedule; problem: Baird; alg: ReghTDCschedule; perc: 0.6868131868131868; div: 1500; total: 2184

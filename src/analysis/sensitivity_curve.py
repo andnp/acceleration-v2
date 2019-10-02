@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 from itertools import tee
 
-from src.analysis.results import getBestOverParameter, find
+from src.analysis.results import getBestOverParameter, find, sliceOverParameter, getBestEnd, getBest
 
 def save(exp, name, type='pdf'):
     exp_name = exp.getExperimentName()
@@ -26,10 +26,21 @@ def getMaxY(arr):
 
     return m
 
-def plotSensitivity(results, param, ax, overStream=None, color=None, label=None, dashed=False, bestBy='end'):
+def plotSensitivity(results, param, ax, reducer='best', overStream=None, color=None, label=None, dashed=False, bestBy='end'):
     useOtherStream = overStream is not None
     overStream = overStream if useOtherStream else results
-    bestStream = getBestOverParameter(overStream, param, bestBy=bestBy)
+
+    if reducer == 'best':
+        bestStream = getBestOverParameter(overStream, param, bestBy=bestBy)
+
+    elif reducer == 'slice':
+        l, r = tee(overStream)
+        if bestBy == 'end':
+            best = getBestEnd(l)
+        elif bestBy == 'auc':
+            best = getBest(l)
+
+        bestStream = sliceOverParameter(r, best, param)
 
     x = sorted(list(bestStream))
     if useOtherStream:

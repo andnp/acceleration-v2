@@ -27,7 +27,7 @@ error = 'rmspbe'
 
 name = 'regh'
 problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
-algorithms = ['gtd2', 'tdc', 'regh_tdc']
+algorithms = ['regh_tdc']
 
 # name = 'all'
 # problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'SmallChainRandomCluster1090', 'SmallChainRandomCluster4060', 'SmallChainRandomCluster5050', 'SmallChainOuterRandomCluster1090', 'Boyan', 'Baird']
@@ -45,43 +45,13 @@ def generatePlotTTA(ax, exp_paths, bestBy, bounds):
     for exp_path in exp_paths:
         exp = loadExperiment(exp_path)
         results = loadResults(exp, errorfile)
-        results = whereParameterEquals(results, 'reg_h', 6.4)
 
         agent = exp.agent
-        if 'SmoothTDC' in agent:
-            average = exp._d['metaParameters']['averageType']
-            agent += '_' + average
-
         color = colors[agent]
         label = agent
 
-        b = plotSensitivity(results, 'ratio', ax, color=color, label=label, bestBy=bestBy)
+        b = plotSensitivity(results, 'reg_h', ax, reducer='best', color=color, label=label, bestBy=bestBy)
         bounds.append(b)
-
-def generatePlotSTA(ax, exp_paths, bestBy, bounds):
-    for exp_path in exp_paths:
-        exp = loadExperiment(exp_path)
-        results = loadResults(exp, errorfile)
-
-        agent = exp.agent
-        if 'SmoothTDC' in agent:
-            average = exp._d['metaParameters']['averageType']
-            agent += '_' + average
-
-        color = colors[agent]
-        label = agent
-
-        if bestBy == 'end':
-            metric = lambda m: np.mean(m[-int(m.shape[0] * .1):])
-            best = getBestEnd(results)
-        elif bestBy == 'auc':
-            metric = np.mean
-            best = getBest(results)
-
-        m = metric(best.mean())
-        ax.hlines(m, 2**-6, 2**6, color=color, label=label)
-
-        bounds.append([m, m])
 
 if __name__ == "__main__":
     f, axes = plt.subplots(len(stepsizes), len(problems) * 2)
@@ -90,22 +60,12 @@ if __name__ == "__main__":
         for j, problem in enumerate(problems):
             bounds = []
 
-            # ---------------------
-            # -- Add TD baselines -
-            # ---------------------
-            if ss == 'constant':
-                td_paths = [f'experiments/stepsizes/{problem}/td/td.json']
-            else:
-                td_paths = glob.glob(f'experiments/stepsizes/{problem}/td/td{ss}.json')
-
-            generatePlotSTA(axes[i, 2 * j], td_paths, 'auc', bounds)
-            generatePlotSTA(axes[i, 2 * j + 1], td_paths, 'end', bounds)
-
             # --------------------
             # -- Plot other algs -
             # --------------------
 
             for alg in algorithms:
+                print(ss, problem, alg)
                 if ss == 'constant':
                     exp_paths = glob.glob(f'experiments/stepsizes/{problem}/{alg}/{alg}.json')
                 else:
@@ -135,10 +95,8 @@ if __name__ == "__main__":
 
             axes[i, 2 * j + 1].set_title(f'{ss} - end')
 
-            axes[i, 2 * j].set_ylim([lower, upper])
-            axes[i, 2 * j + 1].set_ylim([lower, upper])
-            axes[i, 2 * j].axvline(1, linestyle=':', color='grey', linewidth=0.5)
-            axes[i, 2 * j + 1].axvline(1, linestyle=':', color='grey', linewidth=0.5)
+            # axes[i, 2 * j].set_ylim([lower, upper])
+            # axes[i, 2 * j + 1].set_ylim([lower, upper])
 
 
     # plt.show()
@@ -150,4 +108,4 @@ if __name__ == "__main__":
     width = len(problems) * 8
     height = len(stepsizes) * (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/ss_eta_{name}_{error}_lambda-6.png', dpi=100)
+    plt.savefig(f'{save_path}/regh_{name}_{error}.png', dpi=100)

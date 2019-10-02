@@ -25,7 +25,7 @@ stepsize_colors = {
 colors = {
     'SmoothTDCadagrad_ema': 'orange',
     'SmoothTDCadagrad_ema_x': 'black',
-    'HTDadagrad': 'purple',
+    'HTDadagrad': 'pink',
     'GTD2adagrad': 'green',
     'TDCadagrad': 'blue',
     'TDadagrad': 'red',
@@ -33,7 +33,7 @@ colors = {
 
     'SmoothTDCamsgrad_ema': 'orange',
     'SmoothTDCamsgrad_ema_x': 'black',
-    'HTDamsgrad': 'purple',
+    'HTDamsgrad': 'pink',
     'GTD2amsgrad': 'green',
     'TDCamsgrad': 'blue',
     'TDamsgrad': 'red',
@@ -41,7 +41,7 @@ colors = {
 
     'SmoothTDCschedule_ema': 'orange',
     'SmoothTDCschedule_ema_x': 'black',
-    'HTDschedule': 'purple',
+    'HTDschedule': 'pink',
     'GTD2schedule': 'green',
     'TDCschedule': 'blue',
     'TDschedule': 'red',
@@ -49,7 +49,7 @@ colors = {
 
     'SmoothTDC_ema': 'orange',
     'SmoothTDC_ema_x': 'black',
-    'HTD': 'purple',
+    'HTD': 'pink',
     'GTD2': 'green',
     'TDC': 'blue',
     'TD': 'red',
