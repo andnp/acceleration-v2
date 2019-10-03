@@ -1,5 +1,6 @@
 results/
 results.tar
+*.tar.bz2
 .tmp/
 env/
 accum/

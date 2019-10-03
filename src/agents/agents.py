@@ -31,6 +31,9 @@ from .regh_tdc.ReghTDCschedule import ReghTDCschedule
 from .regh_gtd2.ReghGTD2 import ReghGTD2
 from .regh_gtd2.ReghGTD2adagrad import ReghGTD2adagrad
 from .regh_gtd2.ReghGTD2schedule import ReghGTD2schedule
+from .vtrace.VTrace import VTrace
+from .vtrace.VTraceadagrad import VTraceadagrad
+from .vtrace.VTraceschedule import VTraceschedule
 
 def getAgent(name):
     if name == 'TDC':
@@ -131,5 +134,14 @@ def getAgent(name):
 
     elif name == 'ReghGTD2schedule':
         return ReghGTD2schedule
+
+    elif name == 'VTrace':
+        return VTrace
+
+    elif name == 'VTraceadagrad':
+        return VTraceadagrad
+
+    elif name == 'VTraceschedule':
+        return VTraceschedule
 
     raise Exception('Unexpected agent given')
