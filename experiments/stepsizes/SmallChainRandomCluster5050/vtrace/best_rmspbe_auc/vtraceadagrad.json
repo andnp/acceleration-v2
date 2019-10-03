@@ -1,0 +1,9 @@
+{
+    "agent": "VTraceadagrad",
+    "problem": "SmallChainRandomCluster5050",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0,
+        "alpha": 1.0
+    }
+}

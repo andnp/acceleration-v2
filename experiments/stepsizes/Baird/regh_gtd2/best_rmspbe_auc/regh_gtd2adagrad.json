@@ -1,0 +1,11 @@
+{
+    "agent": "ReghGTD2adagrad",
+    "problem": "Baird",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 2,
+        "alpha": 0.5,
+        "reg_h": 1.6,
+        "use_ideal_h": false
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "agent": "ReghTDCadagrad",
+    "problem": "Boyan",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 4,
+        "alpha": 1.0,
+        "reg_h": 0.4,
+        "use_ideal_h": false
+    }
+}

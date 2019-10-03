@@ -13,22 +13,16 @@ from src.utils.model import loadExperiment
 from src.utils.arrays import first
 from src.utils.path import fileName, up
 
-error = 'rmsve'
-
-# name = 'policy'
-# problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'Baird']
-
-# name = 'features'
-# problems = ['SmallChainTabular5050', 'SmallChainInverted5050', 'SmallChainDependent5050' 'Boyan']
+error = 'rmspbe'
 
 name = 'regh'
 problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
-algorithms = ['gtd2', 'tdc', 'td', 'regh_tdc', 'htd']
+algorithms = ['gtd2', 'tdc', 'td', 'regh_tdc', 'htd', 'vtrace']
 stepsizes = ['constant', 'adagrad', 'schedule']
 
 # name = 'all'
 # problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'SmallChainRandomCluster1090', 'SmallChainRandomCluster4060', 'SmallChainRandomCluster5050', 'SmallChainOuterRandomCluster1090', 'Boyan', 'Baird']
-# algorithms = ['gtd2', 'tdc', 'td']
+# algorithms = ['gtd2', 'tdc', 'td', 'regh_tdc', 'regh_gtd2', 'htd', 'vtrace']
 # stepsizes = ['constant', 'adagrad', 'amsgrad', 'schedule']
 
 
@@ -60,12 +54,16 @@ def generatePlotTTA(ax, exp_paths, bounds):
 
         # elif error == 'rmspbe':
         const = whereParameterGreaterEq(const, 'ratio', 1)
-        const = whereParameterEquals(const, 'reg_h', 0.8)
+        if 'ReghTDC' in label:
+            const = whereParameterEquals(const, 'reg_h', 0.8)
+        if 'ReghGTD2' in label:
+            const = whereParameterEquals(const, 'reg_h', 0.1)
+
         best_unconst = getBest(unconst)
         best_const = getBest(const)
 
         if 'Regh' in label:
-            print(best_const.params)
+            print(best_unconst.params)
 
 
         b = plotBest(best_unconst, ax, label=label + '_unc', color=color, dashed=True)
@@ -124,7 +122,7 @@ if __name__ == "__main__":
                     continue
                 exp = loadExperiment(exp_paths[0])
 
-                if '_h' in alg or alg == 'td':
+                if '_h' in alg or alg == 'td' or alg == 'vtrace':
                     generatePlotSSA(axes[i, j], exp_paths, bounds)
                 else:
                     generatePlotTTA(axes[i, j], exp_paths, bounds)

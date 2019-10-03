@@ -23,37 +23,37 @@ stepsize_colors = {
 }
 
 colors = {
-    'SmoothTDCadagrad_ema': 'orange',
-    'SmoothTDCadagrad_ema_x': 'black',
     'HTDadagrad': 'pink',
     'GTD2adagrad': 'green',
     'TDCadagrad': 'blue',
     'TDadagrad': 'red',
     'ReghTDCadagrad': 'purple',
+    'ReghGTD2adagrad': 'black',
+    'VTraceadagrad': 'orange',
 
-    'SmoothTDCamsgrad_ema': 'orange',
-    'SmoothTDCamsgrad_ema_x': 'black',
     'HTDamsgrad': 'pink',
     'GTD2amsgrad': 'green',
     'TDCamsgrad': 'blue',
     'TDamsgrad': 'red',
     'ReghTDCamsgrad': 'purple',
+    'ReghGTD2amsgrad': 'black',
+    'VTraceamsgrad': 'orange',
 
-    'SmoothTDCschedule_ema': 'orange',
-    'SmoothTDCschedule_ema_x': 'black',
     'HTDschedule': 'pink',
     'GTD2schedule': 'green',
     'TDCschedule': 'blue',
     'TDschedule': 'red',
     'ReghTDCschedule': 'purple',
+    'ReghGTD2schedule': 'black',
+    'VTraceschedule': 'orange',
 
-    'SmoothTDC_ema': 'orange',
-    'SmoothTDC_ema_x': 'black',
     'HTD': 'pink',
     'GTD2': 'green',
     'TDC': 'blue',
     'TD': 'red',
     'ReghTDC': 'purple',
+    'ReghGTD2': 'black',
+    'VTrace': 'orange',
 
     'LSTD': 'black',
 }

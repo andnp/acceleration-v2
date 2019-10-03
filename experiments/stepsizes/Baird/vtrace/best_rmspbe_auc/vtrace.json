@@ -1,0 +1,9 @@
+{
+    "agent": "VTrace",
+    "problem": "Baird",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0,
+        "alpha": 0.0078125
+    }
+}

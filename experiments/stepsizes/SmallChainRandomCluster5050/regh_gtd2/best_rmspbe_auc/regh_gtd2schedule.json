@@ -1,0 +1,12 @@
+{
+    "agent": "ReghGTD2schedule",
+    "problem": "SmallChainRandomCluster5050",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 1000,
+        "ratio": 0.0625,
+        "alpha": 1.0,
+        "reg_h": 0.1,
+        "use_ideal_h": false
+    }
+}

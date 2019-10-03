@@ -1,0 +1,12 @@
+{
+    "agent": "ReghGTD2schedule",
+    "problem": "SmallChainDependent4060",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 100,
+        "ratio": 0.125,
+        "alpha": 1.0,
+        "reg_h": 0.4,
+        "use_ideal_h": false
+    }
+}

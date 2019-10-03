@@ -1,0 +1,12 @@
+{
+    "agent": "ReghGTD2schedule",
+    "problem": "Baird",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 1000,
+        "ratio": 2,
+        "alpha": 0.015625,
+        "reg_h": 0.4,
+        "use_ideal_h": false
+    }
+}

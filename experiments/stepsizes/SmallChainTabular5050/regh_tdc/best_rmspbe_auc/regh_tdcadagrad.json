@@ -1,0 +1,11 @@
+{
+    "agent": "ReghTDCadagrad",
+    "problem": "SmallChainTabular5050",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0.03125,
+        "alpha": 0.125,
+        "reg_h": 0.1,
+        "use_ideal_h": false
+    }
+}

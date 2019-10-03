@@ -1,0 +1,11 @@
+{
+    "agent": "ReghGTD2adagrad",
+    "problem": "SmallChainDependent4060",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0.25,
+        "alpha": 0.0625,
+        "reg_h": 1.6,
+        "use_ideal_h": false
+    }
+}

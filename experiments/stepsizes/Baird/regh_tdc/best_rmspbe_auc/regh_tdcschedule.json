@@ -1,0 +1,12 @@
+{
+    "agent": "ReghTDCschedule",
+    "problem": "Baird",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 1000,
+        "ratio": 4,
+        "alpha": 0.015625,
+        "reg_h": 0.8,
+        "use_ideal_h": false
+    }
+}

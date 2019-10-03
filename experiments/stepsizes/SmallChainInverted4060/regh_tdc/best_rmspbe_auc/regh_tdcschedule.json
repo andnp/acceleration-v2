@@ -1,0 +1,12 @@
+{
+    "agent": "ReghTDCschedule",
+    "problem": "SmallChainInverted4060",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 100,
+        "ratio": 0.25,
+        "alpha": 0.5,
+        "reg_h": 0.4,
+        "use_ideal_h": false
+    }
+}

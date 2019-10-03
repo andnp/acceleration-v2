@@ -1,0 +1,10 @@
+{
+    "agent": "VTraceschedule",
+    "problem": "SmallChainDependent4060",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 10,
+        "ratio": 0,
+        "alpha": 1.0
+    }
+}

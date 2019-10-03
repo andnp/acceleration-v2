@@ -1,0 +1,11 @@
+{
+    "agent": "ReghTDC",
+    "problem": "SmallChainTabular4060",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 16,
+        "alpha": 0.03125,
+        "reg_h": 3.2,
+        "use_ideal_h": false
+    }
+}
