@@ -1,6 +1,6 @@
 {
-    "agent": "ReghGTD2schedule",
-    "problem": "SmallChainInverted5050LeftZero",
+    "agent": "ReghTDCschedule",
+    "problem": "SmallChainRandomCluster5050",
     "subsample": 10,
     "metaParameters": {
         "n0": [10, 100, 1000],
