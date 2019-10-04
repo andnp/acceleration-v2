@@ -10,7 +10,7 @@ class VTraceGTD2(BaseTD):
         delta = r + gamma * vp - v
         delta_hat = h.dot(x)
 
-        k = np.min(1, p)
+        k = np.min((1, p))
 
         dw = k * (delta_hat * x - gamma * delta_hat * xp)
         dh = (k * delta - delta_hat) * x
