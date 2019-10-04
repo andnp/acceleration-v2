@@ -52,6 +52,7 @@ colors = {
     'TDC': 'blue',
     'TD': 'red',
     'ReghTDC': 'purple',
+    'REGH_TDC': 'purple',
     'ReghGTD2': 'black',
     'VTrace': 'orange',
 

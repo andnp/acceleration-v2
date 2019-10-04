@@ -26,7 +26,7 @@ def getMaxY(arr):
 
     return m
 
-def plotSensitivity(results, param, ax, reducer='best', overStream=None, color=None, label=None, dashed=False, bestBy='end'):
+def getSensitivityData(results, param, reducer='best', overStream=None, bestBy='end'):
     useOtherStream = overStream is not None
     overStream = overStream if useOtherStream else results
 
@@ -61,9 +61,11 @@ def plotSensitivity(results, param, ax, reducer='best', overStream=None, color=N
     y = [metric(best[k].mean()) for k in x]
     e = [metric(best[k].stderr()) for k in x]
 
-    exp = best[x[0]].exp
+    return x, y, e
 
-    label = label if label is not None else exp.agent
+def plotSensitivity(results, param, ax, reducer='best', overStream=None, color=None, label=None, dashed=False, bestBy='end'):
+    x, y, e = getSensitivityData(results, param, reducer, overStream, bestBy)
+
     if dashed:
         dashes = ':'
     else:
@@ -78,6 +80,23 @@ def plotSensitivity(results, param, ax, reducer='best', overStream=None, color=N
     min_y = min(y) * .95
 
     return (min_y, max_y)
+
+def sensitivityCurve(ax, x, y, e=None, color=None, alphaMain=1, label=None, dashed=False):
+    if dashed:
+        dashes = ':'
+    else:
+        dashes = None
+
+    ax.plot(x, y, label=label, linestyle=dashes, color=color, alpha=alphaMain, linewidth=2)
+    if e is not None:
+        low_ci, high_ci = confidenceInterval(np.array(y), np.array(e))
+        ax.fill_between(x, low_ci, high_ci, color=color, alpha=0.4 * alphaMain)
+
+    max_y = getMaxY(y)
+    min_y = min(y) * .95
+
+    return (min_y, max_y)
+
 
 def confidenceInterval(mean, stderr):
     stderr = stderr.clip(0, 1)

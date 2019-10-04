@@ -7,14 +7,14 @@ sys.path.append(os.getcwd())
 
 from itertools import tee
 from src.analysis.learning_curve import lineplot
-from src.analysis.results import loadResults, whereParameterGreaterEq, getBest, find
-from src.analysis.colormap import stepsize_colors as colors
+from src.analysis.results import loadResults, whereParameterGreaterEq, whereParameterEquals, getBest, find
+from src.analysis.colormap import colors
 from src.utils.model import loadExperiment
 
 from src.utils.arrays import first
 from src.utils.path import fileName, up
 
-error = 'rmspbe'
+error = 'rmsve'
 
 # name = 'policy'
 # problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'Baird']
@@ -25,8 +25,8 @@ error = 'rmspbe'
 name = 'all'
 problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan']
 
-algorithms = ['gtd2', 'tdc']
-stepsizes = ['constant', 'schedule']
+algorithms = ['gtd2', 'tdc', 'regh_tdc', 'td']
+stepsizes = ['constant', 'adagrad', 'schedule']
 
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'
@@ -48,7 +48,7 @@ if __name__ == "__main__":
         all_steps.append(steps)
 
     max_steps = min(all_steps)
-    curves = np.zeros((len(stepsizes), len(algorithms), len(problems), max_steps))
+    curves = np.zeros((len(stepsizes), len(algorithms), len(problems), max_steps, 2))
 
     for k, problem in enumerate(problems):
         for i, ss in enumerate(stepsizes):
@@ -63,11 +63,13 @@ if __name__ == "__main__":
 
                 results = loadResults(exp, errorfile)
                 results = whereParameterGreaterEq(results, 'ratio', 1)
+                results = whereParameterEquals(results, 'reg_h', 0.8)
                 best = getBest(results)
 
                 curve = best.mean()[:max_steps]
 
-                curves[i, j, k, :] = curve / curve[0]
+                curves[i, j, k, :, 0] = curve / curve[0]
+                curves[i, j, k, :, 0] = curve / curve[0]
 
 
     aop = np.mean(curves, axis=2)

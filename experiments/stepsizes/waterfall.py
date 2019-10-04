@@ -15,7 +15,7 @@ error = 'rmspbe'
 
 name = 'all'
 problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'SmallChainRandomCluster1090', 'SmallChainRandomCluster4060', 'SmallChainRandomCluster5050', 'SmallChainOuterRandomCluster1090', 'Boyan', 'Baird']
-algorithms = ['gtd2', 'tdc', 'td', 'regh_tdc']
+algorithms = ['tdc','regh_tdc']
 stepsizes = ['constant', 'adagrad', 'schedule']
 
 # how far above results should "diverged" results go?
@@ -30,6 +30,9 @@ if error == 'rmsve':
 elif error == 'rmspbe':
     errorfile = 'rmspbe_summary.npy'
 
+save_path = 'experiments/stepsizes/plots'
+diverged_file = open(f'{save_path}/{name}_{error}_waterfall_diverged.txt', 'w')
+
 def generatePlot(ax, exp_paths, ss, problem):
     # load results
     all_performance = {}
@@ -40,6 +43,7 @@ def generatePlot(ax, exp_paths, ss, problem):
             continue
 
         results = loadResults(exp, errorfile)
+        results = whereParameterEquals(results, 'reg_h', 0.8)
 
         color = colors[exp.agent]
         label = exp.agent
@@ -58,8 +62,8 @@ def generatePlot(ax, exp_paths, ss, problem):
                 m = np.nan
 
             # diverged if mean is larger than start
-            elif curve[0] < m:
-                m = np.nan
+            # elif curve[0] < m:
+            #     m = np.nan
 
             performance.append(m)
 
@@ -82,8 +86,6 @@ def generatePlot(ax, exp_paths, ss, problem):
     x_ticks = []
     x_labels = []
 
-    save_path = 'experiments/stepsizes/plots'
-    diverged_file = open(f'{save_path}/{name}_{error}_waterfall_diverged.txt', 'w')
     for key in all_performance:
         data = all_performance[key]
 
