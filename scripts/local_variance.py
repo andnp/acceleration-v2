@@ -38,7 +38,10 @@ if __name__ == "__main__":
         paths = listResultsPaths(exp, args.runs)
         indices = generateMissing(paths)
 
-        exe = args.executable + ' ' + path + ' ' + str(first(indices))
-        cmds.append(exe)
+        try:
+            exe = args.executable + ' ' + path + ' ' + str(first(indices))
+            cmds.append(exe)
+        except:
+            continue
 
     pool.map(partial(subprocess.run, shell=True, stdout=subprocess.PIPE), cmds)
