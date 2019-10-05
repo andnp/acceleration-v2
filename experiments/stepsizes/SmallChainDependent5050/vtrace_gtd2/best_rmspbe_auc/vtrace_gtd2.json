@@ -1,0 +1,9 @@
+{
+    "agent": "VTraceGTD2",
+    "problem": "SmallChainDependent5050",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 1,
+        "alpha": 0.0625
+    }
+}

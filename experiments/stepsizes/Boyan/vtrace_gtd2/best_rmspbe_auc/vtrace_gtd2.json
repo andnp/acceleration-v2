@@ -1,0 +1,9 @@
+{
+    "agent": "VTraceGTD2",
+    "problem": "Boyan",
+    "subsample": 10,
+    "metaParameters": {
+        "ratio": 0.5,
+        "alpha": 0.25
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "agent": "VTraceGTD2schedule",
+    "problem": "Baird",
+    "subsample": 10,
+    "metaParameters": {
+        "n0": 1000,
+        "ratio": 0.0625,
+        "alpha": 0.5
+    }
+}
