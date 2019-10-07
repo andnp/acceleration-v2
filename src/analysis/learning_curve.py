@@ -1,7 +1,23 @@
 import os
 import numpy as np
+from PyExpUtils.utils.generator import group
 from src.analysis.results import getBest, getBestEnd
+from src.utils.arrays import first
 import matplotlib.pyplot as plt
+
+def windowAverage(arr, window):
+    for g in group(arr, window):
+        yield np.mean(g)
+
+def smoothingAverage(arr, p=0.5):
+    m = 0
+    for i, a in enumerate(arr):
+        if i == 0:
+            m = a
+            yield m
+        else:
+            m = p * m + (1 - p) * a
+            yield m
 
 def confidenceInterval(mean, stderr):
     return (mean - stderr, mean + stderr)
@@ -30,7 +46,7 @@ def getMaxY(arr):
 
     return m
 
-def plot(results, ax, color=None, label=None, labelParams=None, bestBy='end', dashed=False):
+def plot(results, ax, window=1, smoothing=0, color=None, alpha=0.4, alphaMain=1, label=None, labelParams=None, bestBy='end', dashed=False):
     if bestBy == 'end':
         best = getBestEnd(results)
     elif bestBy == 'auc':
@@ -39,10 +55,10 @@ def plot(results, ax, color=None, label=None, labelParams=None, bestBy='end', da
         raise Exception('I can only get best by "end" or "auc"')
 
     print(best.exp.agent, best.params)
-    return plotBest(best, ax, color, label, labelParams=labelParams, dashed=dashed)
+    return plotBest(best, ax, smoothing=smoothing, color=color, alpha=alpha, alphaMain=alphaMain, label=label, window=window, labelParams=labelParams, dashed=dashed)
 
 
-def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True, labelParams=None, dashed=False):
+def plotBest(best, ax, window=1, smoothing=0, color=None, label=None, alpha=0.4, alphaMain=1, stderr=True, labelParams=None, dashed=False):
     label = label if label is not None else best.exp.agent
 
     params = ''
@@ -64,7 +80,7 @@ def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True, labe
         dashed = [dashed] * mean.shape[1]
 
     for i in range(mean.shape[1]):
-        lineplot(ax, mean[:, i], ste[:, i], color=color, label=label[i] + params, alphaMain=alphaMain, dashed=dashed[i])
+        lineplot(ax, mean[:, i], stderr=ste[:, i], smoothing=smoothing, window=window, color=color, label=label[i] + params, alpha=alpha, alphaMain=alphaMain, dashed=dashed[i])
 
     if len(mean.shape) > 1 and mean.shape[1] > 1:
         return (np.nan, np.nan)
@@ -74,15 +90,24 @@ def plotBest(best, ax, color=None, label=None, alphaMain=None, stderr=True, labe
 
     return (min_y, max_y)
 
-def lineplot(ax, mean, stderr=None, color=None, label=None, alphaMain=None, dashed=None):
+def lineplot(ax, mean, window=1, smoothing=0, stderr=None, color=None, label=None, alpha=0.4, alphaMain=1, dashed=None):
     if dashed:
         dashes = ':'
     else:
         dashes = None
 
+    if window > 1:
+        mean = windowAverage(mean, window)
+
+    if window > 1 and stderr is not None:
+        stderr = windowAverage(stderr, window)
+
+    mean = np.array(list(smoothingAverage(mean, smoothing)))
+
     base, = ax.plot(mean, linestyle=dashes, label=label, color=color, alpha=alphaMain, linewidth=2)
     if stderr is not None:
+        stderr = np.array(list(smoothingAverage(stderr, smoothing)))
         (low_ci, high_ci) = confidenceInterval(mean, stderr)
-        ax.fill_between(range(mean.shape[0]), low_ci, high_ci, color=base.get_color(), alpha=0.4)
+        ax.fill_between(range(mean.shape[0]), low_ci, high_ci, color=base.get_color(), alpha=alpha * alphaMain)
 
     ax.legend()

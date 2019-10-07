@@ -69,7 +69,10 @@ def sliceOverParameter(results, slicer, param):
 
     return sl
 
-def getBest(results):
+def getBest(results, bestBy='auc'):
+    if bestBy == 'end':
+        return getBestEnd(results)
+
     low = first(results)
     for r in results:
         am = np.mean(r.mean())

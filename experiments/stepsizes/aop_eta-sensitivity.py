@@ -17,14 +17,26 @@ from src.utils.path import fileName, up
 
 error = 'rmspbe'
 
+SMALL = 8
+MEDIUM = 12
+BIGGER = 16
+
+plt.rc('font', size=SMALL)          # controls default text sizes
+plt.rc('axes', titlesize=SMALL)     # fontsize of the axes title
+plt.rc('axes', labelsize=MEDIUM)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=BIGGER)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=BIGGER)    # fontsize of the tick labels
+plt.rc('legend', fontsize=BIGGER)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER)  # fontsize of the figure title
+
 # name = 'on-policy'
 # problems = ['SmallChainTabular5050', 'SmallChainInverted5050', 'SmallChainDependent5050', 'Boyan']
 
-# name = 'off-policy'
-# problems = ['SmallChainTabular4060', 'SmallChainInverted4060', 'SmallChainDependent4060']
+name = 'off-policy'
+problems = ['SmallChainTabular4060', 'SmallChainInverted4060', 'SmallChainDependent4060']
 
-name = 'all'
-problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan']
+# name = 'all'
+# problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan']
 
 algorithms = ['gtd2', 'tdc', 'regh_tdc', 'htd']
 stepsizes = ['constant', 'adagrad', 'schedule']
@@ -81,7 +93,7 @@ if __name__ == "__main__":
                 lc, results = tee(results)
                 best = getBest(lc)
 
-                x, y, e = getSensitivityData(results, 'ratio', reducer='best', bestBy='auc')
+                x, y, e = getSensitivityData(results, 'ratio', reducer='slice', bestBy='auc')
 
                 curve = best.mean()
 
@@ -119,4 +131,4 @@ if __name__ == "__main__":
     width = 8
     height = (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/{name}_aop-eta-sensitivity_{error}.png', dpi=100)
+    plt.savefig(f'{save_path}/{name}_aop-eta-sensitivity_{error}.pdf', bbox_inches='tight', dpi=100)

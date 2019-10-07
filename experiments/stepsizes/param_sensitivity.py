@@ -1,12 +1,13 @@
 import os
 import sys
 import glob
+import numpy as np
 import matplotlib.pyplot as plt
 sys.path.append(os.getcwd())
 
 from itertools import tee
-from src.analysis.learning_curve import plot, save, plotBest
-from src.analysis.results import loadResults, whereParameterGreaterEq, whereParameterEquals, getBest, find
+from src.analysis.sensitivity_curve import plotSensitivity, save
+from src.analysis.results import loadResults, whereParameterGreaterEq, whereParameterEquals, getBest, getBestEnd, find
 from src.analysis.colormap import colors
 from src.utils.model import loadExperiment
 
@@ -16,23 +17,20 @@ from src.utils.path import fileName, up
 error = 'rmspbe'
 
 name = 'bakeoff'
-problem = 'SmallChainTabular4060'
-algorithms = ['td', 'tdc', 'vtrace', 'htd', 'regh_tdc']
-# algorithms = ['td', 'gtd2', 'tdc', 'htd', 'regh_tdc']
-# algorithms = ['td', 'tdc', 'regh_tdc']
+problem = 'SmallChainInverted4060'
+algorithms = ['tdc', 'td', 'regh_tdc']
+# algorithms = ['tdc', 'td', 'regh_tdc']
 stepsize = 'constant'
+param = 'alpha'
 
 # name = 'broken-htd'
 # problem = 'Baird'
-# algorithms = ['gtd2', 'vtrace', 'htd', 'tdc', 'regh_tdc']
+# algorithms = ['tdc', 'htd', 'regh_tdc']
 # stepsize = 'constant'
 
 bestBy = 'auc'
 show_unconst = False
-lstd_baseline = False
-window = 3
-smoothing = 0.0
-XMAX = 100
+td_baseline = False
 
 SMALL = 8
 MEDIUM = 16
@@ -59,30 +57,27 @@ def generatePlotTTA(ax, exp_path, bounds):
     color = colors[exp.agent]
     label = exp.agent
 
-    const = whereParameterGreaterEq(const, 'ratio', 1)
+    const = whereParameterEquals(const, 'ratio', 1.0)
+
     if 'ReghTDC' in label:
         const = whereParameterEquals(const, 'reg_h', 0.8)
 
-    best_const = getBest(const, bestBy=bestBy)
-    best_unconst = getBest(unconst, bestBy=bestBy)
-
-    if show_unconst and best_const != best_unconst:
-        b = plotBest(best_unconst, ax, window=window, smoothing=smoothing, label=label + '_unc', color=color, alpha=0.2, dashed=True)
+    if show_unconst:
+        b = plotSensitivity(unconst, param, ax, color=color, label=label + '_unc', bestBy=bestBy, dashed=True)
         bounds.append(b)
 
-    b = plotBest(best_const, ax, window=window, smoothing=smoothing, label=label, color=color, alpha=0.2, dashed=False)
+    b = plotSensitivity(const, param, ax, color=color, label=label, bestBy=bestBy)
     bounds.append(b)
 
-def generatePlotSSA(ax, exp_path, bounds):
+def generatePlot(ax, exp_path, bounds):
     exp = loadExperiment(exp_path)
     results = loadResults(exp, errorfile)
 
     color = colors[exp.agent]
     label = exp.agent
 
-    b = plot(results, ax, window=window, smoothing=smoothing, label=label, color=color, alpha=0.2, dashed=False, bestBy=bestBy)
+    b = plotSensitivity(results, param, ax, color=color, label=label, bestBy=bestBy)
     bounds.append(b)
-
 
 if __name__ == "__main__":
     ax = plt.gca()
@@ -90,15 +85,24 @@ if __name__ == "__main__":
 
     bounds = []
 
-    if lstd_baseline:
-        path = f'experiments/stepsizes/{problem}/lstd.json'
-        lstd_exp = loadExperiment(path)
-        LSTD_res = loadResults(lstd_exp, errorfile)
+    if td_baseline:
+        if stepsize == 'constant':
+            path = f'experiments/stepsizes/{problem}/td/td.json'
+        else:
+            path = f'experiments/stepsizes/{problem}/td/td{stepsize}.json'
 
-        LSTD_best = getBest(LSTD_res)
+        td_exp = loadExperiment(path)
+        TD_res = loadResults(td_exp, errorfile)
 
-        b = plotBest(LSTD_best, ax, window=window, color=colors['LSTD'], label='LSTD', alphaMain=0.5, dashed=True)
-        bounds.append(b)
+        if bestBy == 'end':
+            metric = lambda m: np.mean(m[-int(m.shape[0] * .1):])
+            best = getBestEnd(TD_res)
+        elif bestBy == 'auc':
+            metric = np.mean
+            best = getBest(TD_res)
+
+        m = metric(best.mean())
+        ax.hlines(m, 2**-6, 2**6, color=colors['TD'], label='TD', linewidth=2)
 
     for alg in algorithms:
         if stepsize == 'constant':
@@ -106,10 +110,10 @@ if __name__ == "__main__":
         else:
             exp_path = f'experiments/stepsizes/{problem}/{alg}/{alg}{stepsize}.json'
 
-        if '_h' in alg or alg == 'td' or alg == 'vtrace':
-            generatePlotSSA(ax, exp_path, bounds)
-        else:
+        if alg != 'td':
             generatePlotTTA(ax, exp_path, bounds)
+        else:
+            generatePlot(ax, exp_path, bounds)
 
     lower = min(map(lambda x: x[0], bounds)) * 0.9
     upper = max(map(lambda x: x[1], bounds)) * 1.05
@@ -118,8 +122,7 @@ if __name__ == "__main__":
         lower = -0.01
 
     ax.set_ylim([lower, upper])
-    ax.set_ylim([0.01, 0.1])
-    ax.set_xlim([0, XMAX])
+    ax.set_xscale("log", basex=2)
 
     plt.show()
     exit()
@@ -127,7 +130,11 @@ if __name__ == "__main__":
     save_path = 'experiments/stepsizes/plots'
     os.makedirs(save_path, exist_ok=True)
 
+    # merp. backwards compatibility with old file names
+    if param == 'ratio':
+        param = 'eta'
+
     width = 8
     height = (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/{name}_learning-curve_{error}_{stepsize}_{problem}_{bestBy}.pdf', bbox_inches='tight', dpi=100)
+    plt.savefig(f'{save_path}/{name}_{param}-sensitivity_{error}_{stepsize}_{problem}_{bestBy}.pdf', bbox_inches='tight', dpi=100)
