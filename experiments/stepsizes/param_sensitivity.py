@@ -16,13 +16,13 @@ from src.utils.path import fileName, up
 
 error = 'rmspbe'
 
-name = 'bakeoff'
-problem = 'Boyan'
-algorithms = ['tdc', 'gtd2']
-# algorithms = ['tdc', 'gtd2', 'htd']
-baselines = ['td', 'regh_tdc']
-stepsize = 'adagrad'
-param = 'ratio'
+# name = 'bakeoff'
+# problem = 'Boyan'
+# algorithms = ['tdc', 'gtd2']
+# # algorithms = ['tdc', 'gtd2', 'htd']
+# baselines = ['td', 'regh_tdc']
+# stepsize = 'adagrad'
+# param = 'ratio'
 
 # name = 'bakeoff'
 # problem = 'Baird'
@@ -33,13 +33,12 @@ param = 'ratio'
 # stepsize = 'adagrad'
 # param = 'alpha'
 
-# name = 'bakeoff'
-# problem = 'Boyan'
-# # algorithms = ['tdc', 'htd']
-# algorithms = ['regh_tdc']
-# baselines = ['td', 'tdc']
-# stepsize = 'adagrad'
-# param = 'reg_h'
+name = 'bakeoff'
+problem = 'Baird'
+algorithms = ['regh_tdc']
+baselines = ['td', 'tdc']
+stepsize = 'adagrad'
+param = 'reg_h'
 
 # name = 'broken-htd'
 # problem = 'Baird'
@@ -76,10 +75,10 @@ def generatePlotTTA(ax, exp_path, bounds):
     color = colors[exp.agent]
     label = exp.agent
 
-    # const = whereParameterEquals(const, 'ratio', 1)
+    const = whereParameterEquals(const, 'ratio', 1)
 
-    if 'ReghTDC' in label:
-        const = whereParameterEquals(const, 'reg_h', 0.8)
+    # if 'ReghTDC' in label:
+    #     const = whereParameterEquals(const, 'reg_h', 0.8)
 
     if show_unconst:
         b = plotSensitivity(unconst, param, ax, color=color, label=label + '_unc', bestBy=bestBy, dashed=True)
