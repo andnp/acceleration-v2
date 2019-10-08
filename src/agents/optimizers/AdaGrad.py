@@ -37,8 +37,6 @@ class AdaGrad(BaseTD):
             self.S = self.S + np.square(dtheta)
             self.theta = self.theta + (self.stepsize / (np.sqrt(self.S) + 1e-8)) * dtheta
 
-
-
         self.last_p = p
         self.last_gamma = gamma
         self.dtheta = dtheta

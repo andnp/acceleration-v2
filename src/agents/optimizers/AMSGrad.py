@@ -36,7 +36,7 @@ class AMSGrad(BaseTD):
         experience = (x, a, xp, r, gamma, p)
         self.buffer.add(experience)
 
-        dtheta = self.computeGradient(*experience)
+        dtheta = np.array(self.computeGradient(*experience))
         self.theta = self.theta + self.stepsize * dtheta
 
         self.M = self.momentum * self.M + (1 - self.momentum) * dtheta
@@ -46,7 +46,7 @@ class AMSGrad(BaseTD):
 
         for i in range(self.replay):
             experience = self.buffer.sample()[0]
-            dtheta = self.computeGradient(*experience)
+            dtheta = np.array(self.computeGradient(*experience))
 
             self.M = self.momentum * self.M + (1 - self.momentum) * dtheta
             self.S = self.curve * self.S + (1 - self.curve) * np.square(dtheta)
