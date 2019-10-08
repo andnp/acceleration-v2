@@ -21,18 +21,21 @@ from .etdc.ETD import ETD
 from .etdc.ETDadagrad import ETDadagrad
 from .htd.HTD import HTD
 from .htd.HTDadagrad import HTDadagrad
+from .htd.HTDamsgrad import HTDamsgrad
 from .htd.HTDschedule import HTDschedule
 from .smooth_tdc.SmoothTDC import SmoothTDC
 from .smooth_tdc.SmoothTDCschedule import SmoothTDCschedule
 from .smooth_tdc.SmoothTDCadagrad import SmoothTDCadagrad
 from .regh_tdc.ReghTDC import ReghTDC
 from .regh_tdc.ReghTDCadagrad import ReghTDCadagrad
+from .regh_tdc.ReghTDCamsgrad import ReghTDCamsgrad
 from .regh_tdc.ReghTDCschedule import ReghTDCschedule
 from .regh_gtd2.ReghGTD2 import ReghGTD2
 from .regh_gtd2.ReghGTD2adagrad import ReghGTD2adagrad
 from .regh_gtd2.ReghGTD2schedule import ReghGTD2schedule
 from .vtrace.VTrace import VTrace
 from .vtrace.VTraceadagrad import VTraceadagrad
+from .vtrace.VTraceamsgrad import VTraceamsgrad
 from .vtrace.VTraceschedule import VTraceschedule
 from .vtrace_gtd2.VTraceGTD2 import VTraceGTD2
 from .vtrace_gtd2.VTraceGTD2adagrad import VTraceGTD2adagrad
@@ -117,6 +120,9 @@ def getAgent(name):
     elif name == 'HTDadagrad':
         return HTDadagrad
 
+    elif name == 'HTDamsgrad':
+        return HTDamsgrad
+
     elif name == 'HTDschedule':
         return HTDschedule
 
@@ -125,6 +131,9 @@ def getAgent(name):
 
     elif name == 'ReghTDCadagrad':
         return ReghTDCadagrad
+
+    elif name == 'ReghTDCamsgrad':
+        return ReghTDCamsgrad
 
     elif name == 'ReghTDCschedule':
         return ReghTDCschedule
@@ -143,6 +152,9 @@ def getAgent(name):
 
     elif name == 'VTraceadagrad':
         return VTraceadagrad
+
+    elif name == 'VTraceamsgrad':
+        return VTraceamsgrad
 
     elif name == 'VTraceschedule':
         return VTraceschedule
