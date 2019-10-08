@@ -16,21 +16,22 @@ from src.utils.path import fileName, up
 
 error = 'rmspbe'
 
-# name = 'bakeoff'
-# problem = 'Boyan'
-# algorithms = ['tdc', 'gtd2']
-# # algorithms = ['tdc', 'td', 'regh_tdc']
-# stepsize = 'adagrad'
-# param = 'ratio'
-
 name = 'bakeoff'
-problem = 'Baird'
-# algorithms = ['tdc', 'htd']
-# algorithms = ['td', 'tdc', 'gtd2', 'regh_tdc']
-algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc']
-baselines = []
+problem = 'Boyan'
+algorithms = ['tdc', 'gtd2']
+# algorithms = ['tdc', 'gtd2', 'htd']
+baselines = ['td', 'regh_tdc']
 stepsize = 'adagrad'
-param = 'alpha'
+param = 'ratio'
+
+# name = 'bakeoff'
+# problem = 'Baird'
+# # algorithms = ['tdc', 'htd']
+# # algorithms = ['td', 'tdc', 'gtd2', 'regh_tdc']
+# algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc']
+# baselines = []
+# stepsize = 'adagrad'
+# param = 'alpha'
 
 # name = 'bakeoff'
 # problem = 'Boyan'
@@ -75,10 +76,10 @@ def generatePlotTTA(ax, exp_path, bounds):
     color = colors[exp.agent]
     label = exp.agent
 
-    const = whereParameterEquals(const, 'ratio', 1)
+    # const = whereParameterEquals(const, 'ratio', 1)
 
-    # if 'ReghTDC' in label:
-    #     const = whereParameterEquals(const, 'reg_h', 0.8)
+    if 'ReghTDC' in label:
+        const = whereParameterEquals(const, 'reg_h', 0.8)
 
     if show_unconst:
         b = plotSensitivity(unconst, param, ax, color=color, label=label + '_unc', bestBy=bestBy, dashed=True)
@@ -120,7 +121,9 @@ def baseline(ax, exp_path, values, bounds):
     m = metric(best.mean())
     low = min(values)
     high = max(values)
-    ax.hlines(m, low, high, color=color, label=label, linewidth=2)
+    ax.hlines(m, low, high, color=color, label=label, linewidth=4, linestyle=':')
+
+    bounds.append((m, m))
 
 if __name__ == "__main__":
     ax = plt.gca()
@@ -157,7 +160,7 @@ if __name__ == "__main__":
         lower = -0.01
 
     ax.set_ylim([lower, upper])
-    # ax.set_ylim([lower, 7.0])
+    # ax.set_ylim([lower, 0.1])
     ax.set_xscale("log", basex=2)
 
     # plt.show()
