@@ -17,18 +17,28 @@ from src.utils.path import fileName, up
 error = 'rmspbe'
 
 # name = 'bakeoff'
-# problem = 'SmallChainTabular4060'
-# algorithms = ['tdc', 'htd']
+# problem = 'Boyan'
+# algorithms = ['tdc', 'gtd2']
 # # algorithms = ['tdc', 'td', 'regh_tdc']
-# stepsize = 'constant'
-# param = 'alpha'
+# stepsize = 'adagrad'
+# param = 'ratio'
 
 name = 'bakeoff'
-problem = 'Boyan'
+problem = 'Baird'
 # algorithms = ['tdc', 'htd']
-algorithms = ['tdc', 'td', 'gtd2', 'regh_tdc']
+# algorithms = ['td', 'tdc', 'gtd2', 'regh_tdc']
+algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc']
+baselines = []
 stepsize = 'adagrad'
 param = 'alpha'
+
+# name = 'bakeoff'
+# problem = 'Boyan'
+# # algorithms = ['tdc', 'htd']
+# algorithms = ['regh_tdc']
+# baselines = ['td', 'tdc']
+# stepsize = 'adagrad'
+# param = 'reg_h'
 
 # name = 'broken-htd'
 # problem = 'Baird'
@@ -36,9 +46,7 @@ param = 'alpha'
 # stepsize = 'constant'
 
 bestBy = 'auc'
-regh_baseline = False
 show_unconst = False
-td_baseline = False
 
 stderr = True
 
@@ -69,8 +77,8 @@ def generatePlotTTA(ax, exp_path, bounds):
 
     const = whereParameterEquals(const, 'ratio', 1)
 
-    if 'ReghTDC' in label:
-        const = whereParameterEquals(const, 'reg_h', 0.8)
+    # if 'ReghTDC' in label:
+    #     const = whereParameterEquals(const, 'reg_h', 0.8)
 
     if show_unconst:
         b = plotSensitivity(unconst, param, ax, color=color, label=label + '_unc', bestBy=bestBy, dashed=True)
@@ -89,12 +97,14 @@ def generatePlot(ax, exp_path, bounds):
     b = plotSensitivity(results, param, ax, color=color, label=label, bestBy=bestBy)
     bounds.append(b)
 
-def baseline(ax, exp_path, bounds):
+def baseline(ax, exp_path, values, bounds):
     exp = loadExperiment(path)
     results = loadResults(exp, errorfile)
 
     if 'Regh' in exp.agent:
         results = whereParameterEquals(results, 'reg_h', 0.8)
+        results = whereParameterEquals(results, 'ratio', 1)
+    elif 'TDC' in exp.agent or 'GTD2' in exp.agent:
         results = whereParameterEquals(results, 'ratio', 1)
 
     if bestBy == 'end':
@@ -108,29 +118,15 @@ def baseline(ax, exp_path, bounds):
     label = exp.agent
 
     m = metric(best.mean())
-    ax.hlines(m, 2**-6, 2**6, color=color, label=label, linewidth=2)
+    low = min(values)
+    high = max(values)
+    ax.hlines(m, low, high, color=color, label=label, linewidth=2)
 
 if __name__ == "__main__":
     ax = plt.gca()
     f = plt.gcf()
 
     bounds = []
-
-    if td_baseline:
-        if stepsize == 'constant':
-            path = f'experiments/stepsizes/{problem}/td/td.json'
-        else:
-            path = f'experiments/stepsizes/{problem}/td/td{stepsize}.json'
-
-        baseline(ax, path, bounds)
-
-    if regh_baseline:
-        if stepsize == 'constant':
-            path = f'experiments/stepsizes/{problem}/regh_tdc/regh_tdc.json'
-        else:
-            path = f'experiments/stepsizes/{problem}/regh_tdc/regh_tdc{stepsize}.json'
-
-        baseline(ax, path, bounds)
 
     for alg in algorithms:
         if stepsize == 'constant':
@@ -143,14 +139,25 @@ if __name__ == "__main__":
         else:
             generatePlot(ax, exp_path, bounds)
 
+    tmp = loadExperiment(exp_path)
+    param_values = tmp._d['metaParameters'][param]
+
+    for base in baselines:
+        if stepsize == 'constant':
+            path = f'experiments/stepsizes/{problem}/{base}/{base}.json'
+        else:
+            path = f'experiments/stepsizes/{problem}/{base}/{base}{stepsize}.json'
+
+        baseline(ax, path, param_values, bounds)
+
     lower = min(map(lambda x: x[0], bounds)) * 0.9
     upper = max(map(lambda x: x[1], bounds)) * 1.05
 
     if lower < 0.01:
         lower = -0.01
 
-    # ax.set_ylim([lower, upper])
-    # ax.set_ylim([lower, 1.0])
+    ax.set_ylim([lower, upper])
+    # ax.set_ylim([lower, 7.0])
     ax.set_xscale("log", basex=2)
 
     # plt.show()
