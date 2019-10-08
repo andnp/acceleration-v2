@@ -18,10 +18,10 @@ error = 'rmspbe'
 
 name = 'bakeoff'
 problem = 'SmallChainInverted4060'
-algorithms = ['tdc', 'td', 'regh_tdc']
+algorithms = ['tdc', 'htd']
 # algorithms = ['tdc', 'td', 'regh_tdc']
 stepsize = 'constant'
-param = 'alpha'
+param = 'ratio'
 
 # name = 'broken-htd'
 # problem = 'Baird'
@@ -29,8 +29,9 @@ param = 'alpha'
 # stepsize = 'constant'
 
 bestBy = 'auc'
+regh_baseline = True
 show_unconst = False
-td_baseline = False
+td_baseline = True
 
 SMALL = 8
 MEDIUM = 16
@@ -57,8 +58,6 @@ def generatePlotTTA(ax, exp_path, bounds):
     color = colors[exp.agent]
     label = exp.agent
 
-    const = whereParameterEquals(const, 'ratio', 1.0)
-
     if 'ReghTDC' in label:
         const = whereParameterEquals(const, 'reg_h', 0.8)
 
@@ -79,6 +78,27 @@ def generatePlot(ax, exp_path, bounds):
     b = plotSensitivity(results, param, ax, color=color, label=label, bestBy=bestBy)
     bounds.append(b)
 
+def baseline(ax, exp_path, bounds):
+    exp = loadExperiment(path)
+    results = loadResults(exp, errorfile)
+
+    if 'Regh' in exp.agent:
+        results = whereParameterEquals(results, 'reg_h', 0.8)
+        results = whereParameterEquals(results, 'ratio', 1)
+
+    if bestBy == 'end':
+        metric = lambda m: np.mean(m[-int(m.shape[0] * .1):])
+        best = getBestEnd(results)
+    elif bestBy == 'auc':
+        metric = np.mean
+        best = getBest(results)
+
+    color = colors[exp.agent]
+    label = exp.agent
+
+    m = metric(best.mean())
+    ax.hlines(m, 2**-6, 2**6, color=color, label=label, linewidth=2)
+
 if __name__ == "__main__":
     ax = plt.gca()
     f = plt.gcf()
@@ -91,18 +111,15 @@ if __name__ == "__main__":
         else:
             path = f'experiments/stepsizes/{problem}/td/td{stepsize}.json'
 
-        td_exp = loadExperiment(path)
-        TD_res = loadResults(td_exp, errorfile)
+        baseline(ax, path, bounds)
 
-        if bestBy == 'end':
-            metric = lambda m: np.mean(m[-int(m.shape[0] * .1):])
-            best = getBestEnd(TD_res)
-        elif bestBy == 'auc':
-            metric = np.mean
-            best = getBest(TD_res)
+    if regh_baseline:
+        if stepsize == 'constant':
+            path = f'experiments/stepsizes/{problem}/regh_tdc/regh_tdc.json'
+        else:
+            path = f'experiments/stepsizes/{problem}/regh_tdc/regh_tdc{stepsize}.json'
 
-        m = metric(best.mean())
-        ax.hlines(m, 2**-6, 2**6, color=colors['TD'], label='TD', linewidth=2)
+        baseline(ax, path, bounds)
 
     for alg in algorithms:
         if stepsize == 'constant':
@@ -124,8 +141,8 @@ if __name__ == "__main__":
     ax.set_ylim([lower, upper])
     ax.set_xscale("log", basex=2)
 
-    plt.show()
-    exit()
+    # plt.show()
+    # exit()
 
     save_path = 'experiments/stepsizes/plots'
     os.makedirs(save_path, exist_ok=True)
