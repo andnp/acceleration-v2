@@ -24,10 +24,10 @@ error = 'rmspbe'
 # param = 'alpha'
 
 name = 'bakeoff'
-problem = 'Baird'
+problem = 'Boyan'
 # algorithms = ['tdc', 'htd']
-algorithms = ['tdc', 'regh_tdc']
-stepsize = 'constant'
+algorithms = ['tdc', 'td', 'gtd2', 'regh_tdc']
+stepsize = 'adagrad'
 param = 'alpha'
 
 # name = 'broken-htd'
@@ -40,7 +40,7 @@ regh_baseline = False
 show_unconst = False
 td_baseline = False
 
-stderr = False
+stderr = True
 
 SMALL = 8
 MEDIUM = 16
@@ -150,7 +150,7 @@ if __name__ == "__main__":
         lower = -0.01
 
     # ax.set_ylim([lower, upper])
-    ax.set_ylim([lower, 1.0])
+    # ax.set_ylim([lower, 1.0])
     ax.set_xscale("log", basex=2)
 
     # plt.show()

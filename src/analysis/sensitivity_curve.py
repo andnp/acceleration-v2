@@ -76,7 +76,6 @@ def plotSensitivity(results, param, ax, reducer='best', stderr=True, overStream=
         low_ci, high_ci = confidenceInterval(np.array(y), np.array(e))
         ax.fill_between(x, low_ci, high_ci, color=color, alpha=0.4)
 
-    ax.legend()
     max_y = getMaxY(y)
     min_y = min(y) * .95
 

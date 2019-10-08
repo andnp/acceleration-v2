@@ -1,6 +1,6 @@
 {
     "agent": "VTraceadagrad",
-    "problem": "SmallChainDependent4060",
+    "problem": "Boyan",
     "subsample": 10,
     "metaParameters": {
         "ratio": 0,
