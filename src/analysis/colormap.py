@@ -31,6 +31,7 @@ colors = {
     'REGH_TDC': '#ff7f00',
     'ReghGTD2': '#f781bf',
     'VTrace': '#e41a1c',
+    'VTRACE': '#e41a1c',
     'VTraceGTD2': '#a65628',
 
     'LSTD': 'black',

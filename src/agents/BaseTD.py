@@ -1,4 +1,5 @@
 import numpy as np
+from src.utils.buffers import CircularBuffer
 
 class BaseTD:
     def __init__(self, features, params):
@@ -11,6 +12,9 @@ class BaseTD:
             self.alpha_h = params['ratio'] * self.alpha
 
         self.h_variance = params.get('h_variance', 0)
+        self.replay = params.get('replay', 0)
+        self.buffer_size = params.get('buffer_size', 1)
+        self.buffer = CircularBuffer(self.buffer_size)
 
         self.theta = np.zeros((2, features))
 
@@ -36,11 +40,17 @@ class BaseTD:
         dh = np.zeros(self.features)
         return [ dw, dh ]
 
-    def update(self, obs_t, a_t, obs_tp1, r, gamma, p):
-        dtheta = self.computeGradient(obs_t, a_t, obs_tp1, r, gamma, p)
+    def update(self, x, a, xp, r, gamma, p):
+        experience = (x, a, xp, r, gamma, p)
+        self.buffer.add(experience)
 
-        # print(self.stepsize / (np.sqrt(self.S) + 1e-8))
+        dtheta = self.computeGradient(*experience)
         self.theta = self.theta + self.stepsize * dtheta
+
+        for i in range(self.replay):
+            experience = self.buffer.sample()[0]
+            dtheta = self.computeGradient(*experience)
+            self.theta = self.theta + self.stepsize * dtheta
 
         self.last_p = p
         self.last_gamma = gamma

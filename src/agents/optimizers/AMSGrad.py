@@ -33,14 +33,25 @@ class AMSGrad(BaseTD):
         return np.mean(ss, axis=1)
 
     def update(self, x, a, xp, r, gamma, p):
-        dtheta = np.array(self.computeGradient(x, a, xp, r, gamma, p))
+        experience = (x, a, xp, r, gamma, p)
+        self.buffer.add(experience)
+
+        dtheta = self.computeGradient(*experience)
+        self.theta = self.theta + self.stepsize * dtheta
 
         self.M = self.momentum * self.M + (1 - self.momentum) * dtheta
         self.S = self.curve * self.S + (1 - self.curve) * np.square(dtheta)
-
         self.v = np.max([self.S, self.v], axis=0)
-
         self.theta = self.theta + (self.stepsize / np.sqrt(self.v)) * self.M
+
+        for i in range(self.replay):
+            experience = self.buffer.sample()[0]
+            dtheta = self.computeGradient(*experience)
+
+            self.M = self.momentum * self.M + (1 - self.momentum) * dtheta
+            self.S = self.curve * self.S + (1 - self.curve) * np.square(dtheta)
+            self.v = np.max([self.S, self.v], axis=0)
+            self.theta = self.theta + (self.stepsize / np.sqrt(self.v)) * self.M
 
         self.last_p = p
         self.last_gamma = gamma

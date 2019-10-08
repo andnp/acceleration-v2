@@ -6,9 +6,6 @@ class AdaGrad(BaseTD):
         super().__init__(features, params)
 
         self.S = np.zeros((2, features))
-        self.p = params.get("p_norm")
-        if self.p is None:
-            self.p = 2
 
     def _stepsize(self):
         # promote to an np.array just once to reduce unnecessary implicit casts by numpy
@@ -25,11 +22,22 @@ class AdaGrad(BaseTD):
         return np.mean(ss, axis=1)
 
     def update(self, x, a, xp, r, gamma, p):
-        dtheta = self.computeGradient(x, a, xp, r, gamma, p)
+        experience = (x, a, xp, r, gamma, p)
+        self.buffer.add(experience)
 
-        self.S = self.S + np.power(dtheta, self.p)
+        dtheta = self.computeGradient(*experience)
+        self.theta = self.theta + self.stepsize * dtheta
 
-        self.theta = self.theta + (self.stepsize / (np.power(self.S,1.0/self.p) + 1e-8)) * dtheta
+        self.S = self.S + np.square(dtheta)
+        self.theta = self.theta + (self.stepsize / (np.sqrt(self.S) + 1e-8)) * dtheta
+
+        for i in range(self.replay):
+            experience = self.buffer.sample()[0]
+            dtheta = self.computeGradient(*experience)
+            self.S = self.S + np.square(dtheta)
+            self.theta = self.theta + (self.stepsize / (np.sqrt(self.S) + 1e-8)) * dtheta
+
+
 
         self.last_p = p
         self.last_gamma = gamma

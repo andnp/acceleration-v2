@@ -16,15 +16,26 @@ class Schedule(BaseTD):
         return (alpha, alpha_h)
 
     def update(self, x, a, xp, r, gamma, p):
-        dtheta = self.computeGradient(x, a, xp, r, gamma, p)
+        experience = (x, a, xp, r, gamma, p)
+        self.buffer.add(experience)
+
+        dtheta = self.computeGradient(*experience)
 
         schedule = (self.n0 + 1) / (self.n0 + self.steps)
         alpha = self.alpha * schedule
         alpha_h = self.alpha_h * schedule
-
         stepsize = np.tile([alpha, alpha_h], (self.features, 1)).T
-
         self.theta = self.theta + stepsize * dtheta
+
+        for i in range(self.replay):
+            experience = self.buffer.sample()[0]
+            dtheta = self.computeGradient(*experience)
+
+            schedule = (self.n0 + 1) / (self.n0 + self.steps)
+            alpha = self.alpha * schedule
+            alpha_h = self.alpha_h * schedule
+            stepsize = np.tile([alpha, alpha_h], (self.features, 1)).T
+            self.theta = self.theta + stepsize * dtheta
 
         self.last_p = p
         self.last_gamma = gamma

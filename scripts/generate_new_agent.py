@@ -9,7 +9,7 @@ from src.utils.path import fileName, up
 old_agent_path = sys.argv[1]
 problems = sys.argv[2:]
 
-problems = filter(lambda p: '.' not in p and 'plots' not in p and 'LeftZero' not in p and 'Random' not in p, problems)
+problems = filter(lambda p: '.' not in p and 'plots' not in p and 'LeftZero' not in p and 'Random' not in p and '5050' not in p, problems)
 
 with open(old_agent_path, 'r') as f:
     old_agent = f.read()
