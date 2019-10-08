@@ -16,12 +16,19 @@ from src.utils.path import fileName, up
 
 error = 'rmspbe'
 
+# name = 'bakeoff'
+# problem = 'SmallChainTabular4060'
+# algorithms = ['tdc', 'htd']
+# # algorithms = ['tdc', 'td', 'regh_tdc']
+# stepsize = 'constant'
+# param = 'alpha'
+
 name = 'bakeoff'
-problem = 'SmallChainInverted4060'
-algorithms = ['tdc', 'htd']
-# algorithms = ['tdc', 'td', 'regh_tdc']
+problem = 'Baird'
+# algorithms = ['tdc', 'htd']
+algorithms = ['tdc', 'regh_tdc']
 stepsize = 'constant'
-param = 'ratio'
+param = 'alpha'
 
 # name = 'broken-htd'
 # problem = 'Baird'
@@ -29,9 +36,11 @@ param = 'ratio'
 # stepsize = 'constant'
 
 bestBy = 'auc'
-regh_baseline = True
+regh_baseline = False
 show_unconst = False
-td_baseline = True
+td_baseline = False
+
+stderr = False
 
 SMALL = 8
 MEDIUM = 16
@@ -58,6 +67,8 @@ def generatePlotTTA(ax, exp_path, bounds):
     color = colors[exp.agent]
     label = exp.agent
 
+    const = whereParameterEquals(const, 'ratio', 1)
+
     if 'ReghTDC' in label:
         const = whereParameterEquals(const, 'reg_h', 0.8)
 
@@ -65,7 +76,7 @@ def generatePlotTTA(ax, exp_path, bounds):
         b = plotSensitivity(unconst, param, ax, color=color, label=label + '_unc', bestBy=bestBy, dashed=True)
         bounds.append(b)
 
-    b = plotSensitivity(const, param, ax, color=color, label=label, bestBy=bestBy)
+    b = plotSensitivity(const, param, ax, stderr=stderr, color=color, label=label, bestBy=bestBy)
     bounds.append(b)
 
 def generatePlot(ax, exp_path, bounds):
@@ -127,7 +138,7 @@ if __name__ == "__main__":
         else:
             exp_path = f'experiments/stepsizes/{problem}/{alg}/{alg}{stepsize}.json'
 
-        if alg != 'td':
+        if alg != 'td' and alg != 'vtrace':
             generatePlotTTA(ax, exp_path, bounds)
         else:
             generatePlot(ax, exp_path, bounds)
@@ -138,7 +149,8 @@ if __name__ == "__main__":
     if lower < 0.01:
         lower = -0.01
 
-    ax.set_ylim([lower, upper])
+    # ax.set_ylim([lower, upper])
+    ax.set_ylim([lower, 1.0])
     ax.set_xscale("log", basex=2)
 
     # plt.show()

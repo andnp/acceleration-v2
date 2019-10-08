@@ -63,7 +63,7 @@ def getSensitivityData(results, param, reducer='best', overStream=None, bestBy='
 
     return x, y, e
 
-def plotSensitivity(results, param, ax, reducer='best', overStream=None, color=None, label=None, dashed=False, bestBy='end'):
+def plotSensitivity(results, param, ax, reducer='best', stderr=True, overStream=None, color=None, label=None, dashed=False, bestBy='end'):
     x, y, e = getSensitivityData(results, param, reducer, overStream, bestBy)
 
     if dashed:
@@ -72,8 +72,9 @@ def plotSensitivity(results, param, ax, reducer='best', overStream=None, color=N
         dashes = None
 
     ax.plot(x, y, label=label, linestyle=dashes, color=color, linewidth=2)
-    low_ci, high_ci = confidenceInterval(np.array(y), np.array(e))
-    ax.fill_between(x, low_ci, high_ci, color=color, alpha=0.4)
+    if stderr:
+        low_ci, high_ci = confidenceInterval(np.array(y), np.array(e))
+        ax.fill_between(x, low_ci, high_ci, color=color, alpha=0.4)
 
     ax.legend()
     max_y = getMaxY(y)

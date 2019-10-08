@@ -48,10 +48,10 @@ if __name__ == "__main__":
                 continue
 
             results = loadResults(exp, errorfile)
-            if alg == 'td' or alg == 'vtrace':
+            if alg == 'td' or alg == 'vtrace' or alg == 'gtd2':
                 const = results
             else:
-                const = whereParameterGreaterEq(results, 'ratio', 1)
+                const = whereParameterEquals(results, 'ratio', 1)
                 const = whereParameterEquals(const, 'reg_h', 0.8)
 
             best = getBest(const)
@@ -87,10 +87,10 @@ if __name__ == "__main__":
             x = i * len(algorithms) + j + offset
             ax.bar(x, table[j, i, 0], yerr=table[j, i, 1], color=colors[a.upper()], tick_label='')
 
-    ax.set_ylim([.9, 2])
+    ax.set_ylim([.9, 2.25])
 
-    # plt.show()
-    # exit()
+    plt.show()
+    exit()
 
     save_path = 'experiments/stepsizes/plots'
     os.makedirs(save_path, exist_ok=True)
