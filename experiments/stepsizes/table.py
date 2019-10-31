@@ -15,9 +15,10 @@ from src.utils.path import fileName, up
 error = 'rmspbe'
 
 name = 'all'
-problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
+problems = ['SmallChainTabular4060', 'SmallChainInverted4060', 'SmallChainDependent4060', 'Boyan', 'Baird']
+stepsize = 'amsgrad'
 
-algorithms = ['gtd2', 'tdc', 'htd', 'td', 'regh_tdc']
+algorithms = ['gtd2', 'tdc', 'htd', 'td', 'vtrace', 'regh_tdc']
 
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'
@@ -37,14 +38,14 @@ if __name__ == "__main__":
 
     for i, alg in enumerate(algorithms):
         for j, problem in enumerate(problems):
-            exp_path = f'experiments/stepsizes/{problem}/{alg}/{alg}.json'
+            exp_path = f'experiments/stepsizes/{problem}/{alg}/{alg}{stepsize}.json'
             try:
                 exp = loadExperiment(exp_path)
             except:
                 continue
 
             results = loadResults(exp, errorfile)
-            if alg == 'td':
+            if alg == 'td' or alg == 'vtrace':
                 const = results
             else:
                 const = whereParameterGreaterEq(results, 'ratio', 1)
@@ -62,15 +63,16 @@ if __name__ == "__main__":
             table[i, j] = [mean, stderr]
 
     htd_idx = indexOf(algorithms, 'htd')
+    vtrace_idx = indexOf(algorithms, 'vtrace')
     td_idx = indexOf(algorithms, 'td')
     for j, problem in enumerate(problems):
-        if htd_idx is None:
-            continue
+        if htd_idx is not None and table[htd_idx, j, 0] == 0:
+            print('htd', problem)
+            table[htd_idx, j] = table[td_idx, j]
 
-        if table[htd_idx, j, 0] != 0:
-            continue
-
-        table[htd_idx, j] = table[td_idx, j]
+        if vtrace_idx is not None and table[vtrace_idx, j, 0] == 0:
+            print('vtrace', problem)
+            table[vtrace_idx, j] = table[td_idx, j]
 
     best = np.argmin(table[:, :, 0], axis=0)
 
@@ -82,8 +84,8 @@ if __name__ == "__main__":
         elements = []
         for j in range(len(problems)):
             mean, stderr = table[i, j]
-            # s = f'{mean:.3f} $\\pm$ {stderr:.3f}'
-            s = f'{mean:.3f}'
+            s = f'{mean:.3f} $\\pm$ {stderr:.3f}'
+            # s = f'{mean:.3f}'
             if best[j] == i:
                 s = '\\textbf{' + s + '}'
             elements.append(s)

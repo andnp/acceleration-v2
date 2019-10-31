@@ -20,6 +20,7 @@ name = 'all'
 problems = ['SmallChainTabular4060', 'SmallChainInverted4060', 'SmallChainDependent4060', 'Boyan', 'Baird']
 
 algorithms = ['gtd2', 'tdc', 'vtrace', 'htd', 'td', 'regh_tdc']
+stepsize = ''
 
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'
@@ -41,14 +42,15 @@ if __name__ == "__main__":
 
     for i, alg in enumerate(algorithms):
         for j, problem in enumerate(problems):
-            exp_path = f'experiments/stepsizes/{problem}/{alg}/{alg}.json'
+            print(alg, problem)
+            exp_path = f'experiments/stepsizes/{problem}/{alg}/{alg}{stepsize}.json'
             try:
                 exp = loadExperiment(exp_path)
             except:
                 continue
 
             results = loadResults(exp, errorfile)
-            if alg == 'td' or alg == 'vtrace' or alg == 'gtd2':
+            if alg == 'td' or alg == 'vtrace':
                 const = results
             else:
                 const = whereParameterEquals(results, 'ratio', 1)
@@ -87,7 +89,8 @@ if __name__ == "__main__":
             x = i * len(algorithms) + j + offset
             ax.bar(x, table[j, i, 0], yerr=table[j, i, 1], color=colors[a.upper()], tick_label='')
 
-    ax.set_ylim([.9, 2.25])
+    ax.set_ylim([.9, 2.5])
+    # ax.set_ylim([-.7, .2])
 
     plt.show()
     exit()
@@ -95,7 +98,7 @@ if __name__ == "__main__":
     save_path = 'experiments/stepsizes/plots'
     os.makedirs(save_path, exist_ok=True)
 
-    width = 8
+    width = 32
     height = (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/{name}_bar-plot_{error}.pdf', bbox_inches='tight', dpi=100)
+    plt.savefig(f'{save_path}/{name}_bar-plot_{stepsize}_{error}.pdf', bbox_inches='tight', dpi=100)

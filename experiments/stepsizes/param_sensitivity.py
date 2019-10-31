@@ -17,20 +17,20 @@ from src.utils.path import fileName, up
 error = 'rmspbe'
 
 # name = 'bakeoff'
-# problem = 'Boyan'
+# problem = 'Baird'
 # algorithms = ['tdc', 'gtd2']
 # # algorithms = ['tdc', 'gtd2', 'htd']
-# baselines = ['td', 'regh_tdc']
-# stepsize = 'adagrad'
+# baselines = ['regh_tdc']
+# stepsize = 'constant'
 # param = 'ratio'
 
 # name = 'bakeoff'
 # problem = 'Baird'
 # # algorithms = ['tdc', 'htd']
-# # algorithms = ['td', 'tdc', 'gtd2', 'regh_tdc']
+# # algorithms = ['tdc', 'gtd2', 'regh_tdc']
 # algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc']
 # baselines = []
-# stepsize = 'adagrad'
+# stepsize = 'amsgrad'
 # param = 'alpha'
 
 name = 'bakeoff'
@@ -48,7 +48,7 @@ param = 'reg_h'
 bestBy = 'auc'
 show_unconst = False
 
-stderr = True
+stderr = False
 
 SMALL = 8
 MEDIUM = 16
@@ -159,7 +159,7 @@ if __name__ == "__main__":
         lower = -0.01
 
     ax.set_ylim([lower, upper])
-    # ax.set_ylim([lower, 0.1])
+    ax.set_ylim([lower, 1])
     ax.set_xscale("log", basex=2)
 
     # plt.show()

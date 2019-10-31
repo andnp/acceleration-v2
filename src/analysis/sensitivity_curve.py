@@ -62,7 +62,7 @@ def getSensitivityData(results, param, reducer='best', overStream=None, bestBy='
     e = np.array([metric(best[k].stderr()) for k in x])
 
     e[np.isnan(y)] = 0.000001
-    y[np.isnan(y)] = 1000
+    y[np.isnan(y)] = 100000
 
     return x, y, e
 
