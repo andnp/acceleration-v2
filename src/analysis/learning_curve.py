@@ -80,7 +80,7 @@ def plotBest(best, ax, window=1, smoothing=0, color=None, label=None, alpha=0.4,
         dashed = [dashed] * mean.shape[1]
 
     for i in range(mean.shape[1]):
-        lineplot(ax, mean[:, i], stderr=ste[:, i], smoothing=smoothing, window=window, color=color, label=label[i] + params, alpha=alpha, alphaMain=alphaMain, dashed=dashed[i])
+        lineplot(ax, mean[:, i]**2, stderr=ste[:, i], smoothing=smoothing, window=window, color=color, label=label[i] + params, alpha=alpha, alphaMain=alphaMain, dashed=dashed[i])
 
     if len(mean.shape) > 1 and mean.shape[1] > 1:
         return (np.nan, np.nan)

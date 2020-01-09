@@ -16,6 +16,20 @@ from src.utils.path import fileName, up
 stepsize = sys.argv[1]
 bestBy = sys.argv[2]
 
+UNCONSTRAINED = False
+
+SMALL = 14
+MEDIUM = 16
+BIGGER = 20
+
+plt.rc('font', size=SMALL)          # controls default text sizes
+plt.rc('axes', titlesize=BIGGER)     # fontsize of the axes title
+plt.rc('axes', labelsize=BIGGER)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL)    # fontsize of the tick labels
+plt.rc('legend', fontsize=MEDIUM)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER)  # fontsize of the figure title
+
 if bestBy == 'auc':
     metric = getBest
 elif bestBy == 'end':
@@ -66,19 +80,20 @@ def generatePlot(exp_paths):
             agent += '_' + average
 
         color = colors[agent]
-        label = agent
+        label = agent.replace('adagrad', '')
 
         if not (exp.agent in ['TDadagrad', 'TDschedule', 'TD', 'TDamsgrad'] or use_ideal_h):
-            bounds = plot(unconst, ax, label=label + '_unc', color=color, dashed=True, bestBy=bestBy)
-            rmspbe_bounds.append(bounds)
+            if UNCONSTRAINED:
+                bounds = plot(unconst, ax, label=label + '_unc', color=color, dashed=True, bestBy=bestBy)
+                rmspbe_bounds.append(bounds)
             bounds = plot(const, ax, label=label, color=color, dashed=False, bestBy=bestBy)
             rmspbe_bounds.append(bounds)
         else:
             bounds = plot(unconst, ax, label=label, color=color, dashed=False, bestBy=bestBy)
             rmspbe_bounds.append(bounds)
 
-        ax.set_ylabel("RMSPBE")
-        ax.set_title("RMSPBE")
+        ax.set_ylabel("MSPBE")
+        ax.set_title("MSPBE")
 
     ax = axes[0,1]
     for exp_path in exp_paths:
@@ -98,7 +113,7 @@ def generatePlot(exp_paths):
             agent += '_' + average
 
         color = colors[agent]
-        label = agent
+        label = agent.replace('adagrad', '')
 
         if not (exp.agent in ['TDadagrad', 'TDschedule', 'TD', 'TDamsgrad'] or use_ideal_h):
             best = metric(const)
@@ -109,8 +124,9 @@ def generatePlot(exp_paths):
             bounds = plotBest(best_rmspbe, ax, label=label, color=color, dashed=False)
             rmspbe_bounds.append(bounds)
 
-            bounds = plotBest(best_rmspbe_unc, ax, label=label + '_unc', color=color, dashed=True)
-            rmspbe_bounds.append(bounds)
+            if UNCONSTRAINED:
+                bounds = plotBest(best_rmspbe_unc, ax, label=label + '_unc', color=color, dashed=True)
+                rmspbe_bounds.append(bounds)
         else:
             best = metric(unconst)
             best_rmspbe = find(unconst_res, best)
@@ -118,7 +134,7 @@ def generatePlot(exp_paths):
             bounds = plotBest(best_rmspbe, ax, label=label, color=color, dashed=False)
             rmspbe_bounds.append(bounds)
 
-        ax.set_title("RMSVE")
+        ax.set_title("MSVE")
 
     # RMSVE plots
     ax = axes[1,0]
@@ -139,7 +155,7 @@ def generatePlot(exp_paths):
             agent += '_' + average
 
         color = colors[agent]
-        label = agent
+        label = agent.replace('adagrad', '')
 
         if not (exp.agent in ['TDadagrad', 'TDschedule', 'TD', 'TDamsgrad'] or use_ideal_h):
             # best PBE using AUC
@@ -155,8 +171,9 @@ def generatePlot(exp_paths):
             bounds = plotBest(best_rmsve, ax, label=label, color=color, dashed=False)
             rmsve_bounds.append(bounds)
 
-            bounds = plotBest(best_rmsve_unc, ax, label=label + '_unc', color=color, dashed=True)
-            rmsve_bounds.append(bounds)
+            if UNCONSTRAINED:
+                bounds = plotBest(best_rmsve_unc, ax, label=label + '_unc', color=color, dashed=True)
+                rmsve_bounds.append(bounds)
 
         else:
             best = metric(unconst)
@@ -164,7 +181,7 @@ def generatePlot(exp_paths):
             bounds = plotBest(best_rmsve, ax, label=label, color=color, dashed=False)
             rmsve_bounds.append(bounds)
 
-        ax.set_ylabel("RMSVE")
+        ax.set_ylabel("MSVE")
 
     ax = axes[1,1]
     for exp_path in exp_paths:
@@ -182,14 +199,15 @@ def generatePlot(exp_paths):
             agent += '_' + average
 
         color = colors[agent]
-        label = agent
+        label = agent.replace('adagrad', '')
 
         if not (exp.agent in ['TDadagrad', 'TDschedule', 'TD', 'TDamsgrad'] or use_ideal_h):
             bounds = plot(const, ax, label=label, color=color, dashed=False, bestBy=bestBy)
             rmsve_bounds.append(bounds)
 
-            bounds = plot(unconst, ax, label=label + '_unc', color=color, dashed=True, bestBy=bestBy)
-            rmsve_bounds.append(bounds)
+            if UNCONSTRAINED:
+                bounds = plot(unconst, ax, label=label + '_unc', color=color, dashed=True, bestBy=bestBy)
+                rmsve_bounds.append(bounds)
 
         else:
             bounds = plot(unconst, ax, label=label, color=color, dashed=False, bestBy=bestBy)
@@ -212,8 +230,8 @@ def generatePlot(exp_paths):
     if rmsve_lower < 0.01:
         rmsve_lower = -0.01
 
-    axes[1, 0].set_ylim([rmsve_lower, rmsve_upper])
-    axes[1, 1].set_ylim([rmsve_lower, rmsve_upper])
+    axes[1, 0].set_ylim([0, 20])
+    axes[1, 1].set_ylim([0, 20])
 
 if __name__ == "__main__":
     exp_paths = sys.argv[3:]
@@ -238,7 +256,8 @@ if __name__ == "__main__":
 
     generatePlot(paths)
 
-    # plt.show()
+    plt.show()
+    exit()
 
     exp_name = fileName(up(exp.getExperimentName()))
     save_path = f'experiments/stepsizes/plots/2x2/{bestBy}'
