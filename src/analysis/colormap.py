@@ -24,7 +24,7 @@ stepsize_colors = {
 
 colors = {
     'HTD': '#984ea3',
-    'GTD2': 'grey',
+    'GTD2': 'purple',
     'TDC': '#4daf4a',
     'TD': '#377eb8',
     'ReghTDC': '#ff7f00',
