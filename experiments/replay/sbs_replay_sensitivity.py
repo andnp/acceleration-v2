@@ -2,36 +2,18 @@ import os
 import sys
 import glob
 import matplotlib.pyplot as plt
-import numpy as np
 sys.path.append(os.getcwd())
 
-from itertools import tee
-from src.analysis.sensitivity_curve import plotSensitivity, save
-from src.analysis.results import loadResults, whereParameterEquals, getBest, find, getBestEnd
+from src.analysis.sensitivity_curve import plotSensitivity
+from src.analysis.results import loadResults
 from src.analysis.colormap import colors
 from src.utils.model import loadExperiment
 
-from src.utils.arrays import first
-from src.utils.path import fileName, up
-
 error = 'rmspbe'
 
-# name = 'test'
-# problems = ['SmallChainTabular5050', 'Boyan']
-
-# name = 'policy'
-# problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'Baird']
-
-# name = 'features'
-# problems = ['SmallChainTabular5050', 'SmallChainInverted5050', 'SmallChainDependent5050' 'Boyan']
-
-name = 'regh'
-problems = ['SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'Boyan', 'Baird']
-algorithms = ['regh_tdc']
-
-# name = 'all'
-# problems = ['SmallChainTabular5050LeftZero', 'SmallChainInverted5050LeftZero', 'SmallChainDependent5050LeftZero', 'SmallChainTabular5050', 'SmallChainTabular4060', 'SmallChainInverted5050', 'SmallChainInverted4060', 'SmallChainDependent5050', 'SmallChainDependent4060', 'SmallChainRandomCluster1090', 'SmallChainRandomCluster4060', 'SmallChainRandomCluster5050', 'SmallChainOuterRandomCluster1090', 'Boyan', 'Baird']
-# algorithms = ['gtd2', 'tdc', 'tdc_ema_x']
+name = 'paper'
+problems = ['SmallChainTabular4060', 'SmallChainInverted4060', 'SmallChainDependent4060', 'Boyan', 'Baird']
+algorithms = ['gtd2', 'tdc', 'td', 'tdrc', 'htd', 'vtrace']
 
 stepsizes = ['constant', 'adagrad', 'schedule']
 
@@ -50,7 +32,9 @@ def generatePlotTTA(ax, exp_paths, bestBy, bounds):
         color = colors[agent]
         label = agent
 
-        b = plotSensitivity(results, 'reg_h', ax, reducer='best', color=color, label=label, bestBy=bestBy)
+        # reducer='best' chooses the best value of other parameters *per value of 'replay'*
+        # reducer='slice' first chooses the best parameter setting, then sweeps over 'replay' with other parameters fixed
+        b = plotSensitivity(results, 'replay', ax, reducer='best', color=color, label=label, bestBy=bestBy)
         bounds.append(b)
 
 if __name__ == "__main__":
@@ -67,9 +51,9 @@ if __name__ == "__main__":
             for alg in algorithms:
                 print(ss, problem, alg)
                 if ss == 'constant':
-                    exp_paths = glob.glob(f'experiments/stepsizes/{problem}/{alg}/{alg}.json')
+                    exp_paths = glob.glob(f'experiments/replay/{problem}/replay_{alg}/{alg}.json')
                 else:
-                    exp_paths = glob.glob(f'experiments/stepsizes/{problem}/{alg}/{alg}{ss}.json')
+                    exp_paths = glob.glob(f'experiments/replay/{problem}/replay_{alg}/{alg}{ss}.json')
 
 
                 generatePlotTTA(axes[i, 2 * j], exp_paths, 'auc', bounds)
@@ -102,10 +86,10 @@ if __name__ == "__main__":
     # plt.show()
     # exit()
 
-    save_path = 'experiments/stepsizes/plots'
+    save_path = 'experiments/replay/plots'
     os.makedirs(save_path, exist_ok=True)
 
     width = len(problems) * 8
     height = len(stepsizes) * (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/regh_{name}_{error}.png', dpi=100)
+    plt.savefig(f'{save_path}/sbs-replay-sensitivity_{name}_{error}.png', dpi=100)
