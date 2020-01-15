@@ -15,7 +15,7 @@ name = 'paper'
 problems = ['SmallChainTabular4060', 'SmallChainInverted4060', 'SmallChainDependent4060', 'Boyan', 'Baird']
 algorithms = ['gtd2', 'tdc', 'td', 'tdrc', 'htd', 'vtrace']
 
-stepsizes = ['constant', 'adagrad', 'schedule']
+stepsizes = ['constant', 'adagrad']
 
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'
@@ -38,7 +38,7 @@ def generatePlotTTA(ax, exp_paths, bestBy, bounds):
         bounds.append(b)
 
 if __name__ == "__main__":
-    f, axes = plt.subplots(len(stepsizes), len(problems) * 2)
+    f, axes = plt.subplots(len(stepsizes), len(problems))
 
     for i, ss in enumerate(stepsizes):
         for j, problem in enumerate(problems):
@@ -56,8 +56,8 @@ if __name__ == "__main__":
                     exp_paths = glob.glob(f'experiments/replay/{problem}/replay_{alg}/{alg}{ss}.json')
 
 
-                generatePlotTTA(axes[i, 2 * j], exp_paths, 'auc', bounds)
-                generatePlotTTA(axes[i, 2 * j + 1], exp_paths, 'end', bounds)
+                generatePlotTTA(axes[i, j], exp_paths, 'auc', bounds)
+                # generatePlotTTA(axes[i, 2 * j + 1], exp_paths, 'end', bounds)
 
             # ----------------------
             # -- Set y-axis bounds -
@@ -73,14 +73,15 @@ if __name__ == "__main__":
                 upper = 8
 
             if i == 0:
-                axes[i, 2 * j].set_title(f'{problem}\n{ss}\nauc')
+                axes[i, j].set_title(f'{problem}\n{ss}\nauc')
             else:
-                axes[i, 2 * j].set_title(f'{ss} - auc')
-
-            axes[i, 2 * j + 1].set_title(f'{ss} - end')
+                axes[i, j].set_title(f'{ss} - auc')
 
             # axes[i, 2 * j].set_ylim([lower, upper])
             # axes[i, 2 * j + 1].set_ylim([lower, upper])
+
+            if problem == 'Baird':
+                axes[i, j].set_ylim([0.03, 0.3])
 
 
     # plt.show()
