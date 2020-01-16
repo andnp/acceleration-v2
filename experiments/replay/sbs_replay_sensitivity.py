@@ -84,7 +84,7 @@ if __name__ == "__main__":
             # axes[i, 2 * j + 1].set_ylim([lower, upper])
 
             if problem == 'Baird':
-                axes[i, j].set_ylim([0.03, 0.4])
+                axes[i, j].set_ylim([0.03, 2.0])
 
 
     # plt.show()

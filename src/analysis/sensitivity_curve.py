@@ -30,16 +30,18 @@ def getSensitivityData(results, param, reducer='best', overStream=None, bestBy='
     useOtherStream = overStream is not None
     overStream = overStream if useOtherStream else results
 
+    bestByStr = 'auc'
+    if not callable(bestBy):
+        bestByStr = bestBy
+
     if reducer == 'best':
-        bestStream = getBestOverParameter(overStream, param, bestBy=bestBy)
+        bestStream = getBestOverParameter(overStream, param, bestBy=bestByStr)
 
     elif reducer == 'slice':
         l, r = tee(overStream)
-        if bestBy == 'end':
+        if bestByStr == 'end':
             best = getBestEnd(l)
         elif bestBy == 'auc':
-            best = getBest(l)
-        elif callable(bestBy):
             best = getBest(l)
 
         bestStream = sliceOverParameter(r, best, param)
