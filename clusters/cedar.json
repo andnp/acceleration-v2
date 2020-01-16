@@ -3,5 +3,5 @@
     "time": "23:59:00",
     "nodes": 16,
     "memPerCpu": "2G",
-    "tasksPerNode": 6
+    "tasksPerNode": 3
 }
