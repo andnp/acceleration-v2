@@ -1,6 +1,7 @@
 import os
 import sys
 import glob
+import numpy as np
 import matplotlib.pyplot as plt
 sys.path.append(os.getcwd())
 
@@ -10,6 +11,9 @@ from src.analysis.colormap import colors
 from src.utils.model import loadExperiment
 
 error = 'rmspbe'
+
+bestBy = lambda m: np.mean(m[0 : int(m.shape[0] * .2)])
+# bestBy = 'end' # or 'auc'
 
 name = 'paper'
 problems = ['SmallChainTabular4060', 'SmallChainInverted4060', 'SmallChainDependent4060', 'Boyan', 'Baird']
@@ -56,8 +60,7 @@ if __name__ == "__main__":
                     exp_paths = glob.glob(f'experiments/replay/{problem}/replay_{alg}/{alg}{ss}.json')
 
 
-                generatePlotTTA(axes[i, j], exp_paths, 'auc', bounds)
-                # generatePlotTTA(axes[i, 2 * j + 1], exp_paths, 'end', bounds)
+                generatePlotTTA(axes[i, j], exp_paths, bestBy, bounds)
 
             # ----------------------
             # -- Set y-axis bounds -

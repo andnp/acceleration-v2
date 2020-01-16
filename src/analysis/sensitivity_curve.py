@@ -57,6 +57,8 @@ def getSensitivityData(results, param, reducer='best', overStream=None, bestBy='
         metric = lambda m: np.mean(m[-int(m.shape[0] * .1):])
     elif bestBy == 'auc':
         metric = np.mean
+    elif callable(bestBy):
+        metric = bestBy
 
     y = np.array([metric(best[k].mean()) for k in x])
     e = np.array([metric(best[k].stderr()) for k in x])
