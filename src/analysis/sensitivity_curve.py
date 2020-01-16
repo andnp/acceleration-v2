@@ -39,6 +39,8 @@ def getSensitivityData(results, param, reducer='best', overStream=None, bestBy='
             best = getBestEnd(l)
         elif bestBy == 'auc':
             best = getBest(l)
+        elif callable(bestBy):
+            best = getBest(l)
 
         bestStream = sliceOverParameter(r, best, param)
 
