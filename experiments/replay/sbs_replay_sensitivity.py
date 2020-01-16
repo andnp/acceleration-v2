@@ -15,7 +15,7 @@ name = 'paper'
 problems = ['SmallChainTabular4060', 'SmallChainInverted4060', 'SmallChainDependent4060', 'Boyan', 'Baird']
 algorithms = ['gtd2', 'tdc', 'td', 'tdrc', 'htd', 'vtrace']
 
-stepsizes = ['constant', 'adagrad']
+stepsizes = ['constant', 'adagrad', 'amsgrad']
 
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'
@@ -81,7 +81,7 @@ if __name__ == "__main__":
             # axes[i, 2 * j + 1].set_ylim([lower, upper])
 
             if problem == 'Baird':
-                axes[i, j].set_ylim([0.03, 0.3])
+                axes[i, j].set_ylim([0.03, 0.4])
 
 
     # plt.show()
