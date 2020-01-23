@@ -9,6 +9,7 @@ from src.analysis.sensitivity_curve import plotSensitivity
 from src.analysis.results import loadResults
 from src.analysis.colormap import colors
 from src.utils.model import loadExperiment
+from src.analysis.results import loadResults, whereParameterGreaterEq, whereParameterEquals, getBest, getBestEnd, find
 
 error = 'rmspbe'
 
@@ -35,6 +36,9 @@ def generatePlotTTA(ax, exp_paths, bestBy, bounds):
         agent = exp.agent
         color = colors[agent]
         label = agent
+
+        if exp.agent == 'ReghTDC':
+            results = whereParameterGreaterEq(results, 'ratio', 1.0)
 
         # reducer='best' chooses the best value of other parameters *per value of 'replay'*
         # reducer='slice' first chooses the best parameter setting, then sweeps over 'replay' with other parameters fixed
