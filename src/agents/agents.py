@@ -41,6 +41,8 @@ from .vtrace_gtd2.VTraceGTD2 import VTraceGTD2
 from .vtrace_gtd2.VTraceGTD2adagrad import VTraceGTD2adagrad
 from .vtrace_gtd2.VTraceGTD2schedule import VTraceGTD2schedule
 
+from .tdrcc import TDRCC
+
 def getAgent(name):
     if name == 'TDC':
         return TDC
@@ -167,5 +169,8 @@ def getAgent(name):
 
     elif name == 'VTraceGTD2schedule':
         return VTraceGTD2schedule
+
+    elif name == 'TDRCC':
+        return TDRCC
 
     raise Exception('Unexpected agent given')
