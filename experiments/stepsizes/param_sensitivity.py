@@ -24,21 +24,28 @@ error = 'rmspbe'
 # stepsize = 'constant'
 # param = 'ratio'
 
-# name = 'bakeoff'
-# problem = 'Baird'
-# # algorithms = ['tdc', 'htd']
-# # algorithms = ['tdc', 'gtd2', 'regh_tdc']
-# algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc']
-# baselines = []
-# stepsize = 'amsgrad'
-# param = 'alpha'
-
 name = 'bakeoff'
 problem = 'Baird'
-algorithms = ['replay_gtd2']
+# algorithms = ['tdc', 'htd']
+# algorithms = ['tdc', 'gtd2', 'regh_tdc']
+algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc']
 baselines = []
 stepsize = 'constant'
-param = 'replay'
+param = 'alpha'
+
+# name = 'beta-sensitivity'
+# problem = 'Baird'
+# algorithms = ['regh_tdc']
+# baselines = ['td', 'tdc']
+# stepsize = 'constant'
+# param = 'beta'
+
+# name = 'bakeoff'
+# problem = 'Baird'
+# algorithms = ['replay_gtd2']
+# baselines = []
+# stepsize = 'constant'
+# param = 'replay'
 
 # name = 'broken-htd'
 # problem = 'Baird'
@@ -77,8 +84,8 @@ def generatePlotTTA(ax, exp_path, bounds):
 
     const = whereParameterEquals(const, 'ratio', 1)
 
-    # if 'ReghTDC' in label:
-    #     const = whereParameterEquals(const, 'reg_h', 0.8)
+    if 'ReghTDC' in exp.agent:
+        const = whereParameterEquals(const, 'reg_h', 0.8)
 
     if show_unconst:
         b = plotSensitivity(unconst, param, ax, color=color, label=label + '_unc', bestBy=bestBy, dashed=True)

@@ -16,7 +16,7 @@ from src.utils.path import fileName, up
 error = 'rmspbe'
 
 name = 'bakeoff'
-problem = 'Baird'
+problem = 'SmallChainDependent4060'
 algorithms = ['td', 'tdc', 'vtrace', 'htd', 'regh_tdc']
 # algorithms = ['td', 'gtd2', 'tdc', 'htd', 'regh_tdc']
 # algorithms = ['td', 'tdc', 'regh_tdc']
@@ -117,8 +117,8 @@ if __name__ == "__main__":
     if lower < 0.01:
         lower = -0.01
 
-    ax.set_ylim([lower, upper])
-    ax.set_ylim([0.01, 0.1])
+    # ax.set_ylim([lower, upper])
+    # ax.set_ylim([0.01, 0.1])
     ax.set_xlim([0, XMAX])
 
     plt.show()
