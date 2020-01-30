@@ -41,5 +41,5 @@ class SampleGenerator:
         if self._generated.shape[0] == 0:
             self.generate(generate)
 
-        sampled_exp = np.random.randint(0, int(generate), size=samples)
+        sampled_exp = np.random.randint(0, self._generated.shape[0], size=samples)
         return self._generated[sampled_exp]

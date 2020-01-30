@@ -8,6 +8,7 @@ class Experiment(ExperimentDescription):
         self.agent = d['agent']
         self.problem = d['problem']
         self.subsample = d.get('subsample', 10)
+        self.steps = d.get('steps', 10000)
 
 def loadExperiment(path = None):
     path = path if path is not None else sys.argv[1]

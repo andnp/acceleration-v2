@@ -3,13 +3,14 @@ from src.utils.buffers import CircularBuffer
 
 class BaseTD:
     def __init__(self, features, params):
+        self.params = params
         self.features = features
         self.gamma = params['gamma']
         self.alpha = params['alpha']
 
         self.alpha_h = params.get('alpha_h')
         if self.alpha_h is None:
-            self.alpha_h = params['ratio'] * self.alpha
+            self.alpha_h = params.get('ratio', 0) * self.alpha
 
         self.h_variance = params.get('h_variance', 0)
         self.replay = params.get('replay', 0)
@@ -55,6 +56,18 @@ class BaseTD:
         self.last_p = p
         self.last_gamma = gamma
         self.dtheta = dtheta
+
+    def batch_update(self, gen):
+        num = self.params['batch_size']
+        exps = gen.sample(samples=num)
+        shape = (num,) + self.theta.shape
+        grads = np.zeros(shape)
+        for i in range(num):
+            grads[i] = self.computeGradient(*exps[i])
+
+        grad = np.mean(grads, axis=0)
+
+        self.theta = self.theta + self.stepsize * grad
 
     def reset(self):
         pass

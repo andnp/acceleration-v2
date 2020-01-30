@@ -40,6 +40,8 @@ from .vtrace.VTraceschedule import VTraceschedule
 from .vtrace_gtd2.VTraceGTD2 import VTraceGTD2
 from .vtrace_gtd2.VTraceGTD2adagrad import VTraceGTD2adagrad
 from .vtrace_gtd2.VTraceGTD2schedule import VTraceGTD2schedule
+from .kernel.LinearKernel import LinearKernel, LinearKernelAdagrad
+from .kernel.GaussianKernel import GaussianKernel, GaussianKernelAdagrad
 
 from .tdrcc import TDRCC
 
@@ -172,5 +174,17 @@ def getAgent(name):
 
     elif name == 'TDRCC':
         return TDRCC
+
+    elif name == 'LinearKernel':
+        return LinearKernel
+
+    elif name == 'GaussianKernel':
+        return GaussianKernel
+
+    elif name == 'LinearKerneladagrad':
+        return LinearKernelAdagrad
+
+    elif name == 'GaussianKerneladagrad':
+        return GaussianKernelAdagrad
 
     raise Exception('Unexpected agent given')
