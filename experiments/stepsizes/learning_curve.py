@@ -16,10 +16,11 @@ from src.utils.path import fileName, up
 error = 'rmspbe'
 
 name = 'bakeoff'
-problem = 'SmallChainDependent4060'
-algorithms = ['td', 'tdc', 'vtrace', 'htd', 'regh_tdc']
+problem = 'Boyan'
+# algorithms = ['td', 'tdc', 'vtrace', 'htd', 'regh_tdc']
 # algorithms = ['td', 'gtd2', 'tdc', 'htd', 'regh_tdc']
 # algorithms = ['td', 'tdc', 'regh_tdc']
+algorithms = ['tdc', 'regh_tdc', 'tdrcc']
 stepsize = 'constant'
 
 # name = 'broken-htd'

@@ -25,20 +25,20 @@ error = 'rmspbe'
 # param = 'ratio'
 
 name = 'bakeoff'
-problem = 'Baird'
+problem = 'SmallChainDependent4060'
 # algorithms = ['tdc', 'htd']
-# algorithms = ['tdc', 'gtd2', 'regh_tdc']
-algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc']
+algorithms = ['tdc', 'gtd2', 'regh_tdc', 'tdrcc']
+# algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc']
 baselines = []
 stepsize = 'constant'
 param = 'alpha'
 
 # name = 'beta-sensitivity'
-# problem = 'Baird'
-# algorithms = ['regh_tdc']
+# problem = 'SmallChainDependent4060'
+# algorithms = ['regh_tdc', 'tdrcc']
 # baselines = ['td', 'tdc']
 # stepsize = 'constant'
-# param = 'beta'
+# param = 'reg_h'
 
 # name = 'bakeoff'
 # problem = 'Baird'
@@ -84,11 +84,12 @@ def generatePlotTTA(ax, exp_path, bounds):
 
     const = whereParameterEquals(const, 'ratio', 1)
 
-    if 'ReghTDC' in exp.agent:
+    if 'ReghTDC' in exp.agent or 'TDRCC' in exp.agent:
+        # const = whereParameterGreaterEq(const, 'reg_h', 0.0001)
         const = whereParameterEquals(const, 'reg_h', 0.8)
 
     if show_unconst:
-        b = plotSensitivity(unconst, param, ax, color=color, label=label + '_unc', bestBy=bestBy, dashed=True)
+        b = plotSensitivity(unconst, param, ax, stderr=stderr, color=color, label=label + '_unc', bestBy=bestBy, dashed=True)
         bounds.append(b)
 
     b = plotSensitivity(const, param, ax, stderr=stderr, color=color, label=label, bestBy=bestBy)
@@ -167,9 +168,10 @@ if __name__ == "__main__":
         lower = -0.01
 
     ax.set_ylim([lower, upper])
-    ax.set_ylim([lower, 1])
+    # ax.set_ylim([lower, 1])
     ax.set_xscale("log", basex=2)
 
+    plt.legend()
     plt.show()
     exit()
 

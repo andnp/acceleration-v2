@@ -74,6 +74,7 @@ def getSensitivityData(results, param, reducer='best', overStream=None, bestBy='
 
 def plotSensitivity(results, param, ax, reducer='best', stderr=True, overStream=None, color=None, label=None, dashed=False, bestBy='end'):
     x, y, e = getSensitivityData(results, param, reducer, overStream, bestBy)
+    print(label, y)
 
     if dashed:
         dashes = ':'
