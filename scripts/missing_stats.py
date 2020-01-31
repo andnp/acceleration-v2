@@ -29,6 +29,8 @@ def count(gen):
 
 experiment_paths = sys.argv[2:]
 
+total = 0
+total_missing = 0
 for path in experiment_paths:
     print(path)
     exp = loadExperiment(path)
@@ -39,4 +41,10 @@ for path in experiment_paths:
     indices = generateMissing(paths)
     missing = count(indices)
 
+    total += size
+    total_missing += missing
+
     print(missing, size, missing / size)
+
+print('totals:')
+print(total_missing, total, total_missing / total)
