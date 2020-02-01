@@ -33,7 +33,7 @@ colors = {
     'VTrace': '#e41a1c',
     'VTRACE': '#e41a1c',
     'VTraceGTD2': '#a65628',
-    'TDRCC': 'red',
+    'TDRCC': '#f781bf',
 
     'LSTD': 'black',
 }
