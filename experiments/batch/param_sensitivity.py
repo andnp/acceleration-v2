@@ -13,7 +13,7 @@ from src.utils.model import loadExperiment
 
 error = 'rmspbe'
 
-problem = 'SmallChainDependent4060'
+problem = 'SmallChainInverted4060'
 # algorithms = ['tdc', 'htd']
 # algorithms = ['tdc', 'gtd2', 'regh_tdc']
 algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc', 'gaussiankernel', 'linearkernel']

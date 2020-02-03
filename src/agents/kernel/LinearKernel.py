@@ -34,7 +34,7 @@ class LinearKernel(BaseTD):
         for _ in range(num):
             grads[0] += self._compute_update(gen)
 
-        grad = grads / num**2
+        grad = grads / num
 
         self.theta = self.theta + self.stepsize * grad
 
@@ -50,7 +50,7 @@ class LinearKernelAdagrad(LinearKernel):
         for _ in range(num):
             grads[0] += self._compute_update(gen)
 
-        grad = grads / num**2
+        grad = grads / num
 
         self.S = self.S + np.square(grad)
         self.theta = self.theta + (self.stepsize / (np.sqrt(self.S) + 1e-8)) * grad
