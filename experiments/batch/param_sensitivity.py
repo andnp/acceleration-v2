@@ -13,10 +13,10 @@ from src.utils.model import loadExperiment
 
 error = 'rmspbe'
 
-problem = 'SmallChainInverted4060'
+problem = 'Baird'
 # algorithms = ['tdc', 'htd']
-# algorithms = ['tdc', 'gtd2', 'regh_tdc']
-algorithms = ['tdc', 'td', 'gtd2', 'htd', 'vtrace', 'regh_tdc', 'gaussiankernel', 'linearkernel']
+algorithms = ['tdc', 'gtd2', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
+# algorithms = ['tdc', 'td', 'gtd2', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
 # algorithms = ['tdc', 'td', 'gtd2', 'regh_tdc']
 baselines = []
 stepsize = ''
@@ -53,9 +53,14 @@ def generatePlotTTA(ax, exp_path, bounds):
     color = colors[exp.agent]
     label = exp.agent
 
-    if 'ReghTDC' in exp.agent or 'TDRCC' in exp.agent:
+    if 'ReghTDC' in exp.agent:
         const = whereParameterEquals(const, 'ratio', 1)
         const = whereParameterEquals(const, 'reg_h', 1)
+
+    elif 'TDRCC' in exp.agent:
+        const = whereParameterEquals(const, 'ratio', 1)
+        # const = whereParameterEquals(const, 'reg_h', 0.8)
+        const = whereParameterGreaterEq(const, 'reg_h', 0.01)
 
     elif 'TDC' in exp.agent:
         const = whereParameterGreaterEq(const, 'ratio', 1)
@@ -140,7 +145,7 @@ if __name__ == "__main__":
         lower = -0.01
 
     ax.set_ylim([lower, upper])
-    # ax.set_ylim([lower, 1])
+    ax.set_ylim([lower, 1])
     ax.set_xscale("log", basex=2)
 
     plt.legend()

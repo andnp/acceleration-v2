@@ -109,5 +109,3 @@ def lineplot(ax, mean, window=1, smoothing=0, stderr=None, color=None, label=Non
         stderr = np.array(list(smoothingAverage(stderr, smoothing)))
         (low_ci, high_ci) = confidenceInterval(mean, stderr)
         ax.fill_between(range(mean.shape[0]), low_ci, high_ci, color=base.get_color(), alpha=alpha * alphaMain)
-
-    ax.legend()

@@ -36,6 +36,9 @@ class Result:
     def runs(self):
         return self._reducer(self._lazyLoad()[2])
 
+    def clone(self):
+        return Result(self.path, self.exp, self.idx)
+
 def splitOverParameter(results, param):
     parts = {}
     for r in results:
@@ -106,6 +109,12 @@ def whereParameterEquals(results, param, value):
 
 def whereParameterGreaterEq(results, param, value):
     return filter(lambda r: r.params.get(param, value) >= value, results)
+
+def whereParameterLesserEq(results, param, value):
+    return filter(lambda r: r.params.get(param, value) <= value, results)
+
+def where(results, pred):
+    return filter(pred, results)
 
 def loadResults(exp, summary='errors_summary.npy'):
     for i, path in enumerate(listResultsPaths(exp)):

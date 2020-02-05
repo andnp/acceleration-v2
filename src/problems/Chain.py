@@ -31,14 +31,15 @@ class BaseChain(BaseProblem):
 
         N = self._getSize()
 
-        self.env = Chain(N)
+        self.reward_scale = self.metaParameters.get('reward_scale', 1)
+        self.env = Chain(N, self.reward_scale)
 
         # build target policy
         self.target = self._getTarget()
 
         self.behavior = Policy(lambda s: [0.5, 0.5])
 
-        self.v_star = self.compute_v(N, self.target)
+        self.v_star = self.compute_v(N, self.target, self.reward_scale)
 
         # build representation
         self.rep = self._getRepresentation(N)
@@ -67,8 +68,8 @@ class BaseChain(BaseProblem):
             self.P[i, i + 1] = pr
 
         self.R = np.zeros(N + 1)
-        self.R[0] = pl * -1
-        self.R[N-1] = pr * 1
+        self.R[0] = pl * -self.reward_scale
+        self.R[N-1] = pr * self.reward_scale
 
         self.setupIdealH()
 
@@ -90,7 +91,7 @@ class BaseChain(BaseProblem):
     def getAgent(self):
         return OffPolicyWrapper(self.agent, self.behavior, self.target, self.rep.encode)
 
-    def compute_v(self, nstates, targetPolicy):
+    def compute_v(self, nstates, targetPolicy, reward_scale):
         gamma = self.getGamma()
         theta = 1e-8
 
@@ -108,7 +109,7 @@ class BaseChain(BaseProblem):
 
                 right = s + 1
                 if right >= nstates:
-                    right_reward = 1
+                    right_reward = reward_scale
                     right_value = 0
                 else:
                     right_reward = 0.0
@@ -116,7 +117,7 @@ class BaseChain(BaseProblem):
 
                 left = s - 1
                 if left<0:
-                    left_reward = -1.0
+                    left_reward = -reward_scale
                     left_value = 0.0
                 else:
                     left_reward = 0.0
