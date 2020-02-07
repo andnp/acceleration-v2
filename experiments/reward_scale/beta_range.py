@@ -107,8 +107,8 @@ if __name__ == "__main__":
     cbar = plt.colorbar(sc)
     # cbar.set_ticks([0, MAX / 2, MAX])
 
-    plt.show()
-    exit()
+    # plt.show()
+    # exit()
 
     save_path = 'experiments/reward_scale/plots'
     os.makedirs(save_path, exist_ok=True)
@@ -116,4 +116,4 @@ if __name__ == "__main__":
     width = 8
     height = (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/betas_{error}_{problem}_{bestBy}.png', bbox_inches='tight', dpi=100)
+    plt.savefig(f'{save_path}/betas_{error}_{problem}_{bestBy}.pdf', bbox_inches='tight', dpi=100)
