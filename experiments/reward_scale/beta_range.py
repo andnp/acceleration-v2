@@ -18,7 +18,7 @@ from src.utils.path import fileName, up
 
 error = 'rmspbe'
 
-problem = 'SmallChainTabular4060'
+problem = 'Boyan'
 
 bestBy = 'auc'
 MAX = 0.4
