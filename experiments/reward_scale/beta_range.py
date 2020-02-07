@@ -18,7 +18,7 @@ from src.utils.path import fileName, up
 
 error = 'rmspbe'
 
-problem = 'Boyan'
+problem = 'SmallChainTabular4060'
 
 bestBy = 'auc'
 MAX = 0.4
@@ -26,10 +26,11 @@ MAX = 0.4
 SMALL = 8
 MEDIUM = 16
 BIGGER = 20
+BIGGEST = 25
 
 plt.rc('font', size=SMALL)          # controls default text sizes
-plt.rc('axes', titlesize=SMALL)     # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM)    # fontsize of the x and y labels
+plt.rc('axes', titlesize=BIGGER)     # fontsize of the axes title
+plt.rc('axes', labelsize=BIGGEST)    # fontsize of the x and y labels
 plt.rc('xtick', labelsize=BIGGER)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=BIGGER)    # fontsize of the tick labels
 plt.rc('legend', fontsize=MEDIUM)    # legend fontsize
@@ -104,11 +105,14 @@ if __name__ == "__main__":
     ax.set_xscale("log", basex=10)
     ax.set_yscale("log", basey=2)
 
-    cbar = plt.colorbar(sc)
+    plt.xlabel('Magnitude of Rewards')
+    plt.ylabel('Values of ')
+
+    # cbar = plt.colorbar(sc)
     # cbar.set_ticks([0, MAX / 2, MAX])
 
-    # plt.show()
-    # exit()
+    plt.show()
+    exit()
 
     save_path = 'experiments/reward_scale/plots'
     os.makedirs(save_path, exist_ok=True)

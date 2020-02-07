@@ -12,10 +12,10 @@ from src.utils.model import loadExperiment
 
 error = 'rmspbe'
 
-problem = 'Baird'
+problem = 'Boyan'
 # algorithms = ['tdc', 'htd']
-algorithms = ['tdc', 'gtd2', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
-# algorithms = ['tdc', 'td', 'gtd2', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
+# algorithms = ['tdc', 'gtd2', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
+algorithms = ['tdc', 'td', 'gtd2', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
 # algorithms = ['tdc', 'td', 'gtd2', 'regh_tdc']
 stepsize = ''
 
@@ -27,15 +27,15 @@ stderr = False
 SMALL = 8
 MEDIUM = 16
 BIGGER = 20
+BIGGEST = 25
 
 plt.rc('font', size=SMALL)          # controls default text sizes
-plt.rc('axes', titlesize=SMALL)     # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM)    # fontsize of the x and y labels
+plt.rc('axes', titlesize=BIGGER)     # fontsize of the axes title
+plt.rc('axes', labelsize=BIGGEST)    # fontsize of the x and y labels
 plt.rc('xtick', labelsize=BIGGER)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=BIGGER)    # fontsize of the tick labels
 plt.rc('legend', fontsize=MEDIUM)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER)  # fontsize of the figure title
-
 if error == 'rmsve':
     errorfile = 'errors_summary.npy'
 elif error == 'rmspbe':
@@ -85,7 +85,11 @@ if __name__ == "__main__":
     # ax.set_ylim([lower, 1])
     ax.set_xscale("log", basex=10)
 
-    # plt.legend()
+    plt.xlabel('Number of Updates')
+    # plt.ylabel('RMSPBE', rotation=0)
+
+
+    plt.legend()
     # plt.show()
     # exit()
 
