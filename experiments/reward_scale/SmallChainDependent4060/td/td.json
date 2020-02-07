@@ -1,11 +1,10 @@
 {
-    "agent": "ReghTDC",
+    "agent": "TD",
     "problem": "SmallChainDependent4060",
     "subsample": 25,
     "steps": 3000,
     "metaParameters": {
         "ratio": 1.0,
-        "reg_h": [0.03125, 0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16],
         "alpha": [0.5, 0.25, 0.125, 0.0625, 0.03125],
         "reward_scale": [0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
     }

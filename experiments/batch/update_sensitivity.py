@@ -85,9 +85,9 @@ if __name__ == "__main__":
     # ax.set_ylim([lower, 1])
     ax.set_xscale("log", basex=10)
 
-    plt.legend()
-    plt.show()
-    exit()
+    # plt.legend()
+    # plt.show()
+    # exit()
 
     save_path = 'experiments/batch/plots'
     os.makedirs(save_path, exist_ok=True)

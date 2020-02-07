@@ -13,7 +13,7 @@ from src.utils.model import loadExperiment
 
 def generateMissing(paths):
     for i, p in enumerate(paths):
-        summary_path = p + '/rmsve_summary.npy'
+        summary_path = p + '/errors_summary.npy'
         if not os.path.exists(summary_path):
             yield i
 

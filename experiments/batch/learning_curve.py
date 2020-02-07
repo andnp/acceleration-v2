@@ -16,11 +16,11 @@ from src.utils.path import fileName, up
 error = 'rmspbe'
 
 name = 'bakeoff'
-problem = 'Boyan'
+problem = 'Baird'
 # algorithms = ['td', 'tdc', 'vtrace', 'htd', 'regh_tdc']
 # algorithms = ['td', 'gtd2', 'tdc', 'htd', 'regh_tdc']
 # algorithms = ['td', 'tdc', 'regh_tdc']
-algorithms = ['tdc', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
+algorithms = ['tdc', 'gtd2', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
 stepsize = 'constant'
 
 bestBy = 'auc'
@@ -55,7 +55,7 @@ def generatePlotTTA(ax, exp_path, bounds):
     color = colors[exp.agent]
     label = exp.agent
 
-    const = whereParameterEquals(const, 'batch_size', 32)
+    const = whereParameterEquals(const, 'batch_size', 4)
     const = whereParameterGreaterEq(const, 'ratio', 1)
     if 'ReghTDC' in label:
         const = whereParameterEquals(const, 'reg_h', 1)
@@ -117,11 +117,14 @@ if __name__ == "__main__":
         lower = -0.01
 
     # ax.set_ylim([lower, upper])
-    # ax.set_ylim([0.01, 0.1])
+    ax.set_ylim([0, 0.1])
     # ax.set_xlim([0, XMAX])
 
-    plt.show()
-    exit()
+    # ax.set_xscale("log", basex=10)
+    plt.legend()
+
+    # plt.show()
+    # exit()
 
     save_path = 'experiments/batch/plots'
     os.makedirs(save_path, exist_ok=True)
@@ -129,4 +132,4 @@ if __name__ == "__main__":
     width = 8
     height = (24/5)
     f.set_size_inches((width, height), forward=False)
-    plt.savefig(f'{save_path}/{name}_learning-curve_{error}_{stepsize}_{problem}_{bestBy}.pdf', bbox_inches='tight', dpi=100)
+    plt.savefig(f'{save_path}/{name}_learning-curve_{error}_{stepsize}_{problem}_{bestBy}.png', bbox_inches='tight', dpi=100)
