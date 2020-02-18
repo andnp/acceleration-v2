@@ -12,7 +12,7 @@ from src.utils.model import loadExperiment
 
 error = 'rmspbe'
 
-problem = 'Boyan'
+problem = 'SmallChainDependent4060'
 # algorithms = ['tdc', 'htd']
 # algorithms = ['tdc', 'gtd2', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
 algorithms = ['tdc', 'td', 'gtd2', 'regh_tdc', 'tdrcc', 'gaussiankernel', 'linearkernel']
@@ -41,6 +41,12 @@ if error == 'rmsve':
 elif error == 'rmspbe':
     errorfile = 'rmspbe_summary.npy'
 
+def rename(name):
+    return {
+        'ReghTDC': 'TDRC',
+        'TDRCC': 'TDC++',
+    }.get(name, name)
+
 def addUpdateParam(results):
     for r in results:
         for i in list(range(2, 20)) + list(range(20, 300, 25)):
@@ -55,7 +61,7 @@ def generatePlot(ax, exp_path, bounds):
     results = addUpdateParam(results)
 
     color = colors[exp.agent]
-    label = exp.agent
+    label = rename(exp.agent)
 
     b = plotSensitivity(results, "updates", ax, color=color, label=label, bestBy=bestBy)
     bounds.append(b)
@@ -86,10 +92,10 @@ if __name__ == "__main__":
     ax.set_xscale("log", basex=10)
 
     plt.xlabel('Number of Updates')
-    # plt.ylabel('RMSPBE', rotation=0)
+    # plt.ylabel('RMSPBE')
 
 
-    plt.legend()
+    # plt.legend()
     # plt.show()
     # exit()
 

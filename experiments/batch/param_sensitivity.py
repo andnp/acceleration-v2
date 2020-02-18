@@ -45,13 +45,20 @@ if error == 'rmsve':
 elif error == 'rmspbe':
     errorfile = 'rmspbe_summary.npy'
 
+
+def rename(name):
+    return {
+        'Regh_TDC': 'TDRC',
+        'TDRCC': 'TDC++',
+    }.get(name, name)
+
 def generatePlotTTA(ax, exp_path, bounds):
     exp = loadExperiment(exp_path)
     results = loadResults(exp, errorfile)
     const, unconst = tee(results)
 
     color = colors[exp.agent]
-    label = exp.agent
+    label = rename(exp.agent)
 
     if 'ReghTDC' in exp.agent:
         const = whereParameterEquals(const, 'ratio', 1)
