@@ -76,6 +76,9 @@ class BaseProblem:
         b = X.T.dot(dB).dot(R)
         C = X.T.dot(dB).dot(X)
 
+        print(np.linalg.eigvals(A))
+        exit()
+
         self.A = A
         self.b = b
         self.C = C

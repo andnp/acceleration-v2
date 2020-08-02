@@ -20,7 +20,7 @@ problem = 'Boyan'
 # algorithms = ['td', 'tdc', 'vtrace', 'htd', 'regh_tdc']
 # algorithms = ['td', 'gtd2', 'tdc', 'htd', 'regh_tdc']
 # algorithms = ['td', 'tdc', 'regh_tdc']
-algorithms = ['tdc', 'regh_tdc', 'tdrcc']
+algorithms = ['tdc', 'regh_tdc']
 stepsize = 'constant'
 
 # name = 'broken-htd'
